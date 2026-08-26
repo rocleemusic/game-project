@@ -1,0 +1,19 @@
+{
+  "item_id": "item_dirt",
+  "description": "This dirt is dark and smells of crushed roots. It is damp to the touch but not wet, the kind of soil that clings to the edge of a spade. There are small, pale stones mixed in. It is fine enough to pour from a jar, leaving a thin layer on the table.",
+  "category": "component",
+  "persistence": "pack-triaged",
+  "collectible": true,
+  "consumable": true,
+  "source_locations": [
+    "Forager's Clearing",
+    "Forest Unlock 1"
+  ],
+  "always_available": false,
+  "used_by": [
+    "breath",
+    "furrow"
+  ],
+  "produced_by": [],
+  "use_family": null
+}

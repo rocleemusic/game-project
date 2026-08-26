@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Phaser temper demo</title>
+<style>html,body{margin:0;background:#000;overflow:hidden;}</style>
+</head>
+<body>
+<script src="../../node_modules/phaser/dist/phaser.js"></script>
+<script>
+const WIDTH = 400, HEIGHT = 320;
+
+// temper: a Blacksmith spell — hot metal quenched in water hardens evenly
+// with a hiss (content/magic/temper.json). Redo, Roc call 2026-08-23: a
+// steam/hiss burst at the quench moment, replacing the stock
+// vfx_temper_hiss sprite the cue currently just plays back with no
+// bespoke render path at all. The hiss is SUDDEN — a flash, a splash,
+// then steam that shoots out fast and dissipates almost as quick, not a
+// lingering cloud (that's waft's read). No-effect (cold metal, plain
+// splash, no steam) is authored separately at wiring time, same as
+// scratch/portion/echo's no-effect rows.
+
+const POINT = { x: WIDTH / 2, y: HEIGHT / 2 + 40 };
+const RING_LIFE_MS = 380;
+const LOOP_GAP_MS = 650;
+
+// theme.ts vfxEmber / ink — temper's authored colorKeys in cues.json (effect / no-effect).
+const EMBER = 0xff9d5c;
+const STEAM = 0xf4ead6; // theme.ts ink — steam reads warm-white, not cold blue
+// theme.ts success / vfxWisp — the new streak layer's two color families,
+// Roc call 2026-08-23: firework-style streaks radiating from center.
+const GREEN = [0xffffff, 0x9fd7a0];
+const BLUE = [0xffffff, 0x5fc9ff];
+
+// Ported from firework-demo.html: auto-rotates each streak to face its own
+// velocity, so a radial burst of rectangles reads as directional streaks.
+class StreakParticle extends Phaser.GameObjects.Particles.Particle {
+  update(delta, step, processors) {
+    const alive = super.update(delta, step, processors);
+    this.rotation = Math.atan2(this.velocityY, this.velocityX);
+    return alive;
+  }
+}
+
+class TemperScene extends Phaser.Scene {
+  create() {
+    const g = this.add.graphics();
+    g.fillStyle(0xffffff, 1);
+    g.fillCircle(14, 14, 14);
+    g.generateTexture('dot', 28, 28);
+    g.clear();
+    g.fillStyle(0xffffff, 0.5); g.fillCircle(16, 16, 16);
+    g.fillStyle(0xffffff, 0.85); g.fillCircle(16, 16, 8);
+    g.generateTexture('puff', 32, 32);
+    g.clear();
+    g.fillStyle(0xffffff, 1);
+    g.fillRect(0, 7, 24, 2);
+    g.generateTexture('streak', 24, 14);
+    g.destroy();
+
+    this.add.text(10, 8, 'Phaser temper demo — quench + green/blue firework streaks from center', {
+      fontFamily: 'monospace', fontSize: '12px', color: '#888',
+    });
+    this.add.circle(POINT.x, POINT.y, 3, 0x444444).setStrokeStyle(1, 0x666666);
+
+    this.ringG = this.add.graphics();
+    this.ringG.setBlendMode(Phaser.BlendModes.ADD);
+    this.rings = []; // { start } — drawn in step(), not per-tween onUpdate, so two overlapping rings don't clear each other's frame
+
+    this.time.addEvent({ delay: 16, loop: true, callback: () => this.step() });
+    this.burst();
+  }
+
+  burst() {
+    const now = this.time.now;
+    this.rings = [{ start: now }, { start: now + 90 }];
+
+    // Layer 1: the flash — the instant the hot metal hits the water.
+    const flash = this.add.particles(POINT.x, POINT.y, 'dot', {
+      lifespan: 160, speed: 0, scale: { start: 2.8, end: 0 },
+      alpha: { start: 1, end: 0 }, tint: 0xffffff, blendMode: 'ADD', emitting: false,
+    });
+    flash.explode(1);
+    this.time.delayedCall(200, () => flash.destroy());
+
+    // Layer 2b: firework-style streaks radiating out from the center, green
+    // and blue — a second flourish distinct from the quench's own warm
+    // palette, not more ember/steam. Two separate emitters (not one array)
+    // so each color reads as its own family rather than a gradient between them.
+    for (const colors of [GREEN, BLUE]) {
+      const streaks = this.add.particles(POINT.x, POINT.y, 'streak', {
+        particleClass: StreakParticle,
+        lifespan: { min: 240, max: 380 },
+        speed: { min: 150, max: 260 },
+        angle: { min: 0, max: 360 },
+        scaleX: { start: 1.5, end: 0.3 },
+        scaleY: { start: 1.3, end: 0.25 },
+        alpha: { start: 1, end: 0 },
+        color: colors,
+        colorEase: 'quad.out',
+        blendMode: 'ADD',
+        emitting: false,
+      });
+      streaks.explode(Phaser.Math.Between(6, 8));
+      this.time.delayedCall(420, () => streaks.destroy());
+    }
+
+    // Layer 3: steam — fast out, quick dissipate. Reuses waft's soft-puff
+    // texture idea but with a hard outward kick instead of a slow column,
+    // so it reads as an eruption, not waft's rising drift.
+    // Roc call 2026-08-23: delayed slightly behind the streaks — firing
+    // together buried the thin green/blue streaks under steam's much
+    // larger filled blobs the instant both appeared. A short beat lets the
+    // streaks read on their own before steam blooms over them, which also
+    // matches the real sequence (spark/light flash, then the cloud follows).
+    this.time.delayedCall(70, () => {
+      const steam = this.add.particles(POINT.x, POINT.y, 'puff', {
+        lifespan: { min: 260, max: 420 },
+        speed: { min: 90, max: 170 },
+        angle: { min: 230, max: 310 }, // biased upward, off the water surface
+        scale: { start: { min: 0.5, max: 0.9 }, end: { min: 1.4, max: 2.0 } },
+        alpha: { start: 0.55, end: 0 },
+        tint: STEAM,
+        blendMode: 'ADD',
+        emitting: false,
+      });
+      steam.explode(Phaser.Math.Between(10, 14));
+      this.time.delayedCall(500, () => steam.destroy());
+    });
+
+    // Layer 4: a few bright hiss sparks — droplets flung by the reaction.
+    const sparks = this.add.particles(POINT.x, POINT.y, 'dot', {
+      lifespan: { min: 200, max: 340 },
+      speed: { min: 60, max: 140 },
+      angle: { min: 200, max: 340 },
+      scale: { start: { min: 0.35, max: 0.6 }, end: 0 },
+      alpha: { start: 0.9, end: 0 },
+      tint: EMBER,
+      blendMode: 'ADD',
+      emitting: false,
+    });
+    sparks.explode(Phaser.Math.Between(6, 9));
+    this.time.delayedCall(400, () => sparks.destroy());
+
+    this.time.delayedCall(600 + LOOP_GAP_MS, () => this.burst());
+  }
+
+  step() {
+    const now = this.time.now;
+    this.ringG.clear();
+    for (const r of this.rings) {
+      const elapsed = now - r.start;
+      if (elapsed < 0 || elapsed > RING_LIFE_MS) continue;
+      const t = elapsed / RING_LIFE_MS;
+      const radius = 3 + t * 43;
+      const alpha = 0.6 * (1 - t);
+      this.ringG.lineStyle(2.5, EMBER, alpha);
+      this.ringG.strokeCircle(POINT.x, POINT.y, radius);
+    }
+  }
+}
+
+window.__game = new Phaser.Game({
+  type: Phaser.AUTO,
+  width: WIDTH,
+  height: HEIGHT,
+  backgroundColor: '#000000',
+  scene: TemperScene,
+});
+</script>
+</body>
+</html>

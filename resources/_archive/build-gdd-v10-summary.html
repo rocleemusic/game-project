@@ -1,0 +1,311 @@
+<!doctype html>
+<!-- Print to PDF: US Letter · Portrait · margins "Default" · Background graphics ON -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Festival of Souls — GDD Summary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --cream:#F3EBD7; --cream-2:#ECE0C6; --cream-edge:#E4D5B4;
+    --gold:#E3B26A; --amber:#CE8F45;
+    --dusk:#6E8794; --dusk-deep:#435966;
+    --teal:#2E4E48; --sage:#90A67C; --forest:#4E6B4F; --forest-deep:#33492F;
+    --ink:#382C1E; --body:#251E15; --muted:#6E6149;
+    --rule:#C9B996; --col:6.6in;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{ margin:0; padding:0; }
+
+  body{
+    font-family:"Spectral",Georgia,serif;
+    font-size:14px;
+    line-height:1.6;
+    color:var(--body);
+    background:#cbbfa4;
+  }
+
+  .page{
+    max-width:var(--col);
+    margin:0 auto;
+    background:var(--cream);
+    padding:.9in .95in 1in;
+    box-shadow:0 12px 40px rgba(40,32,18,.30);
+    position:relative;
+  }
+
+  /* ---------- cover ---------- */
+  .cover{ padding-bottom:.5in; border-bottom:1px solid var(--rule); margin-bottom:.4in; }
+  .eyebrow{
+    font-family:"Fraunces",serif; font-weight:500; font-size:11px;
+    letter-spacing:.30em; text-transform:uppercase; color:var(--amber);
+    margin:0 0 .14in;
+  }
+  h1.title{
+    font-family:"Fraunces",serif; font-weight:600; font-size:46px;
+    line-height:1.02; letter-spacing:-.015em; color:var(--ink); margin:0 0 .12in;
+  }
+  .subtitle{
+    font-family:"Spectral",serif; font-style:italic; font-size:16px;
+    color:var(--forest-deep); margin:0 0 .22in; max-width:5.6in;
+  }
+  .meta-line{ font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--muted); letter-spacing:.02em; }
+
+  .logline{
+    border-left:3px solid var(--gold);
+    padding:.02in 0 .02in .22in;
+    margin:.28in 0 0;
+    font-family:"Fraunces",serif; font-style:italic; font-size:15.5px;
+    color:var(--teal); max-width:5.4in;
+  }
+
+  /* ---------- section band ---------- */
+  .band{
+    display:flex; align-items:center; gap:.14in;
+    margin:.55in 0 .2in;
+  }
+  .band:first-of-type{ margin-top:0; }
+  .band .rule{ flex:1; height:1px; background:var(--rule); position:relative; }
+  .band .rule::before{
+    content:""; position:absolute; top:-3px; left:0; right:0; height:1px; background:var(--rule); opacity:.5;
+  }
+  .band .num{
+    width:26px; height:26px; border-radius:50%; border:1.5px solid var(--forest);
+    color:var(--forest); font-family:"Fraunces",serif; font-weight:600; font-size:12px;
+    display:flex; align-items:center; justify-content:center; flex:none;
+  }
+  .band .band-title{
+    font-family:"Fraunces",serif; font-weight:600; font-size:9.5px;
+    letter-spacing:.34em; text-transform:uppercase; color:var(--forest-deep);
+    white-space:nowrap;
+  }
+
+  h2.sec-title{
+    font-family:"Fraunces",serif; font-weight:600; font-size:24px;
+    letter-spacing:-.01em; color:var(--ink); margin:0 0 .14in;
+  }
+
+  p{ margin:0 0 .13in; }
+  em{ color:var(--teal); font-style:italic; }
+  strong{ color:var(--ink); font-weight:600; }
+
+  section.sec{ break-inside:avoid-page; }
+
+  /* ---------- pillar cards ---------- */
+  .pillars{
+    display:grid; grid-template-columns:1fr 1fr; gap:.14in .18in;
+    margin:.16in 0 .1in;
+  }
+  .pillar-card{
+    border:1px solid var(--cream-edge); border-radius:9px;
+    background:var(--cream-2); padding:.13in .16in;
+    break-inside:avoid;
+  }
+  .pillar-card .h{
+    font-family:"Fraunces",serif; font-weight:600; font-size:12.5px;
+    color:var(--forest-deep); margin:0 0 .04in;
+  }
+  .pillar-card .b{ font-size:12.5px; line-height:1.5; margin:0; color:var(--body); }
+
+  /* ---------- tier spectrum ---------- */
+  .tier-strip{
+    display:flex; gap:.09in; margin:.18in 0 .22in;
+  }
+  .tier{
+    flex:1; text-align:center; padding:.1in .06in; border-radius:7px;
+    font-family:"Fraunces",serif; font-weight:600; font-size:11.5px;
+    letter-spacing:.03em; color:var(--ink); border:1px solid var(--cream-edge);
+  }
+  .tier.quiet{ background:var(--cream-2); }
+  .tier.warm{ background:#EAD9A8; }
+  .tier.grand{ background:#E3B26A; color:var(--ink); }
+  .tier.rare{ background:var(--forest); color:var(--cream); border-color:var(--forest-deep); font-size:10.5px; }
+
+  /* ---------- callout ---------- */
+  .callout{
+    border:1px solid var(--cream-edge); border-left:3px solid var(--forest);
+    background:var(--cream-2); border-radius:6px;
+    padding:.14in .18in; margin:.18in 0; font-size:13px;
+  }
+  .callout strong{ color:var(--forest-deep); }
+
+  /* ---------- tables ---------- */
+  table.gtable{
+    width:100%; border-collapse:collapse; margin:.14in 0 .2in; font-size:11.5px;
+    break-inside:avoid;
+  }
+  table.gtable th{
+    text-align:left; font-family:"Fraunces",serif; font-weight:600; font-size:10px;
+    text-transform:uppercase; letter-spacing:.06em; color:var(--forest-deep);
+    border-bottom:1.5px solid var(--forest); padding:.05in .09in;
+  }
+  table.gtable td{
+    border-bottom:1px solid var(--cream-edge); padding:.06in .09in;
+    vertical-align:top; color:var(--body);
+  }
+  table.gtable tbody tr:nth-child(even){ background:rgba(236,224,198,.34); }
+  table.gtable .num{ font-family:"IBM Plex Mono",monospace; color:var(--amber); text-align:center; white-space:nowrap; }
+  table.gtable .lead-in{ font-weight:600; color:var(--ink); }
+  table.gtable .tag{ font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); }
+
+  footer{
+    margin-top:.5in; padding-top:.16in; border-top:1px solid var(--rule);
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:"IBM Plex Mono",monospace; font-size:9.5px; color:var(--muted); letter-spacing:.02em;
+  }
+
+  @media print{
+    body{ background:var(--cream); -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .page{ box-shadow:none; padding:0; max-width:none; }
+    @page{ size:letter portrait; margin:.75in .8in; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <p class="eyebrow">Game Design Document — Summary</p>
+    <h1 class="title">Festival of Souls</h1>
+    <p class="subtitle">A cozy roguelite point-and-click adventure about belonging, told across many lives.</p>
+    <p class="meta-line">Summarized from build-gdd-v10 · Pitch / collaborator read</p>
+    <p class="logline">"The Lantern Arch lights the way for souls to return, one night a year, so their loved ones can remember them."</p>
+  </div>
+
+  <section class="sec">
+    <div class="band"><div class="rule"></div><div class="num">01</div><div class="band-title">Concept</div><div class="rule"></div></div>
+    <h2 class="sec-title">The Hook</h2>
+    <p>Festival of Souls is a cozy roguelite point-and-click adventure — think <em>Outer Wilds</em> meets <em>Spiritfarer</em> meets <em>Frieren</em> — where you explore, collect, and discover in a hand-painted magical world.</p>
+    <p>The game explores one question: <strong>what does it mean to belong, and does connection span lifetimes?</strong></p>
+    <p>You play a mage who has just arrived in town before the Festival of Souls. You forage, craft, learn folk magic, and get to know your neighbors — and your choices shape how the festival turns out. One <strong>life</strong> unfolds across many festivals: your home fills, your bonds deepen, the town grows familiar. When you start a <strong>new life</strong>, the souls return with shuffled roles — the blacksmith may now be the postman — but each soul's core personality stays fixed, and the bonds you built carry forward.</p>
+  </section>
+
+  <section class="sec">
+    <div class="band"><div class="rule"></div><div class="num">02</div><div class="band-title">Differentiation</div><div class="rule"></div></div>
+    <h2 class="sec-title">What Makes It Different</h2>
+    <p>Most "cozy roguelites" are cozy paint over a tension engine — they keep death-as-punishment or push-your-luck mechanics and just make them <em>look</em> soft. This game inverts the mechanics themselves, keeping each roguelite pillar's structure but re-tuning it to produce warmth instead of tension.</p>
+    <div class="pillars">
+      <div class="pillar-card"><p class="h">No permadeath</p><p class="b">A life ends in a festival or a chosen new life — the harshest roguelite mechanic becomes an elective reincarnation. Nothing is lost, only lived.</p></div>
+      <div class="pillar-card"><p class="h">No procedural danger</p><p class="b">Reshuffles re-deal <em>roles</em> (personality fixed), so novelty reads as reunion and rediscovery, never threat.</p></div>
+      <div class="pillar-card"><p class="h">Knowledge, not power</p><p class="b">Like <em>Outer Wilds</em>, nothing mechanically unlocks — you carry forward <em>knowing more</em>, plus the bonds and collection you've built.</p></div>
+      <div class="pillar-card"><p class="h">Escalating intimacy</p><p class="b">Bonds deepen, dialogue warms, and the festival grows grander with depth instead of harder.</p></div>
+      <div class="pillar-card"><p class="h">Discovery over optimization</p><p class="b">You find spells and folk magic; the reward is discovery itself, without build-optimization stress.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="band"><div class="rule"></div><div class="num">03</div><div class="band-title">Gameplay</div><div class="rule"></div></div>
+    <h2 class="sec-title">Core Loop</h2>
+    <p>Four verbs drive everything: <strong>Collect</strong> (forage components, mementos, sounds), <strong>Make</strong> (combine components and knowledge into a spell, dish, or craft), <strong>Use</strong> (apply an item or spell to a target), and <strong>Converse</strong> (talk with an NPC).</p>
+    <p>A day runs morning → afternoon → evening on a move budget. You carry a satchel and a notebook; the notebook holds everything you've learned and never expires. At day's end you bank what fits in the satchel and return home — your hub for this life, which you decorate and which starts empty each new life.</p>
+    <p>A <strong>festival cycle</strong> is the week leading up to one festival night. Each NPC has a personal goal for the festival that you can help with, and the festival's outcome depends on how much you accomplished and who you bonded with.</p>
+  </section>
+
+  <section class="sec">
+    <div class="band"><div class="rule"></div><div class="num">04</div><div class="band-title">Narrative Engine</div><div class="rule"></div></div>
+    <h2 class="sec-title">The Reshuffle: Essence vs. Role</h2>
+    <p>This is the game's core narrative engine. Every soul is built on an <strong>essence/role split</strong>: the essence — a want plus a repeated behavior — never changes across lives. The role (their job in town) is re-dealt each new life from a shared pool (Mage, Blacksmith, Baker, Postman, Herbalist, Priest, Farmer).</p>
+    <p>That reshuffle is the payload, not a cosmetic reskin: the same fixed want, paired with a new civic role each life, produces a genuinely different story each time — a soul whose want is "to be needed" plays very differently as the town's Baker than as its Priest. Name, gender, and personality stay fixed so the player can recognize each soul across lives; only their position in the world changes.</p>
+    <p>The roster is 3 deep souls (hand-authored arcs) plus 5 texture souls (one salient signal each), each embodying a different theory of belonging — earned, given, chosen, tended, or found — so the town collectively argues the game's central question from every angle.</p>
+    <table class="gtable">
+      <thead><tr><th>Soul</th><th>Belonging-stance</th><th>Recognition hook / signal</th></tr></thead>
+      <tbody>
+        <tr><td class="lead-in">The Keeper (Mara) <span class="tag">deep</span></td><td>Belonging is tended; keeps the anchor from slipping into the past</td><td>Always finds the beauty in what's passing</td></tr>
+        <tr><td class="lead-in">Toby, the Giver <span class="tag">deep</span></td><td>Belonging is earned by being needed</td><td>Always the one who sees how people connect</td></tr>
+        <tr><td class="lead-in">Ilsa, the Kinbound <span class="tag">deep</span></td><td>Belonging is given — blood, family above all</td><td>Always gathers people to a table</td></tr>
+        <tr><td class="lead-in">Nell, the Content Server <span class="tag">texture</span></td><td>Needed, and at peace with it (counters the Giver)</td><td>Hums while working; never keeps score</td></tr>
+        <tr><td class="lead-in">Juno, the Found-Family Keeper <span class="tag">texture</span></td><td>Belonging is who you choose (counters the Kinbound; the game's thesis)</td><td>Her "family" is a patchwork of people who found each other</td></tr>
+        <tr><td class="lead-in">Linnet, Half of a Pair <span class="tag">texture</span></td><td>The one bond out of reach — soulmates split by timing</td><td>Keeps a small habit for someone now married to another</td></tr>
+        <tr><td class="lead-in">Pip, the Wonder-Seeker <span class="tag">texture</span></td><td>Belonging is in shared wonder</td><td>Drags people to see small marvels</td></tr>
+        <tr><td class="lead-in">Bex, the Rule-Breaker <span class="tag">texture</span></td><td>Says "you belong" plainly, where everyone else deflects</td><td>Names the feeling out loud</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sec">
+    <div class="band"><div class="rule"></div><div class="num">05</div><div class="band-title">Systems</div><div class="rule"></div></div>
+    <h2 class="sec-title">Magic System</h2>
+    <p>Spells are learned by watching a neighbor cast (which gives a clue, not the spell) and confirmed by doing. A spell is a phrase plus components, cast by selecting inventory items and entering the phrase. Anyone can cast, but mana affects only quality (a bigger or cleaner effect) — never whether you can cast at all.</p>
+    <p>Critically, <strong>outcomes are receiver-determined, not verb-determined</strong>: the same spell produces different results depending on its target. The verb encodes only what was attempted, never what happens. This was proven end-to-end by running <code>ignite</code> against seven receivers through the actual narrative pipeline:</p>
+    <table class="gtable">
+      <thead><tr><th>Receiver</th><th>Outcome</th><th>Reaction</th></tr></thead>
+      <tbody>
+        <tr><td class="lead-in">Stick</td><td>Catches</td><td>The stick catches at the tip and holds a small, steady flame.</td></tr>
+        <tr><td class="lead-in">Hedge</td><td>Catches, clears the obstacle</td><td>The hedge catches along its dry inner branches; smoke rises, then the flame opens the blocked path.</td></tr>
+        <tr><td class="lead-in">Furnace</td><td>State-dependent</td><td>Unlit and stocked: the banked fuel catches. Already lit: nothing changes.</td></tr>
+        <tr><td class="lead-in">Bread</td><td>Scorches, doesn't catch</td><td>The crust blackens and curls; the loaf is ruined, no flame catches.</td></tr>
+        <tr><td class="lead-in">Cat</td><td>No physical effect</td><td>The light washes over its fur and fades. The cat flattens, bolts, then grooms itself.</td></tr>
+        <tr><td class="lead-in">Toby (direct cast)</td><td>No physical effect</td><td>"Save that for the oven."</td></tr>
+        <tr><td class="lead-in">Ilsa (direct cast)</td><td>No physical effect</td><td><em>(null — no reaction)</em></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sec">
+    <div class="band"><div class="rule"></div><div class="num">06</div><div class="band-title">Resolution</div><div class="rule"></div></div>
+    <h2 class="sec-title">Festival Outcome</h2>
+    <p>Festival night isn't a win/lose branch — it's a spectrum, rendered through lighting, turnout, and who shows up:</p>
+    <div class="tier-strip">
+      <div class="tier quiet">Quiet</div>
+      <div class="tier warm">Warm</div>
+      <div class="tier grand">Grand</div>
+      <div class="tier rare">Souls-of-the-world (rare)</div>
+    </div>
+    <p>The tier is driven by pairing each soul's fixed want against their re-dealt role's civic goal — tension or alignment between the two is what makes the same soul's story land differently life to life. Two tracks run in parallel and never collide: the <strong>festival goal</strong> (external, moves the tier) and the <strong>soul's arc</strong> (internal, moves nothing on the tier). A player who ignores every soul's inner life can still reach a Grand festival by finishing the town's collective work; a player who goes deep on one soul and nothing else gets a Quiet festival and a different story. Neither is the "right" way to play. There is no hard-lose — every festival ends with something, because the game can't be lost, only lived.</p>
+  </section>
+
+  <section class="sec">
+    <div class="band"><div class="rule"></div><div class="num">07</div><div class="band-title">Production</div><div class="rule"></div></div>
+    <h2 class="sec-title">AI Pipeline &amp; Token Budget</h2>
+    <p>Content is produced by a crew of specialized agents under human review at every gate — agents generate volume and check consistency, but a human approves every line before it ships.</p>
+    <table class="gtable">
+      <thead><tr><th>Agent</th><th>Input</th><th>Output / Responsibility</th><th>Token Budget</th></tr></thead>
+      <tbody>
+        <tr><td class="lead-in">Orchestrator</td><td>Session goal, pipeline stage, arc-doc + NPC-codex refs, human intent</td><td>Sequences the crew, collects typed output, surfaces human gates, resolves conflicts</td><td class="num">200K</td></tr>
+        <tr><td class="lead-in">Narrative Director</td><td>Corpus lore, roster seeds, human steering intent</td><td>Surfaces lore, proposes arc-doc fields, drafts the arc doc for ratification</td><td class="num">—</td></tr>
+        <tr><td class="lead-in">Narrative Architect</td><td>NPC descriptions, scene list, voice guide</td><td>Persona cards, seed→payoff echo map, NPC codex of locked facts</td><td class="num">300K</td></tr>
+        <tr><td class="lead-in">Content / Dialogue</td><td>Persona card, scene context, tone enum, Architect output</td><td>All player-facing text — NPC lines, lore, descriptions</td><td class="num">700K</td></tr>
+        <tr><td class="lead-in">Consistency Verifier</td><td>New lines, active canon, 8 locked invariants</td><td>Flags each batch against invariants + voice register (flags only, never rewrites)</td><td class="num">300K</td></tr>
+        <tr><td class="lead-in">QA / Playtest</td><td>Scene graph, gates, interaction specs</td><td>Verifies the slice is traversable — no soft-locks, dead-ends, unreachable wins (flags only)</td><td class="num">250K</td></tr>
+        <tr><td class="lead-in">Style / Art-Direction</td><td>New assets, palette bands, silhouette vocabulary</td><td>Checks art against color grammar + silhouette rules; flags drift</td><td class="num">100K</td></tr>
+        <tr><td class="lead-in">Production / PM</td><td>Milestone calendar, task status, review-queue depth</td><td>Tracks backlog, flags scheduling risk, produces weekly readiness summary — no design decisions</td><td class="num">50K</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Budget assumption:</strong> one chat's context window is ~1M tokens; the project assumes a 3M total budget, split 2M for the narrative/content crew and 1M reserved for the technical track (Unreal integration).</p>
+    <p><strong>Measured, not estimated.</strong> On 2026-07-25 the crew was run for real — a 5-arm model benchmark plus a full generation of one soul through the stage-2 sequence (27 agents across two phases). The result: cost doesn't scale by soul, it scales by how many times a soul speaks.</p>
+    <table class="gtable">
+      <thead><tr><th>Unit</th><th>Measured cost</th><th>Scales with</th></tr></thead>
+      <tbody>
+        <tr><td class="lead-in">Architect — one soul's persona card + echoes</td><td class="num">~51K tokens</td><td>Souls (paid once each)</td></tr>
+        <tr><td class="lead-in">Content + Verifier — one soul in one scene</td><td class="num">~107K tokens</td><td>Soul-appearances</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">At 8 souls, persona cards cost ~411K tokens, leaving ~1.59M for appearances — roughly <strong>15 soul-appearances</strong> at ~107K each. The slice runs 5 days × 3 time-blocks = 15 scene-slots, meaning the 2M crew budget affords roughly <strong>one soul-appearance per time-block across the whole festival week, with zero revisions.</strong> That number is the real scope constraint on how populated any given scene can feel — not a design choice, a measured limit.</div>
+  </section>
+
+  <section class="sec">
+    <div class="band"><div class="rule"></div><div class="num">08</div><div class="band-title">Scope</div><div class="rule"></div></div>
+    <h2 class="sec-title">Scope</h2>
+    <p>The vertical slice targets: one playable week reaching festival night, one complete hand-authored deep-soul arc (seed to payoff), one hand-scripted on-camera reshuffle, and persistence of bond levels and collection across a new life. Built on Ink (narrative engine, prototyped in browser, carried into Unreal via ink-to-UE integration) with a Point-and-Click toolkit, Wwise audio, and static-camera 3D scenes — split into a narrative track and a visual/asset track so review never blocks asset work.</p>
+    <table class="gtable">
+      <thead><tr><th>Tier</th><th>Narrative</th><th>World / Levels</th><th>AI Pipeline</th></tr></thead>
+      <tbody>
+        <tr><td class="lead-in">MUST</td><td>1 deep soul's arc complete end-to-end; one seed→payoff echo lands</td><td>Forest (1 screen + 2 unlocks) + Town (Square + 1 scene) + Festival; one week playable to festival night</td><td>Persistence save + reshuffle works; Content + Consistency agents produce &amp; check one soul's lines</td></tr>
+        <tr><td class="lead-in">SHOULD</td><td>3 deep souls' key lines authored &amp; distinct side-by-side; dialogue warms across lives</td><td>3 festival tiers rendered; bond-driven dialogue change on a repeat reshuffle</td><td>Full crew runs; a second hand-authored reshuffle instance demonstrated on camera</td></tr>
+        <tr><td class="lead-in">STRETCH</td><td>All 5 texture souls fully written; the souls-of-the-world display top tier</td><td>Extra forest screens; richer effects</td><td>Style/Art-Direction agent automated; Production/PM agent live; ink→UE integration spike</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    <span>Festival of Souls — GDD Summary</span>
+    <span>Source: build-gdd-v10_draft.md</span>
+  </footer>
+
+</div>
+</body>
+</html>

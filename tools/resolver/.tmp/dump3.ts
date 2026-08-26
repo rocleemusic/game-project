@@ -1,0 +1,14 @@
+import {loadData} from '../src/data.ts';
+import {buildGraph} from '../src/graph.ts';
+import {emitInk} from '../src/ink.ts';
+import {compileInkFiles} from '../src/story.ts';
+const g=buildGraph(loadData('data',[]));
+const f=emitInk(g);
+const ls=f.get('souls/toby.ink')!.split('\n');
+const i=ls.findIndex(l=>l.includes('(ch_t2_09_6)'));
+console.log(ls.slice(i,i+14).join('\n'));
+console.log('=== flag lines ===');
+ls.forEach((l,n)=>{ if(l.includes('enteredByDivert')) console.log(n,l); });
+const r=compileInkFiles(f);
+console.log('ERR',r.errors.length,'WARN',r.warnings.length);
+console.log(r.errors.slice(0,5),r.warnings.slice(0,5));

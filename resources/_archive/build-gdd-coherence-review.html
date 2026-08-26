@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build GDD — Coherence Review (game-26)</title>
+<style>
+  :root{
+    --ink:#1c1a17; --muted:#6b645b; --line:#e5ddd1; --paper:#faf7f1;
+    --card:#fffdf9; --accent:#8a6d3b; --pass:#3f7a52; --pass-bg:#eaf3ec;
+    --fail:#b0472f; --fail-bg:#f8ece7; --park:#7a6a3a; --park-bg:#f4efdf;
+    --shadow:0 1px 2px rgba(28,26,23,.05),0 8px 24px rgba(28,26,23,.06);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:820px; margin:0 auto; padding:56px 28px 96px}
+  header.doc{border-bottom:2px solid var(--ink); padding-bottom:22px; margin-bottom:34px}
+  .eyebrow{font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:700; margin:0 0 10px}
+  h1{font-size:30px; line-height:1.2; margin:0 0 14px; letter-spacing:-.01em}
+  .meta{display:flex; flex-wrap:wrap; gap:6px 26px; font-size:13.5px; color:var(--muted)}
+  .meta b{color:var(--ink); font-weight:600}
+  .meta code{background:#f0ebe0; padding:1px 6px; border-radius:5px; font-size:12.5px}
+
+  .verdict{
+    display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:20px 24px; margin:0 0 38px; box-shadow:var(--shadow);
+  }
+  .score{font-size:34px; font-weight:800; letter-spacing:-.02em; white-space:nowrap}
+  .score .p{color:var(--pass)} .score .f{color:var(--fail)}
+  .verdict p{margin:0; font-size:14.5px; color:var(--muted)}
+  .verdict p b{color:var(--ink)}
+
+  h2{font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent);
+     margin:44px 0 16px; padding-bottom:8px; border-bottom:1px solid var(--line)}
+
+  .cat{background:var(--card); border:1px solid var(--line); border-radius:12px;
+       padding:18px 20px; margin:0 0 14px; box-shadow:var(--shadow)}
+  .cat-head{display:flex; align-items:baseline; gap:12px; margin-bottom:6px}
+  .cat-head .n{font-size:12px; font-weight:700; color:var(--muted); letter-spacing:.06em}
+  .cat-head h3{font-size:17px; margin:0; flex:1; letter-spacing:-.01em}
+  .tag{font-size:11.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+       padding:3px 10px; border-radius:20px; white-space:nowrap}
+  .tag.pass{color:var(--pass); background:var(--pass-bg)}
+  .tag.fail{color:var(--fail); background:var(--fail-bg)}
+  .cat p{margin:6px 0 0; font-size:14.5px; color:#40382e}
+  .cat ul{margin:10px 0 0; padding-left:0; list-style:none}
+  .cat li{position:relative; padding:8px 0 8px 20px; font-size:14px; border-top:1px dashed var(--line)}
+  .cat li:first-child{border-top:none}
+  .cat li::before{content:"▹"; position:absolute; left:0; color:var(--accent)}
+  .cat li .loc{font-weight:600; color:var(--accent)}
+  .cat li .fix{display:block; color:var(--muted); font-size:13px; margin-top:2px}
+  .cat li .fix b{color:var(--pass); font-weight:600}
+  code.q{background:#f0ebe0; padding:1px 6px; border-radius:5px; font-size:12.5px; color:#4a4136}
+
+  .fixes{background:#eef4ee; border:1px solid #cfe0d3; border-radius:12px; padding:18px 22px; margin:6px 0 0}
+  .fixes h3{margin:0 0 10px; font-size:15px; color:var(--pass)}
+  .fixes ol{margin:0; padding-left:20px}
+  .fixes li{margin:7px 0; font-size:14px}
+
+  .ledger{columns:2; column-gap:32px; margin:4px 0 0}
+  .ledger .item{break-inside:avoid; padding:7px 0; font-size:14px; border-bottom:1px dashed var(--line)}
+  .ledger .item.park{color:var(--park)}
+  .ledger .item .b{font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+     background:var(--park-bg); color:var(--park); padding:1px 7px; border-radius:12px; margin-right:6px}
+  @media(max-width:640px){ .ledger{columns:1} h1{font-size:25px} .wrap{padding:40px 20px 72px} }
+
+  footer.doc{margin-top:52px; padding-top:18px; border-top:1px solid var(--line);
+    font-size:12.5px; color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="doc">
+    <p class="eyebrow">Verification Report · game-26</p>
+    <h1>Build GDD — Adversarial Coherence Review</h1>
+    <div class="meta">
+      <span><b>Reviewed doc:</b> <code>resources/build-gdd_draft.md</code></span>
+      <span><b>Date:</b> 2026-07-19</span>
+      <span><b>Method:</b> subagent adversarial pass, 6 categories</span>
+    </div>
+  </header>
+
+  <div class="verdict">
+    <div class="score"><span class="p">5&nbsp;PASS</span> / <span class="f">1&nbsp;FAIL</span></div>
+    <p>The assembled doc was checked line-by-line against the locked Phase-3 decisions, the Van Buren over-spec guardrail, cross-reference integrity, the method-vs-content split, §12 ledger completeness, and structure. The sole failure — a handful of un-hedged scope numbers — <b>was fixed and re-verified.</b> Net state: coherent with the locked set.</p>
+  </div>
+
+  <h2>Category-by-category</h2>
+
+  <div class="cat">
+    <div class="cat-head"><span class="n">01</span><h3>Locked decisions not relitigated</h3><span class="tag pass">Pass</span></div>
+    <p>"bond level" used throughout; the one "partner" mention is explicitly framed as the retired term. Deepest bond stays emergent (§6.3); pairing framed as "one belonging-stance among several." Audio old scheme (string / MetaSounds / mirrored-tree) appears retired-only (§8). Live mode, spells, recognition, design law, endings, and 3D / Wwise / UE5 all consistent. Both parked items remain explicitly unresolved.</p>
+  </div>
+
+  <div class="cat">
+    <div class="cat-head"><span class="n">02</span><h3>Van Buren over-spec guardrail</h3><span class="tag fail">Fail → Fixed</span></div>
+    <p>Specific quantities stated as fact that are neither whitelisted scope inputs nor marked as estimate / §12-open:</p>
+    <ul>
+      <li><span class="loc">§6a</span> — <code class="q">7–8 screens each … 3 reachable at start</code>: per-location screen count is not a locked H14 input.
+        <span class="fix"><b>Fixed:</b> reframed as first-pass, owned by <code class="q">level-layout_draft.md</code> until prototyped.</span></li>
+      <li><span class="loc">§6a.4</span> — <code class="q">3 start screens (Yard · Field · Barn)</code>: same issue.
+        <span class="fix"><b>Fixed:</b> changed to "a start trio (Yard · Field · Barn)."</span></li>
+      <li><span class="loc">§6.4</span> — <code class="q">timelines = save slots (max 3)</code>: read as an invented cap.
+        <span class="fix"><b>Fixed:</b> attributed as "a locked cap of 3" (Session 5 decision).</span></li>
+      <li><span class="loc">§5b</span> — schema constraints <code class="q">≤25w</code>, <code class="q">≤60</code>, <code class="q">6 invariants</code>: flagged lower-confidence.
+        <span class="fix"><b>Kept:</b> these are I/O-contract field values in the designated T3 schema section — exactly where real numbers belong.</span></li>
+    </ul>
+    <p style="margin-top:12px">Content-beat figures (~130 beats, ~30 templates) and token figures (~1–3M, ~200–300 calls) were already correctly framed as first-pass estimates / §12-open — no issue.</p>
+  </div>
+
+  <div class="cat">
+    <div class="cat-head"><span class="n">03</span><h3>Cross-reference integrity</h3><span class="tag pass">Pass</span></div>
+    <p>JSON I/O schemas appear only in §5b. §4.2's interaction matrix explicitly defers its I/O to §5; the §5a persistence schema is named but not inlined (sent to §12); the §9 / §10 code blocks are a naming convention and a budget formula, not JSON schemas.</p>
+  </div>
+
+  <div class="cat">
+    <div class="cat-head"><span class="n">04</span><h3>Method-vs-content split</h3><span class="tag pass">Pass</span></div>
+    <p>H9 baseline content (specific place, 15-second vignette, seed-payoff spine) is deferred to game-35 and carried in §12; §6.1's authoring note and §6.5 keep the method-ships / content-parks split clean. The ink prototype is deferred to game-36, not built.</p>
+  </div>
+
+  <div class="cat">
+    <div class="cat-head"><span class="n">05</span><h3>§12 ledger completeness</h3><span class="tag pass">Pass</span></div>
+    <p>All eight required open items present: which 1–2 endings ship · letting-go ending (parked) · going-big pole (parked) · content-budget calibration · token-budget real numbers · four-family sub-verb list · H9 content (game-35) · map-shape routing dependency.</p>
+  </div>
+
+  <div class="cat">
+    <div class="cat-head"><span class="n">06</span><h3>Structure &amp; ordering</h3><span class="tag pass">Pass</span></div>
+    <p>All twelve sections present and in order: §1, §2, §3, §4, §5 (with §5.0 / §5a / §5b), §6, §6a, §7, §8, §9, §10, §11, §12.</p>
+  </div>
+
+  <h2>Fixes applied &amp; re-verified</h2>
+  <div class="fixes">
+    <h3>Three targeted edits closed the one failing category</h3>
+    <ol>
+      <li><b>§6a</b> — per-location screen counts reframed as first-pass, sourced to <code class="q">level-layout_draft.md</code>, "until the layout is prototyped."</li>
+      <li><b>§6.4</b> — save-slot count relabeled "a locked cap of 3" (a real design decision, not a tuning guess).</li>
+      <li><b>§6a.4</b> — Farm "3 start screens" softened to "a start trio," keeping the altitude gestural.</li>
+    </ol>
+  </div>
+
+  <h2>Residual open items (carried in §12)</h2>
+  <div class="ledger">
+    <div class="item park"><span class="b">Parked</span>Letting-go ending — release vs. hold the bond</div>
+    <div class="item park"><span class="b">Parked</span>Going-big lead pole — which register leads</div>
+    <div class="item">Which 1–2 endings ship in the slice</div>
+    <div class="item">Content-budget calibration (counts stay estimates)</div>
+    <div class="item">Token-budget real numbers (~1–3M is first-pass)</div>
+    <div class="item">Four-family sub-verb list (blocks audio-tag + proof-step)</div>
+    <div class="item">Session-state bus field schema</div>
+    <div class="item">Live-mode I/O + session-log format</div>
+    <div class="item">Multi-agent retry / escalation protocol</div>
+    <div class="item">Runtime persistence schema</div>
+    <div class="item">Delta-storytelling rule field format</div>
+    <div class="item">NPC perceptual-distinctness validation</div>
+    <div class="item">Tag-hierarchy segment scheme (non-blocking)</div>
+    <div class="item">Map-shape routing dependency</div>
+    <div class="item">Notebook UI + detailed data schema</div>
+    <div class="item">H9 baseline-narrative content (game-35)</div>
+  </div>
+
+  <footer class="doc">
+    Coherence review for the assembled Build GDD (game-26). Next in the chain: game-27 (submission HTML) · game-28 (6-agent panel on the full doc) → game-29 (revise). Ink prototype (game-36) and H9 content (game-35) deferred to the settled frame.
+  </footer>
+
+</div>
+</body>
+</html>

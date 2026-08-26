@@ -1,0 +1,21 @@
+{
+  "G-F5-cascade": { "kind": "cast", "spellId": "ignite", "requireEffect": true },
+  "G-F7-light": { "kind": "cast", "spellId": "glimmer", "requireEffect": true },
+  "G-T5-trust": { "kind": "bond", "minBand": 1 },
+  "G-T6-evening": { "kind": "time", "blocks": ["evening"] },
+  "G-F4-still": {
+    "kind": "chain",
+    "steps": [
+      { "spellId": "ignite", "receiverId": "river_stone" },
+      { "spellId": "temper", "onProductOf": 0 }
+    ]
+  },
+  "G-F8-combine": {
+    "kind": "chain",
+    "steps": [
+      { "spellId": "ignite", "receiverId": "river_stone" },
+      { "spellId": "temper", "receiverId": "heated_stone" },
+      { "spellId": "fetch", "receiverId": "stone_wall" }
+    ]
+  }
+}

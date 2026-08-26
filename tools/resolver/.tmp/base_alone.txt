@@ -1,0 +1,328 @@
+✔ the bare day loop terminates: five End-the-day choices reach the final sequence and END (39.9001ms)
+✔ a played week completes and reaches the final sequence (0.2055ms)
+✔ a greedy first-choice walk also terminates (no dead end at index 0) (77.3739ms)
+✔ story.onError never fires: externals all bound, no bad diverts (62.9043ms)
+✔ the four EXTERNALs are bound (fallbacks off) and actually fire (0.6575ms)
+✖ every authored scene is either entered or explicitly unreachable with a reason (0.888ms)
+✖ every authored scene is reachable: some week really enters each one (1.0736ms)
+✔ no route promises more screens than a day can actually stand on (9.3111ms)
+✖ a truncated search can never be read as a proof of unreachability (0.4641ms)
+✔ reported ids are authored ids, and reachable/unreachable partition them (0.5913ms)
+✖ nothing is unreachable for a reason that is not by design (1.8079ms)
+✖ a band-gated beat one life cannot reach is EXPECTED, not a defect (0.4683ms)
+✖ a day-gated scene is entered on a day its gate allows (0.7ms)
+✔ determinism: the same strategy twice gives byte-identical results (341.8339ms)
+✔ determinism: a fresh Walker is independent of any earlier walk (300.4819ms)
+✔ determinism: searchReachable repeats itself (timings aside) (12800.544ms)
+✔ bond is ONE number per soul — never a per-category score (0.2249ms)
+✔ the band reported for each soul is derived from that soul's count (0.1015ms)
+✔ max bond per soul: achieved in a real week, and never above its ceiling (0.3745ms)
+✔ a soul's max-bond figure is backed by a week that really ran (0.1761ms)
+✔ souls with an authored, reachable bond_event end the week above zero (0.3825ms)
+✔ a walk only ever reports authored ids (0.3739ms)
+✔ a scene entry is once-only across the whole week (0.1619ms)
+✔ scene opportunities are consistent with the day files and the map (9.7393ms)
+✔ enumerateRoutes reads connects_to as a path, not a one-way door (17.9829ms)
+✔ presence is re-applied mid-day, not just at day start (0.5227ms)
+✔ the day loop spends moves and advances the clock (0.5723ms)
+✔ walkWeek rejects a strategy that returns an out-of-range index (111.2727ms)
+✔ the step cap truncates rather than hanging, and says so (45.0912ms)
+✔ the world layer always offers a way to end the day (0.3753ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 24
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 28408.1424
+
+✖ failing tests:
+
+test at test\walk.test.ts:182:1
+✖ every authored scene is either entered or explicitly unreachable with a reason (0.888ms)
+  AssertionError [ERR_ASSERTION]: scene SC-T2-11 must be exactly one of entered / unreachable-with-reason (entered=false, unreachable=false)
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/walk.test.ts:189:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\walk.test.ts:205:1
+✖ every authored scene is reachable: some week really enters each one (1.0736ms)
+  AssertionError [ERR_ASSERTION]: every authored scene must be entered by some searched week
+  + actual - expected
+  ... Skipped lines
+  
+    [
+  -   'SC-F1-03',
+      'SC-T2-04',
+      'SC-T2-08',
+      'SC-T2-09',
+      'SC-T2-10',
+  -   'SC-T2-11',
+      'SC-T2-12',
+      'SC-T2-13',
+      'SC-T2-14',
+      'SC-T2-15',
+      'SC-T2-16',
+  ...
+      'SC-T2-20',
+  -   'SC-T2-21',
+      'SC-T2-22',
+  -   'SC-T2-23',
+      'SC-T2-24',
+      'SC-T2-25',
+      'SC-T4-03',
+      'SC-T4-04',
+      'SC-T4-05',
+  
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/walk.test.ts:214:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [
+      'SC-T2-04', 'SC-T2-08',   'SC-T2-09',
+      'SC-T2-10', 'SC-T2-12',   'SC-T2-13',
+      'SC-T2-14', 'SC-T2-15',   'SC-T2-16',
+      'SC-T2-17', 'SC-T2-18',   'SC-T2-19',
+      'SC-T2-20', 'SC-T2-22',   'SC-T2-24',
+      'SC-T2-25', 'SC-T4-03',   'SC-T4-04',
+      'SC-T4-05', 'SC-T4-06',   'SC-T4-07',
+      'SC-T4-08', 'SC-T4-09',   'SC-T4-10',
+      'SC-T4-11', 'SC-T4-12',   'SC-T4-13',
+      'SC-T6-01', 'SC-T7-ilsa', 'SC-T7-toby'
+    ],
+    expected: [
+      'SC-F1-03',   'SC-T2-04', 'SC-T2-08',
+      'SC-T2-09',   'SC-T2-10', 'SC-T2-11',
+      'SC-T2-12',   'SC-T2-13', 'SC-T2-14',
+      'SC-T2-15',   'SC-T2-16', 'SC-T2-17',
+      'SC-T2-18',   'SC-T2-19', 'SC-T2-20',
+      'SC-T2-21',   'SC-T2-22', 'SC-T2-23',
+      'SC-T2-24',   'SC-T2-25', 'SC-T4-03',
+      'SC-T4-04',   'SC-T4-05', 'SC-T4-06',
+      'SC-T4-07',   'SC-T4-08', 'SC-T4-09',
+      'SC-T4-10',   'SC-T4-11', 'SC-T4-12',
+      'SC-T4-13',   'SC-T6-01', 'SC-T7-ilsa',
+      'SC-T7-toby'
+    ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\walk.test.ts:236:1
+✖ a truncated search can never be read as a proof of unreachability (0.4641ms)
+  AssertionError [ERR_ASSERTION]: search bound hit, so the unreachable lists are INCONCLUSIVE: ["never entered: SC-F1-03 (entry gate [\"played(SC-T2-22)\"]), SC-T2-11 (entry gate [\"played(SC-T2-10)\",\"knows(shelf_named)\"]), SC-T2-21 (entry gate [\"played(SC-T2-20)\"]), SC-T2-23 (entry gate [\"played(SC-F1-03)\"])"]
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/walk.test.ts:240:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\walk.test.ts:272:1
+✖ nothing is unreachable for a reason that is not by design (1.8079ms)
+  AssertionError [ERR_ASSERTION]: unreachable for a reason that is not by design
+  + actual - expected
+  
+  + [
+  +   'CH-T2-11-1 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-2 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-3 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-4 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-5 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T7-toby-2 [defect] never offered inside SC-T7-toby, which the search explored exhaustively; gate: ["day >= 5","bond_band(toby) = low"]',
+  +   'CH-T7-ilsa-2 [defect] never offered inside SC-T7-ilsa, which the search explored exhaustively; gate: ["day >= 5","bond_band(ilsa) = low"]',
+  +   'CH-T4-10-4 [defect] never offered inside SC-T4-10, which the search explored exhaustively; gate: ["knows(ore_sourced)"]',
+  +   'CH-T4-04-2 [defect] never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(bench_end_taken)"]',
+  +   'CH-T4-04-5 [defect] never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(cover_witnessed)"]',
+  +   'CH-T4-05-2 [defect] never offered inside SC-T4-05, which the search explored exhaustively; gate: ["knows(bench_end_taken)"]',
+  +   'CH-T2-25-3 [defect] never offered inside SC-T2-25, which the search explored exhaustively; gate: ["knows(stayed_through_it)"]',
+  +   'CH-T2-13-5 [defect] never offered inside SC-T2-13, which the search explored exhaustively; gate: ["knows(tending_seen)"]',
+  +   'CH-T2-14-4 [defect] never offered inside SC-T2-14, which the search explored exhaustively; gate: ["knows(helped_tend)"]',
+  +   'CH-F1-03-1 [scene-unexplored] scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-2 [scene-unexplored] scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-3 [scene-unexplored] scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-3-b-1 [scene-unexplored] scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-3-b-1-a-1 [scene-unexplored] scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-4 [scene-unexplored] scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-5 [scene-unexplored] scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-6 [scene-unexplored] scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-T2-23-1 [scene-unexplored] scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-2 [scene-unexplored] scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-3 [scene-unexplored] scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-4 [scene-unexplored] scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-5 [scene-unexplored] scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-5-a-1 [scene-unexplored] scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-6 [scene-unexplored] scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-16-5 [defect] never offered inside SC-T2-16, which the search explored exhaustively; gate: ["bond_band(toby) = low"]',
+  +   'CH-T2-16-7 [defect] never offered inside SC-T2-16, which the search explored exhaustively; gate: ["bond_band(toby) = high"]',
+  +   'CH-T2-21-1 [scene-unexplored] scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-2 [scene-unexplored] scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-2-a-1 [scene-unexplored] scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-2-a-1-a-1 [scene-unexplored] scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-3 [scene-unexplored] scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-4 [scene-unexplored] scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-5 [scene-unexplored] scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-6 [scene-unexplored] scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-11-1-a [scene-unexplored] CH-T2-11-1: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-1-b [scene-unexplored] CH-T2-11-1: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-1-c [scene-unexplored] CH-T2-11-1: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-2-a [scene-unexplored] CH-T2-11-2: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-2-b [scene-unexplored] CH-T2-11-2: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-3-a [scene-unexplored] CH-T2-11-3: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-3-b [scene-unexplored] CH-T2-11-3: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-4-a [scene-unexplored] CH-T2-11-4: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-4-b [scene-unexplored] CH-T2-11-4: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-5-a [scene-unexplored] CH-T2-11-5: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-5-b [scene-unexplored] CH-T2-11-5: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T7-toby-2-a [defect] CH-T7-toby-2: never offered inside SC-T7-toby, which the search explored exhaustively; gate: ["day >= 5","bond_band(toby) = low"]',
+  +   'CH-T7-toby-2-b [defect] CH-T7-toby-2: never offered inside SC-T7-toby, which the search explored exhaustively; gate: ["day >= 5","bond_band(toby) = low"]',
+  +   'CH-T7-ilsa-2-a [defect] CH-T7-ilsa-2: never offered inside SC-T7-ilsa, which the search explored exhaustively; gate: ["day >= 5","bond_band(ilsa) = low"]',
+  +   'CH-T7-ilsa-2-b [defect] CH-T7-ilsa-2: never offered inside SC-T7-ilsa, which the search explored exhaustively; gate: ["day >= 5","bond_band(ilsa) = low"]',
+  +   'CH-T4-10-4-a [defect] CH-T4-10-4: never offered inside SC-T4-10, which the search explored exhaustively; gate: ["knows(ore_sourced)"]',
+  +   'CH-T4-10-4-b [defect] CH-T4-10-4: never offered inside SC-T4-10, which the search explored exhaustively; gate: ["knows(ore_sourced)"]',
+  +   'CH-T4-04-2-a [defect] CH-T4-04-2: never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(bench_end_taken)"]',
+  +   'CH-T4-04-2-b [defect] CH-T4-04-2: never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(bench_end_taken)"]',
+  +   'CH-T4-04-5-a [defect] CH-T4-04-5: never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(cover_witnessed)"]',
+  +   'CH-T4-04-5-b [defect] CH-T4-04-5: never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(cover_witnessed)"]',
+  +   'CH-T4-05-2-a [defect] CH-T4-05-2: never offered inside SC-T4-05, which the search explored exhaustively; gate: ["knows(bench_end_taken)"]',
+  +   'CH-T4-05-2-b [defect] CH-T4-05-2: never offered inside SC-T4-05, which the search explored exhaustively; gate: ["knows(bench_end_taken)"]',
+  +   'CH-T2-25-3-a [defect] CH-T2-25-3: never offered inside SC-T2-25, which the search explored exhaustively; gate: ["knows(stayed_through_it)"]',
+  +   'CH-T2-25-3-b [defect] CH-T2-25-3: never offered inside SC-T2-25, which the search explored exhaustively; gate: ["knows(stayed_through_it)"]',
+  +   'CH-T2-13-5-a [defect] CH-T2-13-5: never offered inside SC-T2-13, which the search explored exhaustively; gate: ["knows(tending_seen)"]',
+  +   'CH-T2-13-5-b [defect] CH-T2-13-5: never offered inside SC-T2-13, which the search explored exhaustively; gate: ["knows(tending_seen)"]',
+  +   'CH-T2-14-4-a [defect] CH-T2-14-4: never offered inside SC-T2-14, which the search explored exhaustively; gate: ["knows(helped_tend)"]',
+  +   'CH-T2-14-4-b [defect] CH-T2-14-4: never offered inside SC-T2-14, which the search explored exhaustively; gate: ["knows(helped_tend)"]',
+  +   'CH-F1-03-1-a [scene-unexplored] CH-F1-03-1: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-1-b [scene-unexplored] CH-F1-03-1: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-2-a [scene-unexplored] CH-F1-03-2: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-2-b [scene-unexplored] CH-F1-03-2: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-3-a [scene-unexplored] CH-F1-03-3: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-3-b [scene-unexplored] CH-F1-03-3: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-3-c [scene-unexplored] CH-F1-03-3: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-3-b-1-a [scene-unexplored] CH-F1-03-3-b-1: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-3-b-1-b [scene-unexplored] CH-F1-03-3-b-1: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-3-b-1-a-1-a [scene-unexplored] CH-F1-03-3-b-1-a-1: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-3-b-1-a-1-b [scene-unexplored] CH-F1-03-3-b-1-a-1: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-4-a [scene-unexplored] CH-F1-03-4: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-4-b [scene-unexplored] CH-F1-03-4: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-5-a [scene-unexplored] CH-F1-03-5: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-5-b [scene-unexplored] CH-F1-03-5: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-6-a [scene-unexplored] CH-F1-03-6: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-F1-03-6-b [scene-unexplored] CH-F1-03-6: scene SC-F1-03 was never explored inside the search budget',
+  +   'CH-T2-23-1-a [scene-unexplored] CH-T2-23-1: scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-1-b [scene-unexplored] CH-T2-23-1: scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-1-c [scene-unexplored] CH-T2-23-1: scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-2-a [scene-unexplored] CH-T2-23-2: scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-2-b [scene-unexplored] CH-T2-23-2: scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-3-a [scene-unexplored] CH-T2-23-3: scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-3-b [scene-unexplored] CH-T2-23-3: scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-4-a [scene-unexplored] CH-T2-23-4: scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-4-b [scene-unexplored] CH-T2-23-4: scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-5-a [scene-unexplored] CH-T2-23-5: scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-5-b [scene-unexplored] CH-T2-23-5: scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-5-a-1-a [scene-unexplored] CH-T2-23-5-a-1: scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-5-a-1-b [scene-unexplored] CH-T2-23-5-a-1: scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-6-a [scene-unexplored] CH-T2-23-6: scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-23-6-b [scene-unexplored] CH-T2-23-6: scene SC-T2-23 was never explored inside the search budget',
+  +   'CH-T2-16-5-a [defect] CH-T2-16-5: never offered inside SC-T2-16, which the search explored exhaustively; gate: ["bond_band(toby) = low"]',
+  +   'CH-T2-16-5-b [defect] CH-T2-16-5: never offered inside SC-T2-16, which the search explored exhaustively; gate: ["bond_band(toby) = low"]',
+  +   'CH-T2-16-7-a [defect] CH-T2-16-7: never offered inside SC-T2-16, which the search explored exhaustively; gate: ["bond_band(toby) = high"]',
+  +   'CH-T2-16-7-b [defect] CH-T2-16-7: never offered inside SC-T2-16, which the search explored exhaustively; gate: ["bond_band(toby) = high"]',
+  +   'CH-T2-21-1-a [scene-unexplored] CH-T2-21-1: scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-1-b [scene-unexplored] CH-T2-21-1: scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-2-a [scene-unexplored] CH-T2-21-2: scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-2-b [scene-unexplored] CH-T2-21-2: scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-2-a-1-a [scene-unexplored] CH-T2-21-2-a-1: scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-2-a-1-b [scene-unexplored] CH-T2-21-2-a-1: scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-2-a-1-a-1-a [scene-unexplored] CH-T2-21-2-a-1-a-1: scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-2-a-1-a-1-b [scene-unexplored] CH-T2-21-2-a-1-a-1: scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-3-a [scene-unexplored] CH-T2-21-3: scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-3-b [scene-unexplored] CH-T2-21-3: scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-4-a [scene-unexplored] CH-T2-21-4: scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-4-b [scene-unexplored] CH-T2-21-4: scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-5-a [scene-unexplored] CH-T2-21-5: scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-5-b [scene-unexplored] CH-T2-21-5: scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-5-c [scene-unexplored] CH-T2-21-5: scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-6-a [scene-unexplored] CH-T2-21-6: scene SC-T2-21 was never explored inside the search budget',
+  +   'CH-T2-21-6-b [scene-unexplored] CH-T2-21-6: scene SC-T2-21 was never explored inside the search budget'
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/walk.test.ts:279:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ 'CH-T2-11-1 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-2 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-3 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-4 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-5 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget', 'CH-T7-toby-2 [defect] never offered inside SC-T7-toby, which the search explored exhaustively; gate: ["day >= 5","bond_band(toby) = low"]', 'CH-T7-ilsa-2 [defect] never offered inside SC-T7-ilsa, which the search explored exhaustively; gate: ["day >= 5","bond_band(ilsa) = low"]', 'CH-T4-10-4 [defect] never offered inside SC-T4-10, which the search explored exhaustively; gate: ["knows(ore_sourced)"]', 'CH-T4-04-2 [defect] never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(bench_end_taken)"]', 'CH-T4-04-5 [defect] never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(cover_witnessed)"]', 'CH-T4-05-2 [defect] never offered inside SC-T4-05, which the search explored exhaustively; gate: ["knows(bench_end_taken)"]', 'CH-T2-25-3 [defect] never offered inside SC-T2-25, which the search explored exhaustively; gate: ["knows(stayed_through_it)"]', 'CH-T2-13-5 [defect] never offered inside SC-T2-13, which the search explored exhaustively; gate: ["knows(tending_seen)"]', 'CH-T2-14-4 [defect] never offered inside SC-T2-14, which the search explored exhaustively; gate: ["knows(helped_tend)"]', 'CH-F1-03-1 [scene-unexplored] scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-2 [scene-unexplored] scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-3 [scene-unexplored] scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-3-b-1 [scene-unexplored] scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-3-b-1-a-1 [scene-unexplored] scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-4 [scene-unexplored] scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-5 [scene-unexplored] scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-6 [scene-unexplored] scene SC-F1-03 was never explored inside the search budget', 'CH-T2-23-1 [scene-unexplored] scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-2 [scene-unexplored] scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-3 [scene-unexplored] scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-4 [scene-unexplored] scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-5 [scene-unexplored] scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-5-a-1 [scene-unexplored] scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-6 [scene-unexplored] scene SC-T2-23 was never explored inside the search budget', 'CH-T2-16-5 [defect] never offered inside SC-T2-16, which the search explored exhaustively; gate: ["bond_band(toby) = low"]', 'CH-T2-16-7 [defect] never offered inside SC-T2-16, which the search explored exhaustively; gate: ["bond_band(toby) = high"]', 'CH-T2-21-1 [scene-unexplored] scene SC-T2-21 was never explored inside the search budget', 'CH-T2-21-2 [scene-unexplored] scene SC-T2-21 was never explored inside the search budget', 'CH-T2-21-2-a-1 [scene-unexplored] scene SC-T2-21 was never explored inside the search budget', 'CH-T2-21-2-a-1-a-1 [scene-unexplored] scene SC-T2-21 was never explored inside the search budget', 'CH-T2-21-3 [scene-unexplored] scene SC-T2-21 was never explored inside the search budget', 'CH-T2-21-4 [scene-unexplored] scene SC-T2-21 was never explored inside the search budget', 'CH-T2-21-5 [scene-unexplored] scene SC-T2-21 was never explored inside the search budget', 'CH-T2-21-6 [scene-unexplored] scene SC-T2-21 was never explored inside the search budget', 'CH-T2-11-1-a [scene-unexplored] CH-T2-11-1: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-1-b [scene-unexplored] CH-T2-11-1: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-1-c [scene-unexplored] CH-T2-11-1: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-2-a [scene-unexplored] CH-T2-11-2: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-2-b [scene-unexplored] CH-T2-11-2: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-3-a [scene-unexplored] CH-T2-11-3: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-3-b [scene-unexplored] CH-T2-11-3: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-4-a [scene-unexplored] CH-T2-11-4: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-4-b [scene-unexplored] CH-T2-11-4: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-5-a [scene-unexplored] CH-T2-11-5: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-5-b [scene-unexplored] CH-T2-11-5: scene SC-T2-11 was never explored inside the search budget', 'CH-T7-toby-2-a [defect] CH-T7-toby-2: never offered inside SC-T7-toby, which the search explored exhaustively; gate: ["day >= 5","bond_band(toby) = low"]', 'CH-T7-toby-2-b [defect] CH-T7-toby-2: never offered inside SC-T7-toby, which the search explored exhaustively; gate: ["day >= 5","bond_band(toby) = low"]', 'CH-T7-ilsa-2-a [defect] CH-T7-ilsa-2: never offered inside SC-T7-ilsa, which the search explored exhaustively; gate: ["day >= 5","bond_band(ilsa) = low"]', 'CH-T7-ilsa-2-b [defect] CH-T7-ilsa-2: never offered inside SC-T7-ilsa, which the search explored exhaustively; gate: ["day >= 5","bond_band(ilsa) = low"]', 'CH-T4-10-4-a [defect] CH-T4-10-4: never offered inside SC-T4-10, which the search explored exhaustively; gate: ["knows(ore_sourced)"]', 'CH-T4-10-4-b [defect] CH-T4-10-4: never offered inside SC-T4-10, which the search explored exhaustively; gate: ["knows(ore_sourced)"]', 'CH-T4-04-2-a [defect] CH-T4-04-2: never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(bench_end_taken)"]', 'CH-T4-04-2-b [defect] CH-T4-04-2: never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(bench_end_taken)"]', 'CH-T4-04-5-a [defect] CH-T4-04-5: never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(cover_witnessed)"]', 'CH-T4-04-5-b [defect] CH-T4-04-5: never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(cover_witnessed)"]', 'CH-T4-05-2-a [defect] CH-T4-05-2: never offered inside SC-T4-05, which the search explored exhaustively; gate: ["knows(bench_end_taken)"]', 'CH-T4-05-2-b [defect] CH-T4-05-2: never offered inside SC-T4-05, which the search explored exhaustively; gate: ["knows(bench_end_taken)"]', 'CH-T2-25-3-a [defect] CH-T2-25-3: never offered inside SC-T2-25, which the search explored exhaustively; gate: ["knows(stayed_through_it)"]', 'CH-T2-25-3-b [defect] CH-T2-25-3: never offered inside SC-T2-25, which the search explored exhaustively; gate: ["knows(stayed_through_it)"]', 'CH-T2-13-5-a [defect] CH-T2-13-5: never offered inside SC-T2-13, which the search explored exhaustively; gate: ["knows(tending_seen)"]', 'CH-T2-13-5-b [defect] CH-T2-13-5: never offered inside SC-T2-13, which the search explored exhaustively; gate: ["knows(tending_seen)"]', 'CH-T2-14-4-a [defect] CH-T2-14-4: never offered inside SC-T2-14, which the search explored exhaustively; gate: ["knows(helped_tend)"]', 'CH-T2-14-4-b [defect] CH-T2-14-4: never offered inside SC-T2-14, which the search explored exhaustively; gate: ["knows(helped_tend)"]', 'CH-F1-03-1-a [scene-unexplored] CH-F1-03-1: scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-1-b [scene-unexplored] CH-F1-03-1: scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-2-a [scene-unexplored] CH-F1-03-2: scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-2-b [scene-unexplored] CH-F1-03-2: scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-3-a [scene-unexplored] CH-F1-03-3: scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-3-b [scene-unexplored] CH-F1-03-3: scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-3-c [scene-unexplored] CH-F1-03-3: scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-3-b-1-a [scene-unexplored] CH-F1-03-3-b-1: scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-3-b-1-b [scene-unexplored] CH-F1-03-3-b-1: scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-3-b-1-a-1-a [scene-unexplored] CH-F1-03-3-b-1-a-1: scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-3-b-1-a-1-b [scene-unexplored] CH-F1-03-3-b-1-a-1: scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-4-a [scene-unexplored] CH-F1-03-4: scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-4-b [scene-unexplored] CH-F1-03-4: scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-5-a [scene-unexplored] CH-F1-03-5: scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-5-b [scene-unexplored] CH-F1-03-5: scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-6-a [scene-unexplored] CH-F1-03-6: scene SC-F1-03 was never explored inside the search budget', 'CH-F1-03-6-b [scene-unexplored] CH-F1-03-6: scene SC-F1-03 was never explored inside the search budget', 'CH-T2-23-1-a [scene-unexplored] CH-T2-23-1: scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-1-b [scene-unexplored] CH-T2-23-1: scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-1-c [scene-unexplored] CH-T2-23-1: scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-2-a [scene-unexplored] CH-T2-23-2: scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-2-b [scene-unexplored] CH-T2-23-2: scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-3-a [scene-unexplored] CH-T2-23-3: scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-3-b [scene-unexplored] CH-T2-23-3: scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-4-a [scene-unexplored] CH-T2-23-4: scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-4-b [scene-unexplored] CH-T2-23-4: scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-5-a [scene-unexplored] CH-T2-23-5: scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-5-b [scene-unexplored] CH-T2-23-5: scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-5-a-1-a [scene-unexplored] CH-T2-23-5-a-1: scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-5-a-1-b [scene-unexplored] CH-T2-23-5-a-1: scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-6-a [scene-unexplored] CH-T2-23-6: scene SC-T2-23 was never explored inside the search budget', 'CH-T2-23-6-b [scene-unexplored] CH-T2-23-6: scene SC-T2-23 was never explored inside the search budget', ... 21 more items ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\walk.test.ts:291:1
+✖ a band-gated beat one life cannot reach is EXPECTED, not a defect (0.4683ms)
+  AssertionError [ERR_ASSERTION]: CH-T2-11-2 asks for low (needs 0) and toby reaches 133, so it should have been offered
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/walk.test.ts:315:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\walk.test.ts:325:1
+✖ a day-gated scene is entered on a day its gate allows (0.7ms)
+  AssertionError [ERR_ASSERTION]: CH-T7-toby-2 is day-gated ["day >= 5","bond_band(toby) = low"] and SC-T7-toby is reachable, so some week must enter it on a day the gate allows
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/walk.test.ts:349:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

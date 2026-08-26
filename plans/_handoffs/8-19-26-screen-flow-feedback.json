@@ -1,0 +1,32 @@
+{
+  "generatedAt": "2026-08-19T04:32:47.671Z",
+  "feedback": {
+    "location-select": "we want this screen to look more like the calendar screen, and we want to change GDD and limit TownSquare and Forager's Clearing as the only 2 options to start from.  And we should use a thumbnail of the map as their buttons and they should show up inside the Day 1, Day 2 etc rectangles as buttons, and then as you progress each day you can see on the calendar the location you selected. Day 5 will have a subtitle: Featival Night"
+  },
+  "markers": {
+    "collect-forage": [
+      {
+        "x": 2.9,
+        "y": 3.6,
+        "note": "only have day 1 - morning - [Screen Name]"
+      },
+      {
+        "x": 56.9,
+        "y": 4.6,
+        "note": "these buttons should match styleguide"
+      }
+    ],
+    "calendar": [
+      {
+        "x": 8.3,
+        "y": 37.9,
+        "note": "as mentioned in 02 location select, as each day highlights we have the 2 buttons for possible start location, and then as you move to next day, your selection shows on the past days as the thumbnail.  we don't need to mark time of day here"
+      },
+      {
+        "x": 88.8,
+        "y": 32.6,
+        "note": "should have sub header \"Festival Night\""
+      }
+    ]
+  }
+}

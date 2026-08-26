@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Phaser echo demo (alternate)</title>
+<style>html,body{margin:0;background:#000;overflow:hidden;}</style>
+</head>
+<body>
+<script src="../../node_modules/phaser/dist/phaser.js"></script>
+<script>
+const WIDTH = 400, HEIGHT = 320;
+
+// echo (ALTERNATE — the shipped cue already uses the sprite kind,
+// vfx_echo_ripple; this is a second option, not a replacement). echo
+// already reads as a repeating ripple by name, so the "echo" IS the
+// technique this time: several rings, staggered, not one ring or one
+// looping sprite. Ring timing pulled from kapowfx-starter's shockwave.gd
+// (radius Expo.Out, thickness Quad.Out, a short delay before the fade
+// starts) — real validated numbers, not guessed ones. MusicAOE's
+// MusicHealAOE.tscn animation was the other reference: its rune ring
+// cycles through several hues as it pulses. Kept that idea but disciplined
+// down to the two colors the rest of this VFX system uses per cue (dusk +
+// a pale core), not a full rainbow cycle.
+const POINT = { x: WIDTH / 2, y: HEIGHT / 2 };
+const RING_COUNT = 3;
+const RING_STAGGER_MS = 140;
+const RING_GROW_MS = 420;
+const LOOP_GAP_MS = 500;
+
+// theme.ts dusk — echo's authored colorKey in cues.json.
+const DUSK = 0xa893c9;
+const DUSK_PALE = 0xe9def0;
+// Roc call 2026-08-22: flatten the rings into ellipses so they read as
+// spreading out across a ground plane (kapowfx's shockwave.gd literally
+// has a `squash` parameter built for this — "floor-perspective ellipse,
+// great for ground slams") rather than a flat circle facing the camera.
+const RING_SQUASH = 0.4;
+// Roc call 2026-08-22 (5th pass, after the zoom fix made everything
+// actually legible): rings wider (r 80->140), diamonds were clustering at
+// center because their travel distance was tiny relative to their
+// lifespan (speed 15-32 over ~400ms is only 5-15px) — sped them up to
+// actually spread, and shrank them back down now that the zoom makes
+// smaller shapes readable again. Stars and notes both sped up too, for
+// more visible travel now that there's room to see it.
+// Roc call 2026-08-22 (6th pass): still too clustered — nearly doubled
+// diamond and star speed again (diamonds 45-85->90-170, stars 50-100->
+// 90-160). At these lifespans that's real travel distance, not a nudge.
+
+function drawStar(g, cx, cy, outerR, innerR) {
+  const points = 4;
+  g.beginPath();
+  for (let i = 0; i < points * 2; i++) {
+    const ang = (i / (points * 2)) * Math.PI * 2 - Math.PI / 2;
+    const r = i % 2 === 0 ? outerR : innerR;
+    const x = cx + Math.cos(ang) * r, y = cy + Math.sin(ang) * r;
+    if (i === 0) g.moveTo(x, y); else g.lineTo(x, y);
+  }
+  g.closePath();
+  g.fillPath();
+}
+
+// The "several particles going toward the center and disappearing" shape
+// — a diamond, deliberately not a star or circle so it reads as a
+// different kind of thing from the outward motes, not a smaller copy.
+function drawDiamond(g, cx, cy, w, h) {
+  g.beginPath();
+  g.moveTo(cx, cy - h / 2);
+  g.lineTo(cx + w / 2, cy);
+  g.lineTo(cx, cy + h / 2);
+  g.lineTo(cx - w / 2, cy);
+  g.closePath();
+  g.fillPath();
+}
+
+// Roc call 2026-08-22 (8th pass — "go with the procedural note"): after
+// three real rounds on external note.png assets (a timing collision, a
+// removed-in-Phaser-4 API, and finally a source glyph too coarse to read
+// as a note at this scale — verified against Phaser's own tint shader
+// source, not a rendering bug), a hand-drawn note is the reliable path:
+// full control over shape and coverage, same as the star and diamond.
+// Simple filled eighth-note — tilted oval notehead, stem, curved flag.
+function drawNote(g, cx, cy, size) {
+  const headRx = size * 0.38, headRy = size * 0.28;
+  const tilt = -0.35;
+  const headCx = cx - size * 0.1, headCy = cy + size * 0.5;
+  const SEG = 16;
+  g.beginPath();
+  for (let i = 0; i <= SEG; i++) {
+    const t = (i / SEG) * Math.PI * 2;
+    const ex = Math.cos(t) * headRx, ey = Math.sin(t) * headRy;
+    const x = headCx + ex * Math.cos(tilt) - ey * Math.sin(tilt);
+    const y = headCy + ex * Math.sin(tilt) + ey * Math.cos(tilt);
+    if (i === 0) g.moveTo(x, y); else g.lineTo(x, y);
+  }
+  g.closePath();
+  g.fillPath();
+
+  const stemX = headCx + headRx * 0.85;
+  const stemTopY = cy - size * 0.55;
+  g.fillRect(stemX - size * 0.05, stemTopY, size * 0.1, headCy - stemTopY);
+
+  // Roc call 2026-08-22 (9th pass): flag longer — it was a small nub near
+  // the stem top; now it runs most of the stem's length.
+  g.beginPath();
+  g.moveTo(stemX, stemTopY);
+  g.lineTo(stemX + size * 0.36, stemTopY + size * 0.2);
+  g.lineTo(stemX + size * 0.22, stemTopY + size * 0.68);
+  g.lineTo(stemX, stemTopY + size * 0.52);
+  g.closePath();
+  g.fillPath();
+}
+
+class EchoScene extends Phaser.Scene {
+  create() {
+    const g = this.add.graphics();
+    g.fillStyle(0xffffff, 1);
+    g.fillCircle(10, 10, 10);
+    g.generateTexture('dot', 20, 20);
+    g.clear();
+    // A 4-pointed sparkle/star, the same motif kapowfx's pickup_sparkle.gd
+    // uses (make_star_sprite) — Roc call: motes need "magic treatment," not
+    // plain white circles.
+    // Roc call 2026-08-22 (pixel-size pass): "the blue dots feel like 1-2px."
+    // Math says the bounding box is 20-29px, not 1-2 — the real problem is
+    // the star's own shape: inner radius 5 against outer 14 is a thin blade
+    // cross, mostly empty space inside that bounding box. Fattened the
+    // inner radius so the shape actually fills more of its own footprint.
+    g.fillStyle(0xffffff, 1);
+    drawStar(g, 14, 14, 14, 9);
+    g.generateTexture('spark', 28, 28);
+    g.clear();
+    // Diamonds measured out at ~6.6x8.8px rendered — smaller than
+    // everything else on screen without anyone asking for that. Doubled
+    // the base texture.
+    g.fillStyle(0xffffff, 1);
+    drawDiamond(g, 16, 16, 24, 32);
+    g.generateTexture('diamond', 32, 32);
+    g.clear();
+    // The procedural note — white so multiply-tint works cleanly, same as
+    // every other shape here. No external asset, no tint-mode pitfalls.
+    g.fillStyle(0xffffff, 1);
+    drawNote(g, 24, 24, 30);
+    g.generateTexture('noteShape', 48, 48);
+    g.destroy();
+
+    this.add.text(10, 8, 'Phaser echo demo (alternate) — staggered rings, not one ripple', {
+      fontFamily: 'monospace', fontSize: '12px', color: '#888',
+    });
+    this.add.circle(POINT.x, POINT.y, 3, 0x444444).setStrokeStyle(1, 0x666666);
+
+    this.ringGs = [];
+    for (let i = 0; i < RING_COUNT; i++) {
+      const rg = this.add.graphics();
+      rg.setBlendMode(Phaser.BlendModes.ADD);
+      this.ringGs.push(rg);
+    }
+
+    this.puff();
+  }
+
+  puff() {
+    // A quick bright flash only on the FIRST ring — the "source" moment;
+    // the following rings are its echo, not repeats of the same event.
+    const flash = this.add.particles(POINT.x, POINT.y, 'dot', {
+      lifespan: 180, speed: 0, scaleX: { start: 1.3, end: 0 },
+      scaleY: { start: 1.3 * RING_SQUASH * 1.5, end: 0 },
+      alpha: { start: 0.85, end: 0 }, tint: 0xffffff, blendMode: 'ADD', emitting: false,
+    });
+    flash.explode(1);
+    this.time.delayedCall(220, () => flash.destroy());
+
+    for (let i = 0; i < RING_COUNT; i++) {
+      const rg = this.ringGs[i];
+      const delay = i * RING_STAGGER_MS;
+      const state = { r: 2, thickness: 12, alpha: 0.6 };
+      this.time.delayedCall(delay, () => {
+        this.tweens.add({
+          targets: state, r: 140, thickness: 2, duration: RING_GROW_MS,
+          ease: 'Expo.easeOut',
+          onUpdate: () => {
+            rg.clear();
+            rg.lineStyle(state.thickness, i === 0 ? DUSK_PALE : DUSK, state.alpha);
+            rg.strokeEllipse(POINT.x, POINT.y, state.r * 2, state.r * 2 * RING_SQUASH);
+          },
+        });
+        this.tweens.add({
+          targets: state, alpha: 0, duration: RING_GROW_MS * 0.62,
+          delay: RING_GROW_MS * 0.19, ease: 'Quad.easeIn',
+          onComplete: () => rg.clear(),
+        });
+      });
+
+      // Roc call 2026-08-22 (14th pass): dusk star motes retired — the blue
+      // stars (below, wafting with the notes) now cover that role.
+
+      // Roc call 2026-08-22 (2nd pass): swapped speedX/speedY for the same
+      // angle+speed pattern every other emitter in this project already
+      // uses successfully — a narrow 260-280° cone is "straight up" in
+      // Phaser's angle convention (verified live: vx~0-9, vy~-53 to -60).
+      // Also much bigger (0.05-0.09 read as nothing at this canvas size)
+      // and now fires only once per cast instead of once per ring, so it
+      // isn't competing with three overlapping bursts of everything else.
+      // Roc call 2026-08-22 (pixel-size pass): the math says a note renders
+      // at ~66-114px — plenty big. The real problem was timing: it fired
+      // at the exact same instant as the flash, ring 0, and the first star
+      // burst. Four things landing on one frame is why a big sprite still
+      // wasn't readable. Delayed it into its own quieter beat instead.
+      // Roc call 2026-08-22 (8th pass): the external note.png asset is
+      // retired — its actual glyph read as a plain square at this scale
+      // (verified against Phaser's tint shader source: alpha WAS being
+      // respected correctly, the glyph itself was just too coarse). Using
+      // the procedural noteShape texture instead: white source, so a plain
+      // multiply tint (blue, 0x5fc9ff) works with no tint-mode pitfalls,
+      // same reliable pattern as the star and diamond.
+      // Roc call 2026-08-22 (9th pass): smaller and more spread — wider
+      // cone (260-280->245-295) and more speed range (55-85->75-130) so
+      // the 4 notes actually separate from each other instead of climbing
+      // in a tight cluster.
+      if (i === 0) {
+        this.time.delayedCall(delay + 380, () => {
+          const notes = this.add.particles(POINT.x, POINT.y, 'noteShape', {
+            lifespan: { min: 550, max: 750 },
+            angle: { min: 245, max: 295 },
+            speed: { min: 75, max: 130 },
+            scale: { start: 0.5, end: 0.62 },
+            alpha: { start: 1, end: 0 },
+            rotate: { min: -15, max: 15 },
+            tint: 0x5fc9ff,
+            blendMode: 'ADD',
+            emitting: false,
+          });
+          notes.explode(4);
+          this.time.delayedCall(800, () => notes.destroy());
+        });
+
+        // Roc call 2026-08-22 (12th pass): reverted the stagger — "wafts up
+        // WITH the notes" meant together, staggering them apart worked
+        // against the actual ask. Back to firing at the same instant as the
+        // notes. Checked for a real bug (console clean across several live
+        // cycles, particle creation verified in isolation with correct
+        // velocity/color) and found none — pushed size and brightness
+        // further as the next lever rather than guessing further code
+        // changes blind.
+        // Roc call 2026-08-22 (16th pass): smaller and denser instead of a
+        // handful of discrete stars — 6 -> 16 particles, scale down again,
+        // alpha eased back so the density itself reads as a soft wispy
+        // cloud rather than individually bright points.
+        this.time.delayedCall(delay + 380 + 150, () => {
+          const blueStars = this.add.particles(POINT.x, POINT.y, 'spark', {
+            lifespan: { min: 1050, max: 1250 },
+            angle: { min: 220, max: 320 },
+            speed: { min: 60, max: 120 },
+            scale: { start: 0.13, end: 0 },
+            alpha: { start: 0.6, end: 0 },
+            rotate: { min: 0, max: 360 },
+            color: [0x5fd8ea, 0x006680],
+            colorEase: 'expo.out',
+            blendMode: 'ADD',
+            emitting: false,
+          });
+          blueStars.explode(40);
+          this.time.delayedCall(1300, () => blueStars.destroy());
+        });
+      }
+
+      // Roc call 2026-08-22 (4th pass): converging inward was a real,
+      // working effect (bug fixed above) but "does not read like an echo"
+      // — a reflection returning to source isn't what an echo IS. An echo
+      // is the SAME event, repeated, delayed, and fainter. Rebuilt on that:
+      // diamonds now launch outward too, same as the star motes, but later
+      // (after the stars have already started), slower, and dimmer — a
+      // second, quieter repeat of the first burst, not a return trip.
+      // Roc call 2026-08-22 (7th pass): smaller (0.4->0.25), and spread to
+      // match the rings — rings reach r=140 (280px across) over 420ms;
+      // matched that reach here (260-400 speed over a ~340-480ms lifespan
+      // lands in the same ballpark, not the previous ~1/3 of it).
+      this.time.delayedCall(delay + 160, () => {
+        const echoBurst = this.add.particles(POINT.x, POINT.y, 'diamond', {
+          lifespan: { min: 340, max: 480 },
+          speed: { min: 260, max: 400 },
+          angle: { min: 0, max: 360 },
+          scale: { start: 0.25, end: 0 },
+          alpha: { start: 0.45, end: 0 },
+          rotate: { min: 0, max: 360 },
+          color: [DUSK, DUSK_PALE],
+          colorEase: 'quad.out',
+          blendMode: 'ADD',
+          emitting: false,
+        });
+        echoBurst.explode(4);
+        echoBurst.alive.forEach(p => { p.velocityY *= RING_SQUASH; });
+        this.time.delayedCall(550, () => echoBurst.destroy());
+      });
+    }
+
+    const cycle = (RING_COUNT - 1) * RING_STAGGER_MS + RING_GROW_MS + LOOP_GAP_MS;
+    this.time.delayedCall(cycle, () => this.puff());
+  }
+}
+
+window.__game = new Phaser.Game({
+  type: Phaser.AUTO,
+  width: WIDTH,
+  height: HEIGHT,
+  // Roc call 2026-08-22: canvas was reading as ~1/20th of the screen — it
+  // was rendering at its native 400x320px with no display scaling at all.
+  // `zoom` scales the canvas up on screen without touching any internal
+  // coordinate, size, or timing value above.
+  zoom: 3,
+  backgroundColor: '#000000',
+  scene: EchoScene,
+});
+</script>
+</body>
+</html>

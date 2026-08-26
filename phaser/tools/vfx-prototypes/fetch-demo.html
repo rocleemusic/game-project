@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Phaser fetch demo</title>
+<style>html,body{margin:0;background:#000;overflow:hidden;}</style>
+</head>
+<body>
+<script src="../../node_modules/phaser/dist/phaser.js"></script>
+<script>
+const WIDTH = 500, HEIGHT = 400;
+
+// fetch: an object tugs free and flies to the caster's hand.
+const OBJECT = { x: 90, y: 70 };
+const HAND = { x: WIDTH - 90, y: HEIGHT - 60 };
+const TRAVEL_MS = 550;   // how long the pull takes
+const LOOP_GAP_MS = 500; // demo-only: pause between casts
+
+// theme.ts vfxGold family.
+const WHITE = { r: 255, g: 255, b: 255 };
+const GOLD = { r: 255, g: 212, b: 121 };   // #ffd479
+const TAIL_GOLD = { r: 255, g: 179, b: 71 }; // a touch deeper, for the tail's far end
+
+// Roc call 2026-08-22 (3rd pass): the streak-particle trail was rebuilt
+// twice on parameters (density, spread, speed) and still read wrong — a
+// "crossed rectangles" look, because the real bug was the TECHNIQUE, not
+// the numbers. Each streak was an independent flat-white rotated rectangle
+// sprite; several alive at once, at slightly different angles, is
+// literally crossed white bars. Replaced with the same technique the
+// vortex demo uses for its tail: a continuously-redrawn tapered/faded
+// polyline through recent carrier positions, not a particle cloud.
+// Also pulled real fire-trail timing off the Vefects asset pack (see
+// TrailModule.colorOverTrail in the extracted prefab): white-hot only for
+// the first ~20% of the tail's length, saturated color for the rest. Our
+// old array eased toward gold across the WHOLE lifespan, so under additive
+// overlap it stacked back toward white — the other half of "too white."
+const TAIL_MS = 200;        // how far back in time the visible tail reaches
+const HEAD_FRACTION = 0.2;  // white-to-gold blend happens only in this leading slice
+
+function lerpColor(a, b, t) {
+  return Phaser.Display.Color.GetColor(
+    Math.round(a.r + (b.r - a.r) * t),
+    Math.round(a.g + (b.g - a.g) * t),
+    Math.round(a.b + (b.b - a.b) * t)
+  );
+}
+
+class FetchScene extends Phaser.Scene {
+  create() {
+    this.add.text(10, 8, 'Phaser fetch demo — object pulls to the hand, gold trail', {
+      fontFamily: 'monospace', fontSize: '12px', color: '#888',
+    });
+
+    // Reference marks only — not part of the cue, just so the path reads.
+    this.add.circle(OBJECT.x, OBJECT.y, 6, 0x444444).setStrokeStyle(1, 0x666666);
+    this.add.circle(HAND.x, HAND.y, 10, 0x2a2a2a).setStrokeStyle(1, 0x555555);
+
+    const g = this.add.graphics();
+    g.fillStyle(0xffffff, 1);
+    g.fillCircle(8, 8, 8);
+    g.generateTexture('dot', 16, 16);
+    g.destroy();
+
+    this.trailG = this.add.graphics();
+    this.trailG.setBlendMode(Phaser.BlendModes.ADD);
+    this.coreG = this.add.graphics();
+    this.coreG.setBlendMode(Phaser.BlendModes.ADD);
+    this.history = [];
+    this.active = false;
+
+    this.castStart = this.time.now;
+    this.time.addEvent({ delay: 16, loop: true, callback: () => this.step() });
+  }
+
+  step() {
+    const elapsed = this.time.now - this.castStart;
+    if (elapsed > TRAVEL_MS + LOOP_GAP_MS) {
+      this.castStart = this.time.now;
+      this.active = false;
+      return;
+    }
+    if (elapsed <= TRAVEL_MS) {
+      this.active = true;
+      const t = Phaser.Math.Easing.Cubic.In(Math.min(1, elapsed / TRAVEL_MS));
+      const x = Phaser.Math.Linear(OBJECT.x, HAND.x, t);
+      const y = Phaser.Math.Linear(OBJECT.y, HAND.y, t);
+      this.history.push({ x, y, time: this.time.now });
+
+      if (elapsed >= TRAVEL_MS - 16 && !this.arrived) {
+        this.arrived = true;
+        this.arrivalBurst(x, y);
+      }
+    } else if (this.active) {
+      // Just arrived — stop adding new points, let the existing tail age out.
+      this.active = false;
+    }
+
+    // Drop points older than the visible tail window.
+    while (this.history.length && this.time.now - this.history[0].time > TAIL_MS) {
+      this.history.shift();
+    }
+
+    this.drawTrail();
+
+    if (!this.active && this.history.length === 0 && this.arrived) {
+      this.arrived = false;
+    }
+  }
+
+  drawTrail() {
+    const g = this.trailG;
+    g.clear();
+    this.coreG.clear();
+
+    for (let i = 1; i < this.history.length; i++) {
+      const a = this.history[i - 1];
+      const b = this.history[i];
+      const age = this.time.now - b.time;
+      const ageFrac = Phaser.Math.Clamp(age / TAIL_MS, 0, 1); // 0 at head, 1 at the tail's far end
+      const alpha = 1 - ageFrac;
+
+      let color;
+      if (ageFrac < HEAD_FRACTION) {
+        color = lerpColor(WHITE, GOLD, ageFrac / HEAD_FRACTION);
+      } else {
+        color = lerpColor(GOLD, TAIL_GOLD, (ageFrac - HEAD_FRACTION) / (1 - HEAD_FRACTION));
+      }
+
+      const coreW = 7 - ageFrac * 5.5; // thick near the head, thin at the tail
+      const glowW = coreW + 6;
+
+      g.lineStyle(glowW, color, 0.28 * alpha);
+      g.beginPath(); g.moveTo(a.x, a.y); g.lineTo(b.x, b.y); g.strokePath();
+      g.lineStyle(coreW, color, 0.9 * alpha);
+      g.beginPath(); g.moveTo(a.x, a.y); g.lineTo(b.x, b.y); g.strokePath();
+    }
+
+    // The pulled object itself — a soft glow at the current head position,
+    // same stacked-soft-rings technique as the vortex demo's leading head.
+    if (this.active && this.history.length) {
+      const head = this.history[this.history.length - 1];
+      this.coreG.fillStyle(0xffd479, 0.25);
+      this.coreG.fillCircle(head.x, head.y, 14);
+      this.coreG.fillStyle(0xffd479, 0.4);
+      this.coreG.fillCircle(head.x, head.y, 9);
+      this.coreG.fillStyle(0xffffff, 0.9);
+      this.coreG.fillCircle(head.x, head.y, 4);
+    }
+  }
+
+  // A sparkle where the object lands in the hand — firework-demo's
+  // sparkleBurst technique, sized down from a full firework but still a
+  // real "caught it" beat rather than a whisper.
+  arrivalBurst(x, y) {
+    const emitter = this.add.particles(x, y, 'dot', {
+      lifespan: { min: 260, max: 460 },
+      speed: { min: 60, max: 200 },
+      angle: { min: 0, max: 360 },
+      scale: { start: 0.9, end: 0 },
+      alpha: { start: 1, end: 0 },
+      color: [0xffffff, 0xffe9c2, 0xffd479],
+      colorEase: 'quad.out',
+      blendMode: 'ADD',
+      emitting: false,
+    });
+    emitter.explode(Phaser.Math.Between(22, 30));
+    const flash = this.add.particles(x, y, 'dot', {
+      lifespan: 220, speed: 0, scale: { start: 2.6, end: 0 },
+      alpha: { start: 0.9, end: 0 }, tint: 0xffffff, blendMode: 'ADD', emitting: false,
+    });
+    flash.explode(1);
+    this.time.delayedCall(220, () => flash.destroy());
+    this.time.delayedCall(600, () => emitter.destroy());
+  }
+}
+
+window.__game = new Phaser.Game({
+  type: Phaser.AUTO,
+  width: WIDTH,
+  height: HEIGHT,
+  backgroundColor: '#000000',
+  scene: FetchScene,
+});
+</script>
+</body>
+</html>

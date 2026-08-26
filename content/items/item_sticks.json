@@ -1,0 +1,19 @@
+{
+  "item_id": "item_sticks",
+  "description": "These sticks are not from a single tree, but a collection of different woods, each with its own weight and grain. Some are smooth, some are rough, and they all have dried in the sun until they feel light in the hand. They are good for marking a place or making a small fire, but they mostly serve as a way to hold things in place.",
+  "category": "component",
+  "persistence": "pack-triaged",
+  "collectible": true,
+  "consumable": true,
+  "source_locations": [
+    "Forager's Clearing",
+    "Forest Unlock 1"
+  ],
+  "always_available": true,
+  "used_by": [
+    "furrow",
+    "ignite"
+  ],
+  "produced_by": [],
+  "use_family": null
+}

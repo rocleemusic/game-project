@@ -1,0 +1,21 @@
+{
+  "item_id": "item_flame",
+  "description": "It is a flame that is already burning. It has been carried in a jar or a small metal container for some time. The light is steady and the heat is there, but it is not a fresh fire. It is an old thing that someone brought along.",
+  "category": "component",
+  "persistence": "world",
+  "collectible": false,
+  "consumable": true,
+  "source_locations": [
+    "Town scene",
+    "Square",
+    "Festival Grounds"
+  ],
+  "always_available": true,
+  "used_by": [
+    "leap"
+  ],
+  "produced_by": [
+    "ignite"
+  ],
+  "use_family": null
+}

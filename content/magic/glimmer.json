@@ -1,0 +1,54 @@
+{
+  "spell_id": "glimmer",
+  "phrase": "glimmer",
+  "role": "Mage",
+  "canon": false,
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-04 with an amendment: dancing lights, and casting at the Festival Grounds on festival night shows the past casts of many years at once.",
+  "components": [
+    "item_river_stone"
+  ],
+  "produces": [],
+  "learn_source": "Conversation in the Square — old spell-marks on the Lantern Arch come up, and the way a collector would find more of them",
+  "confirm_action": "Cast it yourself on the Arch stone once",
+  "mana_effect": "Quality only: at high mana the lights are many, bright, and dance long; at baseline a few faint motes rise and gutter quickly. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "inert",
+      "receiver_id": "lantern_arch_stone",
+      "physical_outcome": "Small dancing lights rise where past casts struck and drift along the old spell-marks, then gutter out",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "fresh_cut_plank",
+      "physical_outcome": "no_effect — nothing has ever been cast here; no lights rise",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "furnace",
+      "physical_outcome": "State-dependent: recently magic-lit, a few lights dance at the firebox mouth; lit by hand or long cold, none rise",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "festival_grounds",
+      "physical_outcome": "State-dependent on place and night: on festival night, the grounds fill with dancing lights far past what any one surface carries — the past casts of many years rise and dance at once; on any ordinary day, only the sparse traces of recent local casts rise and fade",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "cat",
+      "physical_outcome": "No physical effect — the lights drift past the fur without attaching",
+      "reaction_kind": "chases the drifting lights, paw-swipes as they gutter"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "pip",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "delighted investigation — crowds in under the dancing lights and drags whoever is nearest to see"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "item_id": "item_river_stone",
+  "description": "A smooth river stone found on the bank near the bridge. It is heavy for its size and cold in the hand. The surface is worn flat by the current, no longer holding the rough edges or deep cracks of the quarry. It sits well in a pocket.",
+  "category": "component",
+  "persistence": "pack-triaged",
+  "collectible": true,
+  "consumable": true,
+  "source_locations": [
+    "Forager's Clearing",
+    "Forest Unlock 2"
+  ],
+  "always_available": false,
+  "used_by": [
+    "glimmer",
+    "portion",
+    "temper",
+    "weigh"
+  ],
+  "produced_by": [],
+  "use_family": null
+}

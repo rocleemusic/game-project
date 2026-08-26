@@ -1,0 +1,18 @@
+{
+  "item_id": "item_tree_sap",
+  "description": "Thick amber liquid, pulled from the side of a cedar trunk. It is warm to the touch and smells faintly of pine and sun. Stays soft and sticky for about a week after being cut. It hardens into a clear, hard resin that holds the shape of whatever it touches.",
+  "category": "component",
+  "persistence": "pack-triaged",
+  "collectible": true,
+  "consumable": true,
+  "source_locations": [
+    "Forager's Clearing",
+    "Forest Unlock 1"
+  ],
+  "always_available": false,
+  "used_by": [
+    "waft"
+  ],
+  "produced_by": [],
+  "use_family": null
+}

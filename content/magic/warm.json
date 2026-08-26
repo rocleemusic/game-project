@@ -1,0 +1,49 @@
+{
+  "spell_id": "warm",
+  "phrase": "warm",
+  "role": "Baker",
+  "canon": false,
+  "status": "rejected",
+  "status_note": "Rejected at Roc's gate 2026-08-04. Kept on record, not deleted.",
+  "components": [
+    "item_ash",
+    "item_grass"
+  ],
+  "produces": [],
+  "learn_source": "Watch the baker coax a slow batch at the counter in the Town scene — the feast needs every proof on time whatever the weather does",
+  "confirm_action": "Cast it yourself on a cold thing once",
+  "mana_effect": "Quality only: at high mana the heat is even to the centre; at baseline the surface warms faster than the core. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "dough",
+      "physical_outcome": "State-dependent: underproofed, it rises on schedule; already fully risen, it over-proofs and sags — warmth is not a cure-all",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "river_stone",
+      "physical_outcome": "Warms through and holds the heat a while — a bed-warmer or a proofing stone",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "stone_wall",
+      "physical_outcome": "no_effect — the mass is too great; the heat vanishes into it without registering",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "cat",
+      "physical_outcome": "No physical effect — the warmth does not attach to a living body",
+      "reaction_kind": "sniffs the warmed air near the cast point, circles, settles nearby"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "ilsa",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": null
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "key_item_id": "key_arch_filing",
+  "description": "A single filing from the Lantern Arch centerpiece. It has a sharp edge. I carried it in my sleeve for three days before remembering it. It feels heavier than it looks, and it is still stained with the light from the room where I found it.",
+  "category": "memento",
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-05.",
+  "role": "Blacksmith",
+  "origin": "found",
+  "made_from": [],
+  "source_locations": [
+    "Square",
+    "Town scene"
+  ],
+  "persistence": "pack-triaged",
+  "consumable": false,
+  "use_family": null,
+  "role_link_note": "Metal filings drop where the Blacksmith works the new Lantern Arch centerpiece — at the bench in town and under the Arch itself."
+}

@@ -1,0 +1,9 @@
+# Regenerable build junk — kept out so the map's real files stay the focus
+node_modules/
+dist/
+out/
+out-calib/
+.vite/
+.adversary/
+.playtest/
+*.stackdump

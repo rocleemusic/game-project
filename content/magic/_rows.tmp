@@ -1,0 +1,60 @@
+
+## Mage — personal goal: collect magic from around the world
+
+| spell_id | Phrase | What it does | Components | Canon | Status |
+|---|---|---|---|---|---|
+| `glimmer` | glimmer | Lights up residue of past casts on a surface as a fading shimmer | `item_river_stone` | — | **approved** |
+| `echo` | echo | Replays a captured sound out of a resonant surface | `item_captured_sound` + `item_beeswax` | — | **approved** |
+| `fetch` | fetch | Tugs a small loose object a short way toward the caster | `item_feather` + `item_wool` | — | **approved** |
+
+## Blacksmith — forges the new Lantern Arch centerpiece
+
+| spell_id | Phrase | What it does | Components | Canon | Status |
+|---|---|---|---|---|---|
+| `ignite` | ignite | Sets inert dry material alight; clears the dry hedge (Forest Unlock 1) | `item_sticks` | yes | **approved** |
+| `temper` | temper | Hardens a hot-worked piece evenly as it cools | `item_river_stone` + `item_spring_water` | — | **approved** |
+| `bind` | bind | Closes the seam of a broken hard thing whose halves are fitted together | `item_tree_sap` + `item_wool` | — | ~~rejected~~ |
+
+## Baker — prepares the communal feast
+
+| spell_id | Phrase | What it does | Components | Canon | Status |
+|---|---|---|---|---|---|
+| `knead` | knead | — | `item_spring_water` + `item_wool` | — | *pending* |
+| `rest` | rest | — | `item_salt` + `item_wool` | — | *pending* |
+| `portion` | portion | — | `item_river_stone` | — | *pending* |
+| `warm` | warm | Spreads low, even heat through the target | `item_ash` + `item_grass` | — | ~~rejected~~ |
+| `sift` | sift | Separates fine from coarse in a mixture | `item_feather` | — | ~~rejected~~ |
+| `cool` | cool | Draws heat out of the target without collapsing it | `item_spring_water` + `item_grass` | — | ~~rejected~~ |
+
+## Postman — delivers the festival letters
+
+| spell_id | Phrase | What it does | Components | Canon | Status |
+|---|---|---|---|---|---|
+| `scratch` | scratch | Cuts a lasting mark into a markable surface | `item_wool` | yes | **canon** · unruled |
+| `seal` | seal | Closes a letter, parcel, or jar weather-tight | `item_beeswax` | — | **approved** |
+| `dry` | dry | Takes the water out of a soaked thing | `item_ash` | — | **approved** |
+
+## Herbalist — brews the festival tonic that wards off the first frost
+
+| spell_id | Phrase | What it does | Components | Canon | Status |
+|---|---|---|---|---|---|
+| `steep` | steep | Draws the virtue of what's in a vessel of water into the water, fast | `item_berry` + `item_spring_water` | — | **approved** |
+| `preserve` | preserve | Holds a freshly cut or picked thing at fresh | `item_salt` | — | **approved** |
+| `mist` | mist | Settles a fine cool mist over the target | `item_spring_water` + `item_feather` | — | ~~rejected~~ |
+
+## Priest — leads the rite that lights the Lantern Arch and calls the souls home
+
+| spell_id | Phrase | What it does | Components | Canon | Status |
+|---|---|---|---|---|---|
+| `leap` | leap | — | `item_beeswax` + `item_grass` | — | *pending* |
+| `waft` | waft | Sends smoke, scent, or dust rising in a straight column | `item_grass` + `item_tree_sap` | — | **approved** |
+| `toll` | toll | Sounds a single true tone from resonant material | `item_river_stone` | — | ~~rejected~~ |
+| `still` | still | Calms moving air or water around the target for a short while | `item_dirt` + `item_wool` | — | ~~rejected~~ |
+
+## Farmer — brings in the harvest that feeds the festival week
+
+| spell_id | Phrase | What it does | Components | Canon | Status |
+|---|---|---|---|---|---|
+| `breath` | breath | A directed puff of air — winnows, scatters, feeds embers | `item_grass` + `item_dirt` | yes | **canon** · unruled |
+| `furrow` | furrow | Parts worked ground in a seed-row along the cast | `item_sticks` + `item_dirt` | — | **approved** |
+| `ripen` | ripen | Pushes near-ripe growth the last step to ripe | `item_berry` + `item_spring_water` | — | ~~rejected~~ |

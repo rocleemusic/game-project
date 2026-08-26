@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Phaser firework demo</title>
+<style>html,body{margin:0;background:#000;overflow:hidden;}</style>
+</head>
+<body>
+<script src="../../node_modules/phaser/dist/phaser.js"></script>
+<script>
+const WIDTH = 900, HEIGHT = 520;
+
+// A few color families to draw random bursts from — white-hot core fading
+// into a color, exactly the "color over lifetime" technique from the ref image.
+const PALETTES = [
+  [0xffffff, 0xff5fd8, 0xb23bff],   // magenta/violet
+  [0xffffff, 0x5fe0ff, 0x2a6bff],   // cyan/blue
+  [0xffffff, 0x5cff8f, 0x1fae55],   // green
+  [0xffffff, 0xffe45c, 0xff9d2a],   // gold
+  [0xffffff, 0xff5c5c, 0xd81f3b],   // red
+];
+
+class StreakParticle extends Phaser.GameObjects.Particles.Particle {
+  update(delta, step, processors) {
+    const alive = super.update(delta, step, processors);
+    // Face the direction of travel — this is the one thing Phaser doesn't
+    // do for you automatically; a custom Particle class is the way to get it.
+    this.rotation = Math.atan2(this.velocityY, this.velocityX);
+    return alive;
+  }
+}
+
+class DemoScene extends Phaser.Scene {
+  create() {
+    // Round dot — the workhorse texture for sparkle bursts.
+    const g = this.add.graphics();
+    g.fillStyle(0xffffff, 1);
+    g.fillCircle(8, 8, 8);
+    g.generateTexture('dot', 16, 16);
+    // A short streak — for the "spiky star" willow-type bursts.
+    g.clear();
+    g.fillStyle(0xffffff, 1);
+    g.fillRect(0, 7, 26, 2);
+    g.generateTexture('streak', 26, 16);
+    g.destroy();
+
+    this.add.text(10, 8, 'Phaser particle demo — fireworks', {
+      fontFamily: 'monospace', fontSize: '13px', color: '#888',
+    });
+
+    this.time.addEvent({
+      delay: 550,
+      loop: true,
+      callback: () => this.randomBurst(),
+    });
+    // A couple right away so it doesn't start empty.
+    this.randomBurst();
+    this.time.delayedCall(200, () => this.randomBurst());
+  }
+
+  randomBurst() {
+    const x = Phaser.Math.Between(80, WIDTH - 80);
+    const y = Phaser.Math.Between(80, HEIGHT - 140);
+    const palette = Phaser.Utils.Array.GetRandom(PALETTES);
+    const kind = Phaser.Math.Between(0, 2);
+    if (kind === 0) this.sparkleBurst(x, y, palette);
+    else if (kind === 1) this.streakBurst(x, y, palette);
+    else this.softBloom(x, y, palette);
+  }
+
+  // The dominant look in the reference image: a round dot burst with real
+  // color-over-lifetime (white core fading to the family's outer color) and
+  // gravity pulling the fading embers down.
+  sparkleBurst(x, y, colors) {
+    const emitter = this.add.particles(x, y, 'dot', {
+      lifespan: { min: 700, max: 1300 },
+      speed: { min: 60, max: 220 },
+      angle: { min: 0, max: 360 },
+      scale: { start: 0.55, end: 0 },
+      alpha: { start: 1, end: 0 },
+      color: colors,
+      colorEase: 'quad.out',
+      gravityY: 90,
+      blendMode: 'ADD',
+      emitting: false,
+    });
+    emitter.explode(Phaser.Math.Between(40, 70));
+    this.time.delayedCall(1400, () => emitter.destroy());
+  }
+
+  // The willow/spiky-star look (teal streaks, the white starburst) — an
+  // elongated texture rotated to face its own velocity via StreakParticle.
+  streakBurst(x, y, colors) {
+    const emitter = this.add.particles(x, y, 'streak', {
+      particleClass: StreakParticle,
+      lifespan: { min: 500, max: 850 },
+      speed: { min: 180, max: 340 },
+      angle: { min: 0, max: 360 },
+      scaleX: { start: 1, end: 0.3 },
+      scaleY: { start: 1, end: 0.3 },
+      alpha: { start: 1, end: 0 },
+      color: colors,
+      colorEase: 'quad.out',
+      blendMode: 'ADD',
+      emitting: false,
+    });
+    emitter.explode(Phaser.Math.Between(18, 28));
+    // A small bright flash at the center where the streaks launch from.
+    const flash = this.add.particles(x, y, 'dot', {
+      lifespan: 300, speed: 0, scale: { start: 1.8, end: 0 },
+      alpha: { start: 0.9, end: 0 }, tint: 0xffffff, blendMode: 'ADD', emitting: false,
+    });
+    flash.explode(1);
+    this.time.delayedCall(300, () => flash.destroy());
+    this.time.delayedCall(950, () => emitter.destroy());
+  }
+
+  // The dense lingering glitter cloud (bottom cluster in the reference) —
+  // many tiny slow particles with a long fade.
+  softBloom(x, y, colors) {
+    const emitter = this.add.particles(x, y, 'dot', {
+      lifespan: { min: 1400, max: 2200 },
+      speed: { min: 10, max: 70 },
+      angle: { min: 0, max: 360 },
+      scale: { start: 0.3, end: 0 },
+      alpha: { start: 0.85, end: 0 },
+      color: colors,
+      colorEase: 'quad.out',
+      gravityY: 30,
+      quantity: 2,
+      frequency: 40,
+      blendMode: 'ADD',
+    });
+    this.time.delayedCall(700, () => emitter.stop());
+    this.time.delayedCall(2600, () => emitter.destroy());
+  }
+}
+
+window.__game = new Phaser.Game({
+  type: Phaser.AUTO,
+  width: WIDTH,
+  height: HEIGHT,
+  backgroundColor: '#000000',
+  scene: DemoScene,
+});
+</script>
+</body>
+</html>

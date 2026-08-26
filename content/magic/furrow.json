@@ -1,0 +1,49 @@
+{
+  "spell_id": "furrow",
+  "phrase": "furrow",
+  "role": "Farmer",
+  "canon": false,
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-04.",
+  "components": [
+    "item_sticks",
+    "item_dirt"
+  ],
+  "produces": [],
+  "learn_source": "Watch the farmer open a seed-row without a plough at the field edge of the Town scene — the festival week's planting happens between every other job",
+  "confirm_action": "Cast it yourself on worked ground once",
+  "mana_effect": "Quality only: at high mana the furrow runs long, straight, and seed-deep; at baseline it is short and shallow and wants a second pass. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "field_soil",
+      "physical_outcome": "State-dependent: tilled and soft, a clean furrow opens the cast's length; packed hard or frozen, only a scuffed line — the ground has to be worked first",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "sod",
+      "physical_outcome": "Turns a narrow strip, grass-side down",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "cobbled_square",
+      "physical_outcome": "no_effect — stone does not part",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "dog",
+      "physical_outcome": "No physical effect — the ground parts near it, the animal does not",
+      "reaction_kind": "delighted digging at the fresh furrow"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "nell",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "hums on, steps over the new furrow without comment"
+    }
+  ]
+}

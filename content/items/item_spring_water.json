@@ -1,0 +1,19 @@
+{
+  "item_id": "item_spring_water",
+  "description": "Clear spring water in a clay bottle. Collected from the edge of the grove near the first gate. It is cold to the touch and stays that way even when it is warm outside. It tastes of nothing at all.",
+  "category": "component",
+  "persistence": "pack-triaged",
+  "collectible": true,
+  "consumable": true,
+  "source_locations": [
+    "Town scene",
+    "Forest Unlock 2"
+  ],
+  "always_available": false,
+  "used_by": [
+    "steep",
+    "temper"
+  ],
+  "produced_by": [],
+  "use_family": null
+}

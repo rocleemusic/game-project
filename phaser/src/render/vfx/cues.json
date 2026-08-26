@@ -1,0 +1,750 @@
+{
+  "provenance": "AUTHORED 2026-08-17, Wave 2 Track D. This table is the whole mapping from GameEvent to spell VFX; src/render/vfx/**.ts contains no spell id and no `if (spellId === ...)`, and VfxSystem.test.ts greps for both. A new spell is a new row here.",
+  "vocabulary": "Every `match.spellId` below must name an APPROVED spell in public/content/magic.json. loadCueTable() takes the spell vocabulary as an option and reports an `unknown-spell` defect for a row that names one that is not authored, the same way GateEngine refuses a rule naming an unauthored receiver. A test loads this file against the shipped records and asserts zero defects, so a renamed or cut spell fails the build rather than leaving a cue that can never fire.",
+  "colour": "`colorKey` is a key of COLOR in src/ui/theme.ts, which is contrast-checked. A raw hex here is an `unknown-color-key` defect, and a companion test greps every .ts file in this folder for a hex literal so the renderer cannot introduce one either.",
+  "ordering": "FIRST MATCH WINS, so the per-spell rows sit above the generic ones. findUnreachableRules() computes the rows an earlier row already covers and a test asserts the list is empty.",
+  "noEffectHonesty": "Every approved spell has BOTH a `cast:resolved`/effect row and a `cast:resolved`/no-effect row — that much is still enforced (VfxSystem.test.ts: 'plays something — never nothing at all'). No red, no shake: VfxTone has no failure member, the loader refuses `danger` on any landed cast, and it refuses an error-ish token in a row's id or params, on EITHER row, unconditionally.",
+  "noEffectWeightPolicy": "RELAXED 2026-08-22 (Roc, the VFX prototype batch). The original rule required a no-effect row to be identical to its effect twin in kind/tone/duration/every shape param, differing only by colour (and for `tint`, `amount`), so the two landed within 5% of the same on-screen weight. That is still good practice and `breath`/`fetch`/`weigh` still follow it — but it is no longer mandatory. A spell's VFX firing at all is the signal a cast happened; it does not have to be the same shape dimmed down, and an effect row is free to be more elaborate than its no-effect twin. `cueWeight`/`neutralFor` in CueTable.ts remain correct and available for any pair still authored that way.",
+  "neutralRuleWhenUsed": "Where a pair IS weight-matched (see above), the no-effect colour is DERIVED, not chosen: of the theme's neutral keys (`ink`, `muted` — the only two that carry no meaning), take the one whose cueWeight() lands closest to the effect twin's, and never one that reads more than 5% dimmer. `neutralFor()` in CueTable.ts is that rule as code.",
+  "tintAmounts": "`weigh`'s old `tint` pair (superseded by `suspend`) compensated `amount`, because a tint's visible depth is `amount * (1 - min channel)` and `muted` bites harder than the effect colours do: 0.25 -> 0.2061, solved so the rendered weights matched within 0.1%. Kept here as a worked example — `amount` is the one param pure strength with no geometry in it, which is why it is the only one a weight-matched `tint` pair may differ in.",
+  "reach": "Only rows whose event type is EMITTED and whose emitter sits in a scene that mounts a VfxSystem can ever play. `cue.craft.completed`, `cue.item.acquired.forage` and `cue.item.acquired.any` were removed because nothing in src/ emits `craft:completed` or `item:acquired` at all — three rows that looked authored and could never fire. The gate and receiver rows are kept and DECLARED: GateEngine and ReceiverStateStore do emit them, but no scene constructs either yet (Wave 2 Track B), so VfxSystem.test.ts lists them in AWAITING_WIRING and fails both if a new dead row appears and if a declared one becomes reachable and is not removed from the list.",
+  "default": {
+    "id": "cue.default.neutral",
+    "kind": "none",
+    "tone": "quiet",
+    "durationMs": 0
+  },
+  "rules": [
+    {
+      "id": "cue.cast.effect.breath",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "breath",
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "vortex",
+        "tone": "quiet",
+        "durationMs": 3300,
+        "colorKey": "dusk"
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.breath",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "breath",
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "vortex",
+        "tone": "quiet",
+        "durationMs": 3300,
+        "colorKey": "muted"
+      }
+    },
+    {
+      "id": "cue.cast.effect.dry",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "dry",
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "sprite",
+        "tone": "cold",
+        "durationMs": 1400,
+        "colorKey": "dusk",
+        "params": {
+          "textureKey": "vfx_dry_portal",
+          "frameRate": 12,
+          "scale": 1
+        }
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.dry",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "dry",
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "sprite",
+        "tone": "cold",
+        "durationMs": 1400,
+        "colorKey": "muted",
+        "params": {
+          "textureKey": "vfx_dry_portal",
+          "frameRate": 12,
+          "scale": 1
+        }
+      }
+    },
+    {
+      "id": "cue.cast.effect.echo",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "echo",
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "rings",
+        "tone": "arcane",
+        "durationMs": 1850,
+        "colorKey": "dusk"
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.echo",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "echo",
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "particles",
+        "tone": "arcane",
+        "durationMs": 900,
+        "colorKey": "ink",
+        "params": {
+          "quantity": 6,
+          "speed": 40,
+          "spreadAngle": 360,
+          "scale": 0.35
+        }
+      }
+    },
+    {
+      "id": "cue.cast.effect.fetch",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "fetch",
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "trail",
+        "tone": "arcane",
+        "durationMs": 950,
+        "colorKey": "vfxGold"
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.fetch",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "fetch",
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "trail",
+        "tone": "arcane",
+        "durationMs": 950,
+        "colorKey": "ink"
+      }
+    },
+    {
+      "id": "cue.cast.effect.furrow",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "furrow",
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "sprite",
+        "tone": "warm",
+        "durationMs": 1600,
+        "colorKey": "vfxEmber",
+        "params": {
+          "textureKey": "vfx_furrow_growth",
+          "frameRate": 10,
+          "scale": 1
+        }
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.furrow",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "furrow",
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "sprite",
+        "tone": "warm",
+        "durationMs": 1600,
+        "colorKey": "ink",
+        "params": {
+          "textureKey": "vfx_furrow_growth",
+          "frameRate": 10,
+          "scale": 1
+        }
+      }
+    },
+    {
+      "id": "cue.cast.effect.glimmer",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "glimmer",
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "sprite",
+        "tone": "arcane",
+        "durationMs": 1400,
+        "colorKey": "vfxGold",
+        "params": {
+          "textureKey": "vfx_glimmer_motes",
+          "frameRate": 12,
+          "scale": 1
+        }
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.glimmer",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "glimmer",
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "sprite",
+        "tone": "arcane",
+        "durationMs": 1400,
+        "colorKey": "ink",
+        "params": {
+          "textureKey": "vfx_glimmer_motes",
+          "frameRate": 12,
+          "scale": 1
+        }
+      }
+    },
+    {
+      "id": "cue.cast.effect.ignite",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "ignite",
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "sprite",
+        "tone": "warm",
+        "durationMs": 1200,
+        "colorKey": "vfxEmber",
+        "params": {
+          "textureKey": "vfx_ignite_flame",
+          "frameRate": 14,
+          "scale": 1,
+          "originY": 0.371
+        }
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.ignite",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "ignite",
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "sprite",
+        "tone": "warm",
+        "durationMs": 1200,
+        "colorKey": "ink",
+        "params": {
+          "textureKey": "vfx_ignite_flame",
+          "frameRate": 14,
+          "scale": 1,
+          "originY": 0.371
+        }
+      }
+    },
+    {
+      "id": "cue.cast.effect.leap",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "leap",
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "sprite",
+        "tone": "arcane",
+        "durationMs": 1100,
+        "colorKey": "vfxGold",
+        "params": {
+          "textureKey": "vfx_leap_streak",
+          "frameRate": 16,
+          "scale": 1,
+          "originY": 0.6667
+        }
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.leap",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "leap",
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "sprite",
+        "tone": "arcane",
+        "durationMs": 1100,
+        "colorKey": "ink",
+        "params": {
+          "textureKey": "vfx_leap_streak",
+          "frameRate": 16,
+          "scale": 1,
+          "originY": 0.6667
+        }
+      }
+    },
+    {
+      "id": "cue.cast.effect.portion",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "portion",
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "pop",
+        "tone": "cold",
+        "durationMs": 1300,
+        "colorKey": "dusk"
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.portion",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "portion",
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "particles",
+        "tone": "cold",
+        "durationMs": 900,
+        "colorKey": "muted",
+        "params": {
+          "quantity": 6,
+          "speed": 60,
+          "spreadAngle": 180,
+          "scale": 0.4
+        }
+      }
+    },
+    {
+      "id": "cue.cast.effect.preserve",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "preserve",
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "sprite",
+        "tone": "cold",
+        "durationMs": 1700,
+        "colorKey": "success",
+        "params": {
+          "textureKey": "vfx_preserve_bloom",
+          "frameRate": 10,
+          "scale": 1
+        }
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.preserve",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "preserve",
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "sprite",
+        "tone": "cold",
+        "durationMs": 1700,
+        "colorKey": "ink",
+        "params": {
+          "textureKey": "vfx_preserve_bloom",
+          "frameRate": 10,
+          "scale": 1
+        }
+      }
+    },
+    {
+      "id": "cue.cast.effect.scratch",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "scratch",
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "burst",
+        "tone": "quiet",
+        "durationMs": 750,
+        "colorKey": "vfxEmber"
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.scratch",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "scratch",
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "particles",
+        "tone": "quiet",
+        "durationMs": 900,
+        "colorKey": "ink",
+        "params": {
+          "quantity": 5,
+          "speed": 45,
+          "spreadAngle": 90,
+          "scale": 0.35
+        }
+      }
+    },
+    {
+      "id": "cue.cast.effect.seal",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "seal",
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "sprite",
+        "tone": "arcane",
+        "durationMs": 950,
+        "colorKey": "vfxGold",
+        "params": {
+          "textureKey": "vfx_seal_ward_temp",
+          "frameRate": 8,
+          "scale": 1
+        }
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.seal",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "seal",
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "sprite",
+        "tone": "arcane",
+        "durationMs": 950,
+        "colorKey": "ink",
+        "params": {
+          "textureKey": "vfx_seal_ward_temp",
+          "frameRate": 8,
+          "scale": 1
+        }
+      }
+    },
+    {
+      "id": "cue.cast.effect.steep",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "steep",
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "beacon",
+        "tone": "warm",
+        "durationMs": 1800,
+        "colorKey": "vfxEmber"
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.steep",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "steep",
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "particles",
+        "tone": "warm",
+        "durationMs": 900,
+        "colorKey": "ink",
+        "params": {
+          "quantity": 8,
+          "speed": 25,
+          "spreadAngle": 360,
+          "scale": 0.4,
+          "gravityY": -60,
+          "speedVariance": 0.3,
+          "scaleVariance": 1
+        }
+      }
+    },
+    {
+      "id": "cue.cast.effect.temper",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "temper",
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "eruption",
+        "tone": "warm",
+        "durationMs": 1240,
+        "colorKey": "vfxEmber"
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.temper",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "temper",
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "particles",
+        "tone": "warm",
+        "durationMs": 500,
+        "colorKey": "ink",
+        "params": {
+          "quantity": 6,
+          "speed": 50,
+          "spreadAngle": 180,
+          "scale": 0.35,
+          "gravityY": 40
+        }
+      }
+    },
+    {
+      "id": "cue.cast.effect.waft",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "waft",
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "plume",
+        "tone": "quiet",
+        "durationMs": 2625,
+        "colorKey": "dusk"
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.waft",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "waft",
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "particles",
+        "tone": "quiet",
+        "durationMs": 900,
+        "colorKey": "muted",
+        "params": {
+          "quantity": 12,
+          "speed": 20,
+          "spreadAngle": 360,
+          "scale": 0.6,
+          "gravityY": -70,
+          "speedVariance": 0.5,
+          "scaleVariance": 1
+        }
+      }
+    },
+    {
+      "id": "cue.cast.effect.weigh",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "weigh",
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "suspend",
+        "tone": "cold",
+        "durationMs": 2530,
+        "colorKey": "dusk"
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.weigh",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "spellId": "weigh",
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "suspend",
+        "tone": "cold",
+        "durationMs": 2530,
+        "colorKey": "muted"
+      }
+    },
+    {
+      "id": "cue.cast.effect.any",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "outcome": "effect"
+        }
+      },
+      "cue": {
+        "kind": "glow",
+        "tone": "arcane",
+        "durationMs": 900,
+        "colorKey": "vfxGold",
+        "params": {
+          "outer": 2.5
+        }
+      }
+    },
+    {
+      "id": "cue.cast.noeffect.any",
+      "when": {
+        "type": "cast:resolved",
+        "match": {
+          "outcome": "no-effect"
+        }
+      },
+      "cue": {
+        "kind": "glow",
+        "tone": "arcane",
+        "durationMs": 900,
+        "colorKey": "ink",
+        "params": {
+          "outer": 2.5
+        }
+      }
+    },
+    {
+      "id": "cue.cast.notaken.any",
+      "when": {
+        "type": "cast:rejected",
+        "match": {}
+      },
+      "cue": {
+        "kind": "tint",
+        "tone": "quiet",
+        "durationMs": 400,
+        "colorKey": "muted",
+        "params": {
+          "amount": 0.2
+        }
+      }
+    },
+    {
+      "id": "cue.gate.cleared",
+      "when": {
+        "type": "gate:cleared",
+        "match": {
+          "source": "authored"
+        }
+      },
+      "cue": {
+        "kind": "glow",
+        "tone": "arcane",
+        "durationMs": 1200,
+        "colorKey": "vfxGold",
+        "params": {
+          "outer": 4
+        }
+      }
+    },
+    {
+      "id": "cue.gate.blocked",
+      "when": {
+        "type": "gate:blocked",
+        "match": {}
+      },
+      "cue": {
+        "kind": "tint",
+        "tone": "cold",
+        "durationMs": 500,
+        "colorKey": "danger",
+        "params": {
+          "amount": 0.3
+        }
+      }
+    },
+    {
+      "id": "cue.receiver.state-changed",
+      "when": {
+        "type": "receiver:state-changed",
+        "match": {}
+      },
+      "cue": {
+        "kind": "tint",
+        "tone": "cold",
+        "durationMs": 500,
+        "colorKey": "dusk",
+        "params": {
+          "amount": 0.25
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Phaser vortex demo</title>
+<style>html,body{margin:0;background:#000;overflow:hidden;}</style>
+</head>
+<body>
+<script src="../../node_modules/phaser/dist/phaser.js"></script>
+<script>
+const WIDTH = 500, HEIGHT = 560;
+
+// Timing envelope for one cast. This IS the proposed durationMs for the
+// real cue: GROW + HOLD + FADE = 1400ms, in the same range as the other
+// authored spells (900-2000ms).
+// Roc call 2026-08-22: the previous 750ms per-strand arc (300/250/200) read
+// as 4 flickers, not a vortex — each strand popped up and died too fast to
+// read as continuous motion. Slowed back toward the original 1350ms scale
+// and lengthened the tail so more of the strand stays visible at once.
+// Roc call 2026-08-22 (2nd pass): still read wrong — the 4 strands are the
+// same curve rotated 90° apart, so once they were slow enough to actually
+// see, they looked like one path duplicated instead of a vortex. Widened
+// each strand and pushed HOLD_MS up so more strands overlap on screen at
+// once, giving the shape more visual mass.
+// Roc call 2026-08-22 (3rd pass): still too fast. This time it's not just
+// the grow/hold/fade envelope — PHASE_SPEED (how fast the strands actually
+// spin around the pole) was untouched by the first two passes, so the
+// swirl itself was still racing even while each strand lingered longer.
+// Slowed PHASE_SPEED too, on top of a longer envelope.
+// Roc call 2026-08-22 (4th pass): tighter stagger (250ms), slower climb
+// (GROW_MS +300ms), 6 strands instead of 4 — more strands closer together
+// in time, each climbing slower, aiming for a fuller/denser swirl.
+// Roc call 2026-08-22 (5th pass): rebalanced envelope — climb slower still,
+// hold shorter — plus a bigger leading particle.
+const GROW_MS = 1400;  // builds from the ground up
+const HOLD_MS = 750;   // fully formed, still spinning
+const FADE_MS = 550;   // dies back down
+const PER_STRAND_MS = GROW_MS + HOLD_MS + FADE_MS; // one strand's own arc
+const STAGGER_MS = 150; // each strand starts this much after the previous one
+const TAIL_FRACTION = 0.5;  // the tail's length, before it starts shrinking near the top
+const PHASE_SPEED = 0.013;  // how fast strands spin around the pole, per 16ms tick (was 0.026)
+const HEAD_GAP = 0.05;       // empty space between the tail's end and the leading particle
+const SHRINK_FROM = 0.7;     // past this much of the climb, the tail shrinks toward 0
+const LOOP_GAP_MS = 300; // demo-only: pause between casts so you can see it restart
+
+class VortexScene extends Phaser.Scene {
+  create() {
+    this.add.text(10, 8, 'Phaser vortex demo — grows bottom-to-top, tapered, tip-led', {
+      fontFamily: 'monospace', fontSize: '12px', color: '#888',
+    });
+    this.STRANDS = 10;
+    // Roc call 2026-08-22 (9th pass): strands now start in CW/CCW pairs —
+    // (0,1) together, (2,3) together, etc. — instead of one at a time, so
+    // each stagger step launches a crossing X rather than a single strand.
+    this.cycleMs = (Math.ceil(this.STRANDS / 2) - 1) * STAGGER_MS + PER_STRAND_MS;
+    this.add.text(10, 26, `per-strand: ${PER_STRAND_MS}ms · staggered ${STAGGER_MS}ms apart · full cycle: ${this.cycleMs}ms`, {
+      fontFamily: 'monospace', fontSize: '12px', color: '#666',
+    });
+
+    this.g = this.add.graphics();
+    this.g.setBlendMode(Phaser.BlendModes.ADD);
+
+    this.baseX = WIDTH / 2;
+    this.baseY = HEIGHT - 40;
+    this.topY = 40;
+    this.maxRadius = 150;
+    this.twists = 2.4;
+    this.phase = 0;
+    this.castStart = this.time.now;
+
+    this.time.addEvent({ delay: 16, loop: true, callback: () => this.step() });
+  }
+
+  step() {
+    this.phase += PHASE_SPEED;
+    const g = this.g;
+    g.clear();
+
+    const elapsedCycle = this.time.now - this.castStart;
+    if (elapsedCycle > this.cycleMs + LOOP_GAP_MS) this.castStart = this.time.now;
+
+    for (let s = 0; s < this.STRANDS; s++) {
+      // Each strand's own clock — offset from the cycle clock by its stagger,
+      // so strand 2 doesn't even begin until strand 1 is already partway up.
+      // That's what makes them read as separate things happening rather than
+      // one shape breathing in unison.
+      const elapsed = elapsedCycle - Math.floor(s / 2) * STAGGER_MS;
+      if (elapsed < 0 || elapsed > PER_STRAND_MS) continue; // not started yet / already done
+
+      let growT, envelopeAlpha;
+      if (elapsed <= GROW_MS) {
+        growT = elapsed / GROW_MS;
+        envelopeAlpha = 1;
+      } else if (elapsed <= GROW_MS + HOLD_MS) {
+        growT = 1;
+        envelopeAlpha = 1;
+      } else {
+        growT = 1;
+        envelopeAlpha = 1 - (elapsed - GROW_MS - HOLD_MS) / FADE_MS;
+      }
+      const growEase = 1 - Math.pow(1 - growT, 3);
+      const strandOffset = (s / this.STRANDS) * Math.PI * 2;
+      // Roc call 2026-08-22 (8th pass): alternating strands spin the
+      // opposite way round the pole. Same-direction strands are just
+      // rotated copies of one curve, so their gaps line up predictably —
+      // counter-spinning strands cross through each other's paths instead,
+      // which fills gaps without needing more strands.
+      const dir = s % 2 === 0 ? 1 : -1;
+
+      const pointAt = (t) => {
+        const minR = 12;
+        const radius = minR + (this.maxRadius - minR) * Math.pow(t, 0.65);
+        const angle = strandOffset + dir * (this.phase * (1 + t * 0.6) + t * this.twists * Math.PI * 2);
+        const wobble = Math.sin(t * 14 + this.phase * 3) * 6 * (1 - t * 0.5);
+        return {
+          x: this.baseX + Math.cos(angle) * (radius + wobble),
+          y: this.baseY - t * (this.baseY - this.topY),
+          t,
+        };
+      };
+
+      // The tail is a constant length — no more shrinking it geometrically.
+      // A real gap between the tail and the leading particle — the tail's
+      // own end sits HEAD_GAP behind the particle's true position, not
+      // touching it.
+      const tailEnd = Math.max(0, growEase - HEAD_GAP);
+      const tailStart = Math.max(0, tailEnd - TAIL_FRACTION);
+      const tailSpan = Math.max(0.0001, tailEnd - tailStart);
+
+      // Dims the WHOLE tail uniformly as the climb passes SHRINK_FROM,
+      // reaching fully invisible right as the particle arrives at the top —
+      // this is the "disappears by the time it reaches the top" behavior,
+      // done as a fade instead of a hard cutoff.
+      let arrivalFade = 1;
+      if (growEase > SHRINK_FROM) {
+        arrivalFade = 1 - (growEase - SHRINK_FROM) / (1 - SHRINK_FROM);
+      }
+
+      const SAMPLES = 48;
+      const iStart = Math.max(0, Math.round(SAMPLES * tailStart));
+      const iEnd = Math.max(iStart, Math.round(SAMPLES * tailEnd));
+      const pts = [];
+      for (let i = iStart; i <= iEnd; i++) pts.push(pointAt(i / SAMPLES));
+
+      // Tapered AND faded: thick and solid near the particle, thinning and
+      // fading to nothing at the tail's back (bottom) end — a real comet
+      // fade along the strand's own length, not just an on/off cutoff.
+      // Combined with arrivalFade, the bottom fades first and the whole
+      // thing is gone by the time the particle reaches the top.
+      for (let i = 1; i < pts.length; i++) {
+        const a = pts[i - 1], b = pts[i];
+        const localT = b.t;
+        const alongTail = Math.max(0, Math.min(1, (localT - tailStart) / tailSpan)); // 0 at back, 1 near particle
+        const localAlpha = alongTail * arrivalFade * envelopeAlpha;
+        const coreW = 5 - localT * 5;   // 5px at the base -> 0px at the tip
+        const glowW = coreW + 6;
+        g.lineStyle(glowW, 0x6fb8c4, 0.32 * localAlpha);
+        g.beginPath(); g.moveTo(a.x, a.y); g.lineTo(b.x, b.y); g.strokePath();
+        g.lineStyle(coreW, 0xeaf4f2, 0.9 * localAlpha);
+        g.beginPath(); g.moveTo(a.x, a.y); g.lineTo(b.x, b.y); g.strokePath();
+      }
+
+      // The leading particle — a soft glow at the current growing tip, only
+      // while still growing. Positioned at the TRUE tip (growEase), not the
+      // tail's end, so the gap between them is real, not just narrow. Once
+      // fully extended it fades away rather than sitting at the top.
+      // Roc call 2026-08-22 (6th pass): was two flat-alpha circles, read as
+      // a hard-edged ball. Outer radius down 15px (20.5 -> 5.5) and rebuilt
+      // as stacked soft rings (additive blend already on) so it falls off
+      // like a glow instead of cutting off at an edge.
+      if (growT < 1) {
+        const tip = pointAt(growEase);
+        const headAlpha = envelopeAlpha * (0.6 + 0.4 * Math.sin(this.phase * 6));
+        const headR = 10.5;
+        g.fillStyle(0x6fb8c4, headAlpha * 0.18);
+        g.fillCircle(tip.x, tip.y, headR);
+        g.fillStyle(0x6fb8c4, headAlpha * 0.3);
+        g.fillCircle(tip.x, tip.y, headR * 0.65);
+        g.fillStyle(0xeaf4f2, headAlpha * 0.45);
+        g.fillCircle(tip.x, tip.y, headR * 0.4);
+        g.fillStyle(0xeaf4f2, headAlpha * 0.9);
+        g.fillCircle(tip.x, tip.y, headR * 0.18);
+      }
+    }
+  }
+}
+
+window.__game = new Phaser.Game({
+  type: Phaser.AUTO,
+  width: WIDTH,
+  height: HEIGHT,
+  backgroundColor: '#000000',
+  scene: VortexScene,
+});
+</script>
+</body>
+</html>

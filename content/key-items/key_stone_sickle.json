@@ -1,0 +1,18 @@
+{
+  "key_item_id": "key_stone_sickle",
+  "description": "A stone-edged sickle. It is heavy in the hand and the edge has a fine grit, like sand. It cuts grass cleanly if you hold it right, but the stone chips if you strike a twig. It is not as fast as a metal blade. For a week, it has been the only thing I use to harvest.",
+  "category": "tool",
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-05.",
+  "role": "Farmer",
+  "origin": "made",
+  "made_from": [
+    "item_sticks",
+    "item_river_stone"
+  ],
+  "source_locations": [],
+  "persistence": "pack-triaged",
+  "consumable": false,
+  "use_family": "harvest",
+  "role_link_note": "The Farmer's harvest work needs a cutting edge — a river stone knapped and hafted on sticks brings the festival week's grain in."
+}

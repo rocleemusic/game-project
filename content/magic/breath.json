@@ -1,0 +1,55 @@
+{
+  "spell_id": "breath",
+  "phrase": "breath",
+  "role": "Farmer",
+  "canon": true,
+  "status": "approved",
+  "status_note": "Canon starter spell, ruled in by Roc 2026-08-05 as written.",
+  "components": [
+    "item_grass",
+    "item_dirt"
+  ],
+  "produces": [],
+  "learn_source": "Watch the farmer winnow at the edge of the Town scene — a directed puff of air that does in one cast what an afternoon of tossing grain does by hand",
+  "confirm_action": "Cast it yourself on loose material once",
+  "mana_effect": "Quality only: at high mana the gust is broad and sustained; at baseline it is one short puff. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "inert",
+      "receiver_id": "threshed_grain",
+      "physical_outcome": "The chaff lifts and blows clear; clean grain stays in the tray",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "fallen_leaves",
+      "physical_outcome": "Scatter off the path in one gust",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "furnace",
+      "physical_outcome": "State-dependent: banked embers brighten and flare under the draft; dead ash only swirls — breath feeds fire, it does not start one",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "anvil",
+      "physical_outcome": "no_effect — the gust breaks around it and nothing moves",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "cat",
+      "physical_outcome": "No physical effect — the gust parts around the animal without ruffling it",
+      "reaction_kind": "startle-crouch, tail-lash, retreat to a doorway"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "toby",
+      "physical_outcome": "No physical effect — not a hair moves",
+      "reaction_kind": "deflection — redirects the caster to the winnowing tray that actually needs it"
+    }
+  ]
+}

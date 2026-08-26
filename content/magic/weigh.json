@@ -1,0 +1,54 @@
+{
+  "spell_id": "weigh",
+  "phrase": "weigh",
+  "role": "Baker",
+  "canon": false,
+  "status": "approved",
+  "status_note": "Approved and shipping, ruled by Roc 2026-08-05. Brings the slice to 16 spells.",
+  "components": [
+    "item_river_stone"
+  ],
+  "produces": [],
+  "learn_source": "Watch the baker settle the flour sacks at the counter in the Town scene — a feast recipe scaled to the whole town, every batch owed the same as the last, and no scale in town built for feast quantities",
+  "confirm_action": "Cast it yourself on something with heft once",
+  "mana_effect": "Quality only: at high mana the hang reads true to a pinch; at baseline it reads only to the nearest stone's-worth. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "inert",
+      "receiver_id": "flour_sack",
+      "physical_outcome": "Rises a hand's breadth and hangs at a height set by its heft — a heavy sack hangs low, a light one high, and two matched sacks hang level with each other",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "salt_measure",
+      "physical_outcome": "Barely dips off the counter — hangs high and near-level, a small measure declaring itself small",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "stew_cauldron",
+      "physical_outcome": "State-dependent: full, it hangs low off its resting place and the hang reads the batch; scraped empty, it hangs high — only the pot's own weight left to bear",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "brick_oven",
+      "physical_outcome": "no_effect — built into the floor; nothing here the cast can bear up",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "hen",
+      "physical_outcome": "No physical effect — nothing living is borne up",
+      "reaction_kind": "squawk and wing-beat at the stirred air, struts off affronted"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "juno",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "reads the hang-heights down the row of sacks and starts tallying them against the feast count"
+    }
+  ]
+}

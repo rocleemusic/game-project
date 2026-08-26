@@ -1,0 +1,17 @@
+{
+  "key_item_id": "key_sealed_letter",
+  "description": "A thick, heavy envelope of cream-colored paper, folded once and held tight by a dark wax seal. The wax has a faint impression of a sun or a star pressed into the center, though the edges are chipped from being handled. The paper feels stiff, and there is a small, faded smear of something red on the back. It has been kept in a dry place, but the edges are starting to yellow.",
+  "category": "gift",
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-05.",
+  "role": "Postman",
+  "origin": "made",
+  "made_from": [
+    "item_beeswax"
+  ],
+  "source_locations": [],
+  "persistence": "pack-triaged",
+  "consumable": true,
+  "use_family": null,
+  "role_link_note": "One of the festival letters the Postman carries, closed weather-tight with beeswax before it can be handed on."
+}

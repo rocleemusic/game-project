@@ -1,0 +1,48 @@
+{
+  "spell_id": "preserve",
+  "phrase": "preserve",
+  "role": "Herbalist",
+  "canon": false,
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-04.",
+  "components": [
+    "item_salt"
+  ],
+  "produces": [],
+  "learn_source": "Watch the herbalist lay cut herbs by for the festival week in the Town scene — tonic ingredients gathered early must still be good on rite night",
+  "confirm_action": "Cast it yourself on something freshly cut or picked once",
+  "mana_effect": "Quality only: at high mana the hold lasts the whole festival week; at baseline it buys a day or two. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "inert",
+      "receiver_id": "cut_flowers",
+      "physical_outcome": "Stay fresh past their time — stems firm, petals unbrowned",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "dried_herb_bundle",
+      "physical_outcome": "no_effect — already past fresh; there is nothing left to hold",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "berry_basket",
+      "physical_outcome": "State-dependent: just-picked, the berries hold at ripe; already turning, the soft ones stay soft — the hold is not a rewind",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "cat",
+      "physical_outcome": "No physical effect — living receivers never catch; nothing is held",
+      "reaction_kind": "slow blink, walks through the cast point unbothered"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "mara",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "long look at the caster — she keeps things her own way"
+    }
+  ]
+}

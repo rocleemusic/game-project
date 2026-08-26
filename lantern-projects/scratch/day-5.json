@@ -1,0 +1,157 @@
+{
+  "seed": "edbb697efcecad2903821454cca4bca1f708d7ed5fef53b86dc2e83c901979b7",
+  "day": 5,
+  "slot_fill": [
+    {
+      "screen_id": "T7",
+      "time_block": "night",
+      "soul": "ilsa"
+    },
+    {
+      "screen_id": "T2",
+      "time_block": "afternoon",
+      "soul": "mara"
+    },
+    {
+      "screen_id": "T7",
+      "time_block": "night",
+      "soul": "toby"
+    },
+    {
+      "screen_id": "F1",
+      "time_block": "morning",
+      "soul": "linnet"
+    },
+    {
+      "screen_id": "F1",
+      "time_block": "afternoon",
+      "soul": "toby"
+    },
+    {
+      "screen_id": "F1",
+      "time_block": "evening",
+      "soul": "ilsa"
+    },
+    {
+      "screen_id": "F3",
+      "time_block": "afternoon",
+      "soul": "pip"
+    },
+    {
+      "screen_id": "F3",
+      "time_block": "evening",
+      "soul": "nell"
+    },
+    {
+      "screen_id": "F5",
+      "time_block": "afternoon",
+      "soul": "ilsa"
+    },
+    {
+      "screen_id": "F5",
+      "time_block": "evening",
+      "soul": "bex"
+    },
+    {
+      "screen_id": "T1",
+      "time_block": "morning",
+      "soul": "bex"
+    },
+    {
+      "screen_id": "T1",
+      "time_block": "morning",
+      "soul": "nell"
+    },
+    {
+      "screen_id": "T1",
+      "time_block": "afternoon",
+      "soul": "linnet"
+    },
+    {
+      "screen_id": "T1",
+      "time_block": "afternoon",
+      "soul": "nell"
+    },
+    {
+      "screen_id": "T1",
+      "time_block": "evening",
+      "soul": "linnet"
+    },
+    {
+      "screen_id": "T1",
+      "time_block": "evening",
+      "soul": "toby"
+    },
+    {
+      "screen_id": "T2",
+      "time_block": "morning",
+      "soul": "toby"
+    },
+    {
+      "screen_id": "T2",
+      "time_block": "morning",
+      "soul": "ilsa"
+    },
+    {
+      "screen_id": "T2",
+      "time_block": "afternoon",
+      "soul": "bex"
+    },
+    {
+      "screen_id": "T3",
+      "time_block": "morning",
+      "soul": "juno"
+    },
+    {
+      "screen_id": "T3",
+      "time_block": "morning",
+      "soul": "mara"
+    },
+    {
+      "screen_id": "T3",
+      "time_block": "afternoon",
+      "soul": "juno"
+    },
+    {
+      "screen_id": "T3",
+      "time_block": "evening",
+      "soul": "pip"
+    },
+    {
+      "screen_id": "T3",
+      "time_block": "evening",
+      "soul": "mara"
+    },
+    {
+      "screen_id": "T5",
+      "time_block": "evening",
+      "soul": "juno"
+    },
+    {
+      "screen_id": "T6",
+      "time_block": "night",
+      "soul": "linnet"
+    },
+    {
+      "screen_id": "T6",
+      "time_block": "night",
+      "soul": "juno"
+    },
+    {
+      "screen_id": "T6",
+      "time_block": "night",
+      "soul": "nell"
+    },
+    {
+      "screen_id": "T7",
+      "time_block": "night",
+      "soul": "bex"
+    }
+  ],
+  "item_rolls": [],
+  "live_leads": [
+    "LEAD-03",
+    "LEAD-02"
+  ],
+  "aliveness_band": "quiet"
+}

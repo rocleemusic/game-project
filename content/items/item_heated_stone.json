@@ -1,0 +1,19 @@
+{
+  "item_id": "item_heated_stone",
+  "description": "A smooth stone from the riverbed, still holding a deep warmth. It is heavy in the hand and does not cool quickly. When the air is damp, it pulls moisture from the mist. For a short time, it makes the fingers feel steady.",
+  "category": "component",
+  "persistence": "world",
+  "collectible": false,
+  "consumable": true,
+  "source_locations": [
+    "Heart of the Wood"
+  ],
+  "always_available": true,
+  "used_by": [
+    "temper"
+  ],
+  "produced_by": [
+    "ignite"
+  ],
+  "use_family": null
+}

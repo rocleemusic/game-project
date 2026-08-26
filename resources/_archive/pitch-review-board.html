@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pitch GDD - Review Board</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --panel-2: #1d222b;
+    --border: #2a303b;
+    --text: #f2f4f8;
+    --muted: #b6bcc7;
+    --dim: #8a8f98;
+    --blocker: #ff5555;
+    --major: #ffa94d;
+    --minor: #ffe066;
+    --nit: #8a8f98;
+    --accent: #6ea8fe;
+    --good: #51cf66;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 48px 40px 96px;
+  }
+  header.masthead {
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 32px;
+    margin-bottom: 44px;
+  }
+  header.masthead h1 {
+    font-size: 46px;
+    line-height: 1.1;
+    margin: 0 0 8px;
+    letter-spacing: -0.5px;
+    font-weight: 800;
+  }
+  header.masthead .sub {
+    color: var(--dim);
+    font-size: 17px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+  }
+  .verdict {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, rgba(81,207,102,0.14), rgba(110,168,254,0.10));
+    border: 1px solid rgba(81,207,102,0.35);
+    border-radius: 14px;
+    padding: 24px 28px;
+  }
+  .verdict .badge {
+    flex: 0 0 auto;
+    background: var(--good);
+    color: #06210e;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    padding: 12px 20px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+  .verdict .verdict-text {
+    flex: 1 1 320px;
+    color: var(--text);
+    font-size: 18px;
+  }
+  .verdict .verdict-text strong { color: var(--good); }
+  .verdict .score {
+    flex: 0 0 auto;
+    text-align: center;
+    padding-left: 20px;
+    border-left: 1px solid var(--border);
+  }
+  .verdict .score .num {
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--good);
+    line-height: 1;
+  }
+  .verdict .score .lbl {
+    font-size: 13px;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  h2.section {
+    font-size: 30px;
+    font-weight: 800;
+    margin: 60px 0 24px;
+    letter-spacing: -0.3px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  h2.section::before {
+    content: "";
+    width: 8px;
+    height: 30px;
+    background: var(--accent);
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  /* One Logic Gap callout */
+  .gap {
+    background: var(--panel);
+    border: 2px solid var(--blocker);
+    border-radius: 16px;
+    padding: 32px 36px;
+    box-shadow: 0 0 0 4px rgba(255,85,85,0.10);
+  }
+  .gap .gap-tag {
+    display: inline-block;
+    background: var(--blocker);
+    color: #2a0606;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 14px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+  }
+  .gap h3 {
+    font-size: 26px;
+    line-height: 1.25;
+    margin: 0 0 18px;
+    color: var(--text);
+  }
+  .gap p { color: var(--muted); margin: 0 0 18px; }
+  .gap .fix {
+    background: var(--panel-2);
+    border-left: 4px solid var(--good);
+    border-radius: 0 10px 10px 0;
+    padding: 18px 22px;
+    margin-top: 8px;
+  }
+  .gap .fix .fix-lbl {
+    color: var(--good);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .gap .fix p { color: var(--text); margin: 0; }
+
+  /* Problem cards */
+  .cards { display: flex; flex-direction: column; gap: 24px; }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 8px solid var(--dim);
+    border-radius: 14px;
+    padding: 26px 30px;
+  }
+  .card.sev-blocker { border-left-color: var(--blocker); }
+  .card.sev-major   { border-left-color: var(--major); }
+  .card.sev-minor   { border-left-color: var(--minor); }
+  .card.sev-nit     { border-left-color: var(--nit); }
+
+  .card-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 16px;
+  }
+  .rank {
+    flex: 0 0 auto;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .card-head .titlewrap { flex: 1 1 auto; }
+  .card-head h3 {
+    font-size: 21px;
+    line-height: 1.3;
+    margin: 0 0 10px;
+    color: var(--text);
+  }
+  .meta-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .pill {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .pill.section { background: var(--panel-2); color: var(--accent); border: 1px solid var(--border); }
+  .pill.sev-blocker { background: var(--blocker); color: #2a0606; }
+  .pill.sev-major   { background: var(--major); color: #2b1500; }
+  .pill.sev-minor   { background: var(--minor); color: #2b2400; }
+  .pill.sev-nit     { background: var(--nit); color: #10131a; }
+
+  .field { margin-top: 16px; }
+  .field .flabel {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--dim);
+    margin-bottom: 4px;
+  }
+  .field.why .flabel { color: var(--major); }
+  .field.fix .flabel { color: var(--good); }
+  .field p { margin: 0; color: var(--muted); }
+  .field.fix p { color: var(--text); }
+
+  .raised {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+  .raised .rlbl {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--dim);
+    font-weight: 700;
+    margin-right: 4px;
+  }
+  .who {
+    font-size: 14px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 4px 12px;
+    border-radius: 999px;
+  }
+
+  /* Quick wins */
+  .checklist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .checklist li {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    color: var(--muted);
+  }
+  .checklist li .box {
+    flex: 0 0 auto;
+    width: 26px;
+    height: 26px;
+    border: 2px solid var(--good);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--good);
+    font-weight: 800;
+    font-size: 17px;
+    margin-top: 1px;
+  }
+
+  /* Disagreement log */
+  .dtable {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .drow {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 28px;
+  }
+  .drow .dtopic {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    margin: 0 0 16px;
+    line-height: 1.3;
+  }
+  .dblock { margin-bottom: 14px; }
+  .dblock:last-child { margin-bottom: 0; }
+  .dblock .dlbl {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .dblock.sides .dlbl { color: var(--major); }
+  .dblock.call .dlbl { color: var(--accent); }
+  .dblock p { margin: 0; color: var(--muted); }
+  .dblock.call {
+    background: var(--panel-2);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin-top: 6px;
+  }
+  .dblock.call p { color: var(--text); }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin: 8px 0 0;
+    font-size: 14px;
+    color: var(--dim);
+  }
+  .legend .lg { display: flex; align-items: center; gap: 8px; }
+  .legend .dot { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="sub">6-Agent GDD Review Board</div>
+    <h1>Pitch GDD &mdash; Review Board</h1>
+    <div class="verdict">
+      <span class="badge">TURN-IN VIABLE &mdash; 7/21</span>
+      <div class="verdict-text">
+        <strong>High readiness.</strong> A genuinely strong pitch that answers all three litmus questions and earns its theme through the loop rather than asserting it. At T1 altitude <strong>none of the findings are true blockers</strong> &mdash; every flag is a contradiction, clarity, or framing fix, not a depth request. Gradeable as-is, but do not ship untouched: the rank-1 &ldquo;true ending&rdquo; rewrite is the mandatory pre-turn-in edit. One rewrite + four quick wins &asymp; a 30-minute pass.
+      </div>
+      <div class="score">
+        <div class="num">7.6</div>
+        <div class="lbl">Panel /10</div>
+      </div>
+    </div>
+    <div class="legend">
+      <span class="lg"><span class="dot" style="background:#ff5555"></span>Blocker</span>
+      <span class="lg"><span class="dot" style="background:#ffa94d"></span>Major</span>
+      <span class="lg"><span class="dot" style="background:#ffe066"></span>Minor</span>
+      <span class="lg"><span class="dot" style="background:#8a8f98"></span>Nit</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="gap">
+      <span class="gap-tag">The One Logic Gap</span>
+      <h3>The &ldquo;true ending&rdquo; claims a fixed predestined soul <em>and</em> an emergent authored bond in the same sentence &mdash; two mutually exclusive game designs.</h3>
+      <p>P4&rsquo;s closing sentence (lines 72&ndash;74) is the pitch&rsquo;s emotional climax and the answer to litmus (b) what success feels like and (c) why the loop matters: &ldquo;you&rsquo;re searching for one particular soul, gradually shaped by who you spend your time with &mdash; and recognizing them, at last, is the true ending.&rdquo;</p>
+      <p>The clauses logically contradict. &ldquo;One particular soul&rdquo; + &ldquo;searching for&rdquo; + &ldquo;recognizing them at last&rdquo; entails a <strong>pre-existing fixed target</strong> the player must correctly identify &mdash; a deduction puzzle with a right answer (the Obra Dinn model the pitch itself invokes). &ldquo;Gradually shaped by who you spend your time with&rdquo; entails an <strong>emergent bond</strong> derived from play with no pre-assigned answer &mdash; a relationship sim. A soul cannot be both pre-assigned and emergent; a claim that you &ldquo;recognize&rdquo; an answer does not follow from a premise that you &ldquo;shaped&rdquo; that answer yourself. This is a true self-contradiction, not shallowness &mdash; and it is the one place where every downstream cohesion question the board raised traces back to a single unresolved seam. Five of six reviewers independently stopped their pen on this exact sentence.</p>
+      <div class="fix">
+        <span class="fix-lbl">Fix</span>
+        <p>Disambiguate by putting the two ideas in sequence rather than in apposition: the bond is <em>emergent first</em> (past tense &mdash; you author who matters by where you spend your days), and once authored it becomes the &ldquo;one particular soul&rdquo; you then <em>recognize</em> across future re-deals (present tense &mdash; the terminal skill). Frieren is the exact precedent. Concretely: &ldquo;Who matters is emergent &mdash; you shape one bond by where you spend your days. Then the game re-deals everyone into new lives, and finding that same soul again, across every shuffle, is the ending the loop points toward.&rdquo; This gives the recognition skill a fixed referent to be scored against (supplying the missing fail state), and &mdash; paired with a one-clause signpost that the final payoff is documented-but-deferred to the slice &mdash; resolves the narrative, systems, motivational, and feasibility versions of the flag in one edit.</p>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="section">Top 5 Problems</h2>
+  <div class="cards">
+
+    <div class="card sev-major">
+      <div class="card-head">
+        <div class="rank">1</div>
+        <div class="titlewrap">
+          <h3>The &ldquo;true ending&rdquo; sentence is internally at war: fixed predestined soul vs. emergent bond authored by attention</h3>
+          <div class="meta-row">
+            <span class="pill section">P4</span>
+            <span class="pill sev-major">Major</span>
+          </div>
+        </div>
+      </div>
+      <div class="field why">
+        <div class="flabel">Why</div>
+        <p>The pitch&rsquo;s single most load-bearing sentence (lines 72&ndash;74) reads: &ldquo;you&rsquo;re searching for one particular soul, gradually shaped by who you spend your time with &mdash; and recognizing them, at last, is the true ending.&rdquo; &ldquo;One particular soul&rdquo; + &ldquo;searching for&rdquo; + &ldquo;recognizing them at last&rdquo; describes a fixed target you must correctly identify (a deduction puzzle, Obra-Dinn-style). &ldquo;Gradually shaped by who you spend your time with&rdquo; describes an emergent bond you author by attention (a relationship sim). These imply opposite games with opposite emotional reward structures. This one sentence answers litmus (b) what success FEELS like and (c) why the loop matters, so the ambiguity is maximally costly: a grader reading only the pitch cannot tell which game this is. Five of six reviewers converged here from independent lenses, making it the clear highest-leverage fix.</p>
+      </div>
+      <div class="field fix">
+        <div class="flabel">Fix</div>
+        <p>Split the emergent authoring (past tense: the bond you BUILT through shared time) from the recognition (present tense: finding that same soul again across re-deals). Frieren does exactly this. One careful rewrite: &ldquo;The bond you build by attention becomes the one soul you learn to recognize across every re-deal &mdash; and recognizing them again is the ending the loop points toward.&rdquo; This resolves the narrative contradiction, the searcher-locus question, and the fixed-vs-emergent seam at once.</p>
+      </div>
+      <div class="raised">
+        <span class="rlbl">Raised by</span>
+        <span class="who">Adversarial QA</span>
+        <span class="who">Narrative Critic</span>
+        <span class="who">Player Psychologist</span>
+        <span class="who">Feasibility Lead</span>
+        <span class="who">Business Analyst</span>
+      </div>
+    </div>
+
+    <div class="card sev-major">
+      <div class="card-head">
+        <div class="rank">2</div>
+        <div class="titlewrap">
+          <h3>Recognition is called &ldquo;the real skill&rdquo; but the pitch shows no confirmation beat and no failure state, so it reads as note-taking, not skill</h3>
+          <div class="meta-row">
+            <span class="pill section">P4</span>
+            <span class="pill sev-major">Major</span>
+          </div>
+        </div>
+      </div>
+      <div class="field why">
+        <div class="flabel">Why</div>
+        <p>P4 stakes the entire meta-loop on &ldquo;Recognizing an essence across those shuffles is the real skill&rdquo; (line 65), backed by personality cards and the Obra Dinn comparison. But the pitch names only the INPUT (observe, fill the card) and no OUTPUT: no moment where the game confirms &ldquo;yes, that&rsquo;s the same soul&rdquo; (the Obra-Dinn book-snap that IS the dopamine), and no cost for getting it wrong. Meanwhile &ldquo;you always leave with something&rdquo; (line 61) removes any fail state. A skill needs both a legible &ldquo;you got it right&rdquo; and a cost for getting it wrong; the pitch supplies neither, so the most important &ldquo;is-this-fun&rdquo; claim is asserted, not shown. This directly fails litmus (b) &ldquo;what does success feel like.&rdquo; Player Psychologist and Adversarial QA are the same defect (missing output) seen from motivation and logic; Narrative and Systems circle the same hole.</p>
+      </div>
+      <div class="field fix">
+        <div class="flabel">Fix</div>
+        <p>Add one clause naming the confirmation-and-cost beat: e.g., &ldquo;when the card locks, the game confirms the match with the soul&rsquo;s leitmotif &mdash; and a wrong lock costs you a season of trust before you can try again.&rdquo; Ties the payoff to the audio USP and gives recognition a legible win and a real miss.</p>
+      </div>
+      <div class="raised">
+        <span class="rlbl">Raised by</span>
+        <span class="who">Player Psychologist</span>
+        <span class="who">Adversarial QA</span>
+        <span class="who">Narrative Critic</span>
+        <span class="who">Systems Designer</span>
+      </div>
+    </div>
+
+    <div class="card sev-major">
+      <div class="card-head">
+        <div class="rank">3</div>
+        <div class="titlewrap">
+          <h3>P5 QA agent&rsquo;s &ldquo;every choice permutation is reachable &mdash; no dead-ends&rdquo; is an over-broad guarantee the slice cannot honor and that contradicts the design&rsquo;s own intent</h3>
+          <div class="meta-row">
+            <span class="pill section">P5</span>
+            <span class="pill sev-major">Major</span>
+          </div>
+        </div>
+      </div>
+      <div class="field why">
+        <div class="flabel">Why</div>
+        <p>Line 92 promises the QA agent &ldquo;checks every choice permutation is reachable &mdash; no dead-ends, win/lose works.&rdquo; Two problems: (a) feasibility/verifiability &mdash; &ldquo;every permutation&rdquo; across day-choices &times; festival-choices &times; 3 years &times; role-reshuffles is a combinatorial space the slice cannot exhaustively compute, so the claim is either literally unverifiable or true only because the slice is small (in which case the sweeping wording oversells); and (b) design-intent &mdash; the re-deal/superposition system&rsquo;s WHOLE POINT is structural generated absence (souls dealt &ldquo;past&rdquo;, roles reshuffled), so a guarantee that every permutation is reachable would flatten the very variance the meta-loop exists to create. This is the one agent claim that undercuts the credibility of the otherwise-strong dev-crew section, and it invites &ldquo;what counts as a permutation?&rdquo; &mdash; a question the pitch deliberately excludes Build depth to answer.</p>
+      </div>
+      <div class="field fix">
+        <div class="flabel">Fix</div>
+        <p>Reword to bound scope AND respect designed scarcity: &ldquo;the QA agent checks that no UNINTENDED dead-ends exist within the authored graph, and that win/lose resolves across the slice&rsquo;s canned paths.&rdquo; Verify reachability of authored content, not exhaustive permutation coverage.</p>
+      </div>
+      <div class="raised">
+        <span class="rlbl">Raised by</span>
+        <span class="who">Adversarial QA</span>
+        <span class="who">Feasibility Lead</span>
+        <span class="who">Systems Designer</span>
+      </div>
+    </div>
+
+    <div class="card sev-major">
+      <div class="card-head">
+        <div class="rank">4</div>
+        <div class="titlewrap">
+          <h3>The pitch sells its climax (recognition = true ending) that P7 says the slice will NOT ship, with no signpost of the seam</h3>
+          <div class="meta-row">
+            <span class="pill section">P4</span>
+            <span class="pill sev-major">Major</span>
+          </div>
+        </div>
+      </div>
+      <div class="field why">
+        <div class="flabel">Why</div>
+        <p>P4 lands the whole meta-loop on &ldquo;recognizing them, at last, is the true ending&rdquo; (lines 73&ndash;74), but P7&rsquo;s slice contract explicitly states the true &ldquo;kept-promise&rdquo; ending is &ldquo;documented but deferred&rdquo; and only &ldquo;1-2 endings ship&rdquo; (lines 118&ndash;119). The single most load-bearing payoff the core-loop section sells is, by the pitch&rsquo;s own admission, not in the deliverable &mdash; and the pitch never signals that seam, so it reads as the slice promising its own climax and quietly retracting it three sections later. This is defensible (P4 describes the full game, P7 the slice) but ONLY once signposted; and the thematic half stands independently (a required single true payoff is a &ldquo;push&rdquo; toward a directed goal, contradicting the P2 pillar &ldquo;pull, not push&rdquo; and Non-Goal &ldquo;no forced mystery&rdquo; at lines 22/26). Two distinct fixes are needed, not one.</p>
+      </div>
+      <div class="field fix">
+        <div class="flabel">Fix</div>
+        <p>Add one clause distinguishing full-game climax from slice deliverable in P4 or P7: &ldquo;the full game ends on recognition; the slice demonstrates the mechanism (year-over-year memory, role-reshuffle), not the final payoff.&rdquo; Separately, reframe the true ending as the deep-cut the loop POINTS TOWARD (optional, uncoerced) rather than a gate you must reach, to keep faith with &ldquo;pull, not push.&rdquo;</p>
+      </div>
+      <div class="raised">
+        <span class="rlbl">Raised by</span>
+        <span class="who">Feasibility Lead</span>
+        <span class="who">Narrative Critic</span>
+        <span class="who">Adversarial QA</span>
+      </div>
+    </div>
+
+    <div class="card sev-major">
+      <div class="card-head">
+        <div class="rank">5</div>
+        <div class="titlewrap">
+          <h3>The P1 hook omits both differentiators; the strongest one (&ldquo;shipped game runs without an LLM&rdquo;) is buried in P5 and worded as a hedge</h3>
+          <div class="meta-row">
+            <span class="pill section">P1</span>
+            <span class="pill sev-major">Major</span>
+          </div>
+        </div>
+      </div>
+      <div class="field why">
+        <div class="flabel">Why</div>
+        <p>The elevator pitch a grader reads first (lines 12&ndash;14) frames the game as a generic &ldquo;cozy point-and-click adventure &mdash; explore, collect, discover&rdquo; with a five-reference prestige stack, and nothing in the opening line distinguishes it. The two things that actually make this pitch distinct &mdash; the reincarnation/soul-recognition meta-loop and the agentic-AI production angle (the entire reason this is a capstone in THIS course) &mdash; don&rsquo;t surface until P3/P4/P5. Worse, the single most impressive, counterintuitive claim for a Multi-Agent-AI grader &mdash; that the SHIPPED game runs with no runtime LLM (line 83) &mdash; appears midway through P5, phrased passively (&ldquo;runtime LLM is optional... a canned mode ships a few fully pre-generated paths&rdquo;), reading as a fallback/de-scope rather than a designed architectural choice. A grader could misread it as &ldquo;the AI doesn&rsquo;t actually run in the game,&rdquo; undercutting the AI-central claim. Convergence across positioning and motivation lenses confirms the back-loading.</p>
+      </div>
+      <div class="field fix">
+        <div class="flabel">Fix</div>
+        <p>Rebuild the P1 line to carry one differentiator (the soul-recognition meta-loop) and one clause of the AI-production angle. In P5, surface &ldquo;the shipped game runs without an LLM&rdquo; as a deliberate design choice and distinguish the dev-TIME pipeline (~5 agents authoring content) from a single OPTIONAL runtime call &mdash; reframing canned mode as &ldquo;a small set of authored paths, pre-baked for the slice,&rdquo; which advertises the wedge while honestly signaling authoring cost. This also closes the &ldquo;crew connects for a live run&rdquo; contradiction Adversarial QA flags.</p>
+      </div>
+      <div class="raised">
+        <span class="rlbl">Raised by</span>
+        <span class="who">Business Analyst</span>
+        <span class="who">Player Psychologist</span>
+        <span class="who">Narrative Critic</span>
+        <span class="who">Feasibility Lead</span>
+        <span class="who">Adversarial QA</span>
+      </div>
+    </div>
+
+  </div>
+
+  <h2 class="section">Quick Wins</h2>
+  <ul class="checklist">
+    <li><span class="box">&#10003;</span><span><strong>P4 line 64:</strong> change the re-dealt neighbor &ldquo;half-remembers you&rdquo; to &ldquo;half-recognizes you&rdquo; &mdash; a pull, not a memory. One word preserves the P3 &ldquo;player-only truth&rdquo; (souls return is a truth the player uncovers, not folklore the townsfolk believe / experience) that &ldquo;half-remembers&rdquo; currently softens.</span></li>
+    <li><span class="box">&#10003;</span><span><strong>P4 line 92 (QA agent):</strong> replace &ldquo;every choice permutation is reachable&rdquo; with &ldquo;no unintended dead-ends within the authored graph; win/lose resolves across the slice&rsquo;s canned paths.&rdquo; Trivial reword that removes the one unfalsifiable agent claim and respects the design&rsquo;s intended scarcity.</span></li>
+    <li><span class="box">&#10003;</span><span><strong>P5:</strong> distinguish the dev-TIME crew (~5 agents authoring content) from a single OPTIONAL runtime call in one clause &mdash; simultaneously closes the &ldquo;crew connects for a live run&rdquo; vs. &ldquo;runs without an LLM&rdquo; contradiction and reframes the canned mode from hedge to designed choice.</span></li>
+    <li><span class="box">&#10003;</span><span><strong>P4 lines 72&ndash;74:</strong> split the emergent bond (past tense, built by attention) from the recognition (present tense, found again) in one rewrite &mdash; the single highest-leverage edit; collapses the largest cross-reviewer cluster at once.</span></li>
+    <li><span class="box">&#10003;</span><span><strong>P3/P4:</strong> surface the load-bearing bridge line (&ldquo;most magic is learned from people... gathering magic quietly pulls you toward connection&rdquo;, currently late and quiet in P4 lines 71&ndash;72) up into P3 so the collect-a-thon surface and the belonging theme visibly CAUSE each other rather than reading as two games bolted together.</span></li>
+    <li><span class="box">&#10003;</span><span><strong>P2/P5:</strong> add one illustrative line of the &ldquo;agentic-AI wow&rdquo; pillar (named in P2, parked to Build GDD in P5) so the pitch cashes the emotional promise it makes &mdash; e.g., the Audio-Tag Agent auto-scoring an NPC&rsquo;s leitmotif as the recognition payoff. One line satisfies the unsupported-&ldquo;wow&rdquo; flag.</span></li>
+    <li><span class="box">&#10003;</span><span><strong>P6:</strong> add a single one-line reason-to-believe for the audio-first USP &mdash; the supporting mechanic already exists but is scattered (&ldquo;sounds travel free, like knowledge&rdquo; P4; &ldquo;the partner&rsquo;s leitmotif is the deepest clue&rdquo; P6). State it AS the differentiating experience: &ldquo;you recognize a soul by its sound before you can name its face.&rdquo;</span></li>
+    <li><span class="box">&#10003;</span><span><strong>P1:</strong> add one clause of audience placement (&ldquo;for cozy-adventure players who like Ghibli and slow mystery&rdquo;) &mdash; cheap &ldquo;is this a real concept&rdquo; strengthener; lowest priority, arguably out of scope.</span></li>
+  </ul>
+
+  <h2 class="section">Disagreement Log</h2>
+  <div class="dtable">
+
+    <div class="drow">
+      <p class="dtopic">P4 &ldquo;Use &mdash; receiver decides the outcome&rdquo;: should it read as more surprising/delightful (surface it) or more legibly strategic (add a readable model)?</p>
+      <div class="dblock sides">
+        <div class="dlbl">Sides</div>
+        <p>Player Psychologist: Use is the pitch&rsquo;s most playful, discovery-rich verb and directly serves the named &ldquo;discovery is the reward&rdquo; pillar; it&rsquo;s buried as a fourth parenthetical and should be SURFACED as a delight engine. Systems Designer: for Use to satisfy the &ldquo;strategy over dexterity&rdquo; pillar the player needs a readable model of how receivers transform inputs, or Use degrades to trial-and-error guessing (the opposite of strategy). Adversarial QA adds that an open (thing &times; target) matrix implies bespoke outcomes everywhere, contradicting the P2 &ldquo;authored, not simulated&rdquo; non-goal.</p>
+      </div>
+      <div class="dblock call">
+        <div class="dlbl">Moderator call</div>
+        <p>Both poles are right and the fix must hold both in one breath &mdash; this is a genuine design tension, not a defect to resolve by picking a side. For a COZY, discovery-pillared game the surprise-delight pole should LEAD, but with just enough legibility that the player forms hypotheses. One line makes Use a &ldquo;reason-then-be-delighted&rdquo; verb: the player hypothesizes a receiver&rsquo;s transform (readable category, not a solved matrix), then gets a surprising-but-fair result. That satisfies &ldquo;discovery is the reward&rdquo; AND &ldquo;strategy over dexterity,&rdquo; and the &ldquo;readable category&rdquo; framing answers QA&rsquo;s combinatorial-blowup worry by implying authored buckets, not bespoke pairs. Low priority for the 7/21 turn-in; a one-line polish, not a blocker.</p>
+      </div>
+    </div>
+
+    <div class="drow">
+      <p class="dtopic">P4 &ldquo;you always leave with something&rdquo; run-end guarantee: anti-frustration asset or stakes-diluting liability?</p>
+      <div class="dblock sides">
+        <div class="dlbl">Sides</div>
+        <p>Player Psychologist (R1): textbook anti-frustration / loss-aversion design, a motivational strength. Narrative Critic + Adversarial QA: the same rule blunts the melancholic &ldquo;does connection outlive a life&rdquo; ache (a theme built on loss) and removes the fail state the &ldquo;recognition is a skill&rdquo; claim needs. Systems Designer: the guarantee is load-bearing structure &mdash; it closes the run loop so no festival-week is a dead end &mdash; so do NOT weaken it; locate the loss elsewhere.</p>
+      </div>
+      <div class="dblock call">
+        <div class="dlbl">Moderator call</div>
+        <p>These do not cancel &mdash; the guarantee is genuinely good anti-frustration design AND genuinely dilutes stakes; that is a tension the pitch should hold ON PURPOSE. I side with the Systems Designer&rsquo;s structural resolution: PROTECT the guarantee (removing it re-opens the dead-end problem it solves), keep the knowledge/understanding FLOOR guaranteed, and put the loss in the layers that can afford it &mdash; the items/pack-triage layer and the relationship layer (a soul dealt &ldquo;past&rdquo; this life, a recognition you can get wrong at a cost). That preserves the cozy cushion while giving the theme and the &ldquo;skill&rdquo; claim something to bite on. This directly serves the rank-2 fix (recognition needs a cost), so resolve them together.</p>
+      </div>
+    </div>
+
+    <div class="drow">
+      <p class="dtopic">P5 two-mode &ldquo;runs without an LLM&rdquo; architecture: primarily an asset to foreground (positioning) or primarily the biggest risk to flag (feasibility)?</p>
+      <div class="dblock sides">
+        <div class="dlbl">Sides</div>
+        <p>Business Analyst: it&rsquo;s the doc&rsquo;s strongest, most counterintuitive differentiator for a Multi-Agent-AI grader, currently buried and hedge-worded &mdash; surface it louder and earlier. Feasibility Lead: it&rsquo;s simultaneously the single highest technical risk (every canned branch must be pre-baked, stored, and wired to the same schema the live crew produces into, in time for 8/25), and filing it under &ldquo;Resolved&rdquo; understates that. Adversarial QA: at pitch altitude it&rsquo;s a clarity/contradiction issue (&ldquo;optional&rdquo; + &ldquo;runs without an LLM&rdquo; vs. &ldquo;live mode connects the crew&rdquo;), not a build-risk assessment.</p>
+      </div>
+      <div class="dblock call">
+        <div class="dlbl">Moderator call</div>
+        <p>All three are correct and the fix is a SINGLE edit that must do both jobs &mdash; leading harder into the differentiator alone (naive BA fix) would amplify Feasibility&rsquo;s over-claim. Reframe from passive hedge to a bounded designed choice: &ldquo;Canned mode = a small set of authored paths, pre-baked for the slice; live mode makes a single optional runtime call. The dev-time crew authors content; the shipped game runs without a runtime LLM.&rdquo; This surfaces the wedge earlier (BA), distinguishes dev-time pipeline from one runtime call (QA&rsquo;s contradiction closed), and honestly signals the authoring cost so &ldquo;Resolved&rdquo; no longer reads as settled-with-no-cost (Feasibility). On the QA-vs-Feasibility altitude sub-dispute: at pitch altitude I score it as a clarity fix, but the one-line edit satisfies both without importing Build depth.</p>
+      </div>
+    </div>
+
+    <div class="drow">
+      <p class="dtopic">P4 &ldquo;recipes survive every reset&rdquo; flattening the meta-loop: a major full-game cohesion gap, or a non-issue insulated by slice scope?</p>
+      <div class="dblock sides">
+        <div class="dlbl">Sides</div>
+        <p>Systems Designer (major): the thing that resets (roles) is not the thing that gates progression (knowledge), so the Collect-&gt;Make day engine can run dry by ~life 3 while the recognition loop continues &mdash; a real day-loop/meta-loop cohesion gap. Adversarial QA (upgraded to align): same pull &mdash; persistent knowledge + knowledge-gating collapses the discovery loop in later lives. Feasibility Lead: real for the FULL game, but P7 bounds the slice to 10 spells / 3 years / a few runs &mdash; too small to saturate &mdash; so it does NOT bite the graded 8/25 slice and should not be weighted as turn-in-blocking.</p>
+      </div>
+      <div class="dblock call">
+        <div class="dlbl">Moderator call</div>
+        <p>Both are right at different altitudes and both should appear, correctly weighted. I side with Feasibility on SEVERITY for the 7/21 turn-in: the slice scope in P7 insulates the deliverable, so this is NOT a turn-in blocker. But the Systems cohesion point is legitimate and a grader reading the full-game loop could raise it in one read, so it earns a one-phrase acknowledgment, not silence. Moderator call: note it as a full-game cohesion item (the pitch could add one clause implying new keys arrive each life &mdash; e.g., re-dealt roles surface magic the current cast never showed you &mdash; so the collect engine keeps a pull), but do not rank it in the top-5 blockers. Kept as a quick win rather than a blocker.</p>
+      </div>
+    </div>
+
+    <div class="drow">
+      <p class="dtopic">Whether the generic P1 hook is a &ldquo;major&rdquo; omission or merely a positioning-optimization nit.</p>
+      <div class="dblock sides">
+        <div class="dlbl">Sides</div>
+        <p>Business Analyst (major): for a one-read pitch the distinct idea should be legible in the first line; omitting both differentiators is a real hook-legibility defect. Adversarial QA: a deliberately genre-legible opening line is not a logic defect or contradiction &mdash; the pitch openly STAGES the reincarnation reveal as something &ldquo;the game slowly reveals itself to be&rdquo; (P3), so the deferral is intentional design; escalating hook-ordering to major conflates &ldquo;could position better&rdquo; with &ldquo;is internally broken.&rdquo;</p>
+      </div>
+      <div class="dblock call">
+        <div class="dlbl">Moderator call</div>
+        <p>Split the difference along the axis each reviewer owns. As a CONTRADICTION/logic matter, QA is right &mdash; the deferral is intentional and internally consistent, so it is not a logic gap. As a PITCH-EFFECTIVENESS matter (which is what a grader scores on a one-read do/feel/why-AI turn-in), BA is right that back-loading the only two differentiators past P3 measurably weakens the first impression. I keep it at major in the top-5 because pitch legibility, not just internal consistency, is what the assignment grades &mdash; but I explicitly scope the fix as framing/ordering, not a correctness repair, which honors QA&rsquo;s point that nothing here is broken.</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>

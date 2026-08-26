@@ -1,0 +1,55 @@
+{
+  "spell_id": "knead",
+  "phrase": "knead",
+  "role": "Baker",
+  "canon": false,
+  "status": "rejected",
+  "status_note": "Rejected at Roc's gate 2026-08-05. Kept on record, not deleted. The Baker's approved set is `portion` and `weigh`.",
+  "components": [
+    "item_spring_water",
+    "item_wool"
+  ],
+  "produces": [],
+  "learn_source": "Watch the baker turn a feast-sized trough at the counter in the Town scene — a communal feast asks for more hands than any one baker has",
+  "confirm_action": "Cast it yourself on a workable mass once",
+  "mana_effect": "Quality only: at high mana the whole mass is worked through in one cast; at baseline the middle needs a second pass. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "feast_dough_trough",
+      "physical_outcome": "State-dependent: shaggy and just-mixed, the whole trough is worked smooth and elastic as if by many hands; already fully worked, it goes over — tight, tough, and slow to rise",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "cream_pail",
+      "physical_outcome": "Churned through — the cream breaks and comes together as butter",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "wet_clay",
+      "physical_outcome": "Wedged even, the trapped air pressed out",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "river_stone",
+      "physical_outcome": "no_effect — nothing in it yields to working",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "cat",
+      "physical_outcome": "No physical effect — no working attaches to a living body",
+      "reaction_kind": "startles at the stirred air where the cast landed, hops down and resettles"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "toby",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "sizes it up as spare hands — starts naming whose batch is furthest behind"
+    }
+  ]
+}

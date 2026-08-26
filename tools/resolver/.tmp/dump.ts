@@ -1,0 +1,10 @@
+import {loadData} from '../src/data.ts';
+import {buildGraph} from '../src/graph.ts';
+import {emitInk} from '../src/ink.ts';
+const f=emitInk(buildGraph(loadData()));
+const ls=f.get('souls/toby.ink')!.split('\n');
+const i=ls.findIndex(l=>l.includes('ch_t2_09_6)'));
+console.log('idx',i,ls.length);
+console.log(ls.slice(i-1,i+18).join('\n'));
+console.log('=== divert lines ===');
+console.log(ls.filter(l=>l.includes('enteredByDivert')||l.includes('-> toby.sc_t2_09.ch')).join('\n'));

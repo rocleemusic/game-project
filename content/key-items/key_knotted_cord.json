@@ -1,0 +1,17 @@
+{
+  "key_item_id": "key_knotted_cord",
+  "description": "The cord is made of dark wool, twisted tight and worn smooth where it has been handled. There are six knots along its length, each one tied with a different, uneven tension. It feels heavy for its size and has a faint scent of old dust and woodsmoke. She never said who each knot is for, and she never tried to explain the cord itself, but she carries it everywhere.",
+  "category": "memento",
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-05, with the material changed from grass to wool.",
+  "soul": "ilsa",
+  "origin": "made",
+  "made_from": [
+    "item_wool"
+  ],
+  "source_locations": [],
+  "persistence": "pack-triaged",
+  "consumable": false,
+  "use_family": null,
+  "soul_link_note": "Ilsa counts arrivals against a number she never says — the cord is that count given a body she can keep in a pocket. The tally is of her people, not of any workplace, so it holds true whatever seat she is dealt next life."
+}

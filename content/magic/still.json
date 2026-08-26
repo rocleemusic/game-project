@@ -1,0 +1,55 @@
+{
+  "spell_id": "still",
+  "phrase": "still",
+  "role": "Priest",
+  "canon": false,
+  "status": "rejected",
+  "status_note": "Rejected at Roc's gate 2026-08-04. Kept on record, not deleted.",
+  "components": [
+    "item_dirt",
+    "item_wool"
+  ],
+  "produces": [],
+  "learn_source": "Watch the priest steady the arch lanterns against the evening wind at the Festival Grounds — the rite fails if the flames won't hold",
+  "confirm_action": "Cast it yourself on something the wind is troubling once",
+  "mana_effect": "Quality only: at high mana the calm holds long and wide; at baseline it is a small pocket that the next gust ends. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "guttering_lantern",
+      "physical_outcome": "State-dependent: guttering in wind, the flame steadies upright; already burning steady in shelter, nothing changes",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "well_water",
+      "physical_outcome": "The surface flattens to a mirror until something touches it",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "hung_washing",
+      "physical_outcome": "Falls slack mid-flap and hangs dead straight while the calm lasts",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "stone_step",
+      "physical_outcome": "no_effect — it was not moving; there is nothing to still",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "hen",
+      "physical_outcome": "No physical effect — living receivers never catch; the bird is not stilled",
+      "reaction_kind": "freeze, head-cock at the sudden quiet air, then bustles off"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "linnet",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": null
+    }
+  ]
+}

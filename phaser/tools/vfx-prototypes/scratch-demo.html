@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Phaser scratch demo</title>
+<style>html,body{margin:0;background:#000;overflow:hidden;}</style>
+</head>
+<body>
+<script src="../../node_modules/phaser/dist/phaser.js"></script>
+<script>
+const WIDTH = 400, HEIGHT = 320;
+
+// scratch: soothes an itch out of reach. Quiet tone, small physical
+// footprint — short travel, no big burst — but Roc call 2026-08-22 (3rd
+// pass): a single uniform particle stream reads as boring even once it's
+// sized and colored right. Rebuilt as a small three-layer composite instead
+// of one emitter, borrowing structure (not code — GDShader doesn't run
+// here) from FreeHitVfx's impact_ring.gdshader: a flash, an expanding ring
+// silhouette, and varied-color/varied-size sparks rather than one uniform
+// cluster. Footprint stays small; the shape and color variety is what
+// changed, not the scale.
+const POINT = { x: WIDTH / 2, y: HEIGHT / 2 };
+const LOOP_GAP_MS = 700; // demo-only: pause between casts
+
+// Roc call 2026-08-22 (5th pass): violet kept for the ring; the streak
+// sparks move off rose/violet onto a third family — teal — so all three
+// layers read as distinct rather than two of three sharing a hue.
+const SPARK_COLORS_WARM = [0xffe9c2, 0xffd479, 0xffb347];
+const SPARK_COLORS_COOL = [0xd9fff5, 0x7de8d0, 0x3bb8a8];
+const RING_COLOR = 0xd97bd9;
+
+class StreakParticle extends Phaser.GameObjects.Particles.Particle {
+  update(delta, step, processors) {
+    const alive = super.update(delta, step, processors);
+    this.rotation = Math.atan2(this.velocityY, this.velocityX);
+    return alive;
+  }
+}
+
+class ScratchScene extends Phaser.Scene {
+  create() {
+    const g = this.add.graphics();
+    g.fillStyle(0xffffff, 1);
+    g.fillCircle(12, 12, 12);
+    g.generateTexture('dot', 24, 24);
+    g.clear();
+    g.fillStyle(0xffffff, 1);
+    g.fillRect(0, 6, 16, 2);
+    g.generateTexture('spark', 16, 12);
+    g.destroy();
+
+    this.add.text(10, 8, 'Phaser scratch demo — flash + ring + varied ember sparks', {
+      fontFamily: 'monospace', fontSize: '12px', color: '#888',
+    });
+    this.add.circle(POINT.x, POINT.y, 3, 0x444444).setStrokeStyle(1, 0x666666);
+
+    this.ringG = this.add.graphics();
+    this.ringG.setBlendMode(Phaser.BlendModes.ADD);
+
+    this.castStart = this.time.now;
+    this.puff();
+  }
+
+  puff() {
+    // Layer 1: a quick bright flash at the touch point — the "moment of
+    // contact" beat, gone almost immediately.
+    const flash = this.add.particles(POINT.x, POINT.y, 'dot', {
+      lifespan: 200, speed: 0, scale: { start: 2.4, end: 0 },
+      alpha: { start: 0.9, end: 0 }, tint: 0xffffff, blendMode: 'ADD', emitting: false,
+    });
+    flash.explode(1);
+    this.time.delayedCall(240, () => flash.destroy());
+
+    // Layer 2: a small expanding ring — the "relief" ripple, same
+    // silhouette idea as impact_ring.gdshader's expanding band, redrawn
+    // with a plain Graphics tween since a custom Godot shader can't run
+    // here.
+    const ring = { r: 3, alpha: 0.65 };
+    this.tweens.add({
+      targets: ring,
+      r: 42,
+      alpha: 0,
+      duration: 480,
+      ease: 'Cubic.easeOut',
+      onUpdate: () => {
+        this.ringG.clear();
+        this.ringG.lineStyle(3.5, RING_COLOR, ring.alpha);
+        this.ringG.strokeCircle(POINT.x, POINT.y, ring.r);
+      },
+      onComplete: () => this.ringG.clear(),
+    });
+
+    // Layer 3a: round sparks, warm end of the palette — varied size via
+    // Phaser's own scale range, not a fixed dot.
+    const round = this.add.particles(POINT.x, POINT.y, 'dot', {
+      lifespan: { min: 360, max: 620 },
+      speed: { min: 30, max: 85 },
+      angle: { min: 0, max: 360 },
+      scale: { start: { min: 0.5, max: 0.95 }, end: 0 },
+      alpha: { start: 0.9, end: 0 },
+      color: SPARK_COLORS_WARM,
+      colorEase: 'expo.out',
+      blendMode: 'ADD',
+      emitting: false,
+    });
+    round.explode(Phaser.Math.Between(10, 14));
+    this.time.delayedCall(700, () => round.destroy());
+
+    // Layer 3b: a few short streak sparks, deeper end of the palette — the
+    // texture/rotation variety that made the round-only version read flat.
+    const streaks = this.add.particles(POINT.x, POINT.y, 'spark', {
+      particleClass: StreakParticle,
+      lifespan: { min: 220, max: 380 },
+      speed: { min: 70, max: 150 },
+      angle: { min: 0, max: 360 },
+      scaleX: { start: 1.5, end: 0.25 },
+      scaleY: { start: 1.1, end: 0.2 },
+      alpha: { start: 0.9, end: 0 },
+      color: SPARK_COLORS_COOL,
+      colorEase: 'expo.out',
+      blendMode: 'ADD',
+      emitting: false,
+    });
+    streaks.explode(Phaser.Math.Between(4, 6));
+    this.time.delayedCall(450, () => streaks.destroy());
+
+    this.time.delayedCall(480 + LOOP_GAP_MS, () => this.puff());
+  }
+}
+
+window.__game = new Phaser.Game({
+  type: Phaser.AUTO,
+  width: WIDTH,
+  height: HEIGHT,
+  backgroundColor: '#000000',
+  scene: ScratchScene,
+});
+</script>
+</body>
+</html>

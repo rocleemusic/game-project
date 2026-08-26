@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Phaser steep demo</title>
+<style>html,body{margin:0;background:#000;overflow:hidden;}</style>
+</head>
+<body>
+<script src="../../node_modules/phaser/dist/phaser.js"></script>
+<script>
+const WIDTH = 400, HEIGHT = 420;
+
+// steep: a Herbalist spell — colour/virtue draws from herbs into water
+// within moments (content/magic/steep.json).
+//
+// Roc call 2026-08-23 (redo): "try something like godot loot" — referring
+// to the Godot loot-pickup VFX pack (Desktop/assets/GodotLootVFX), whose
+// ground_loot_vfx_*.tscn scenes share one shape: a ground ring (a flattened
+// torus, "magic circle" style), a soft vertical glow pillar rising from it,
+// and small sparkle motes drifting upward with slight outward radial
+// spread, shrinking and fading as they climb (its ParticleProcessMaterial:
+// radial_accel + a scale-down curve + an alpha-fade curve). That shape
+// reads as "a glowing thing is happening here and rising into being" — a
+// better fit for "virtue draws into the water" than the previous pass's
+// tendrils-unfurling-downward idea, which read more like spilled ink than
+// something magical. Rebuilt on the ring+pillar+motes shape; the ground
+// ring itself reuses echo-demo.html's flattened-ellipse technique.
+//
+// Roc call 2026-08-23 (2nd pass): motes redone as a real fountain — closed-
+// form projectile motion (launch angle + speed + gravity, position as a
+// function of age, not an eased lerp) so they actually arc up and out and
+// curve back down, smaller ("delicate"), and topping out much lower than
+// the first pass's near-pillar-height reach.
+
+const WATERLINE_Y = 260;
+const SOURCE_X = WIDTH / 2;
+const GROW_MS = 380;   // ring pops in, pillar rises
+const HOLD_MS = 340;   // breathing glow, motes still rising
+const FADE_MS = 300;   // everything fades together — close to steep's 900ms durationMs in cues.json
+const LOOP_GAP_MS = 500;
+const PILLAR_HEIGHT = 170;
+const RING_SQUASH = 0.34;
+// Fountain physics for the motes — px/ms and px/ms². Angle 270° is
+// straight up in Phaser's convention; the 248-292° range is a ~44° cone
+// mostly vertical with a bit of outward fan on each side.
+const MOTE_ANGLE_MIN = 248, MOTE_ANGLE_MAX = 292;
+const MOTE_SPEED_MIN = 0.13, MOTE_SPEED_MAX = 0.19;
+const MOTE_GRAVITY = 0.00038;
+
+// theme.ts vfxEmber / ink — steep's authored colorKeys in cues.json (effect / no-effect).
+const EMBER = 0xff9d5c;
+const EMBER_CORE = 0xffd9b3;
+
+function drawStar(g, cx, cy, outerR, innerR) {
+  const points = 4;
+  g.beginPath();
+  for (let i = 0; i < points * 2; i++) {
+    const ang = (i / (points * 2)) * Math.PI * 2 - Math.PI / 2;
+    const r = i % 2 === 0 ? outerR : innerR;
+    const x = cx + Math.cos(ang) * r, y = cy + Math.sin(ang) * r;
+    if (i === 0) g.moveTo(x, y); else g.lineTo(x, y);
+  }
+  g.closePath();
+  g.fillPath();
+}
+
+class SteepScene extends Phaser.Scene {
+  create() {
+    const g = this.add.graphics();
+    g.fillStyle(0xffffff, 1);
+    drawStar(g, 12, 12, 12, 5);
+    g.generateTexture('spark', 24, 24);
+    g.destroy();
+
+    this.add.text(10, 8, 'Phaser steep demo — ground ring, rising glow pillar, fountain-arc sparkle motes', {
+      fontFamily: 'monospace', fontSize: '12px', color: '#888',
+    });
+    this.add.line(0, 0, 0, WATERLINE_Y, WIDTH, WATERLINE_Y, 0x2a3a44).setOrigin(0);
+    this.add.circle(SOURCE_X, WATERLINE_Y, 3, 0x444444).setStrokeStyle(1, 0x666666);
+
+    this.g = this.add.graphics();
+    this.g.setBlendMode(Phaser.BlendModes.ADD);
+
+    this.motes = [];
+    this.lastMote = 0;
+    this.castStart = this.time.now;
+    this.time.addEvent({ delay: 16, loop: true, callback: () => this.step() });
+  }
+
+  spawnMote() {
+    const img = this.add.image(SOURCE_X, WATERLINE_Y, 'spark');
+    img.setBlendMode(Phaser.BlendModes.ADD);
+    img.setTint(EMBER_CORE);
+    // Smaller, more delicate — down from the first pass's 0.5-0.8.
+    img.__baseScale = 0.22 + Math.random() * 0.16;
+    img.setScale(img.__baseScale);
+    img.setAlpha(0);
+    img.__born = this.time.now;
+    // A real launch angle + speed, not a drift toward a target — this is
+    // what makes it a fountain (arcs up AND out) instead of a rising column.
+    const angleDeg = MOTE_ANGLE_MIN + Math.random() * (MOTE_ANGLE_MAX - MOTE_ANGLE_MIN);
+    const speed = MOTE_SPEED_MIN + Math.random() * (MOTE_SPEED_MAX - MOTE_SPEED_MIN);
+    const angleRad = angleDeg * Math.PI / 180;
+    img.__vx0 = speed * Math.cos(angleRad);
+    img.__vy0 = speed * Math.sin(angleRad);
+    // Life roughly matches one full up-and-back arc for this launch speed,
+    // so it fades out around where it'd land rather than being cut off
+    // mid-flight or visibly diving back through the waterline.
+    img.__life = Math.abs(img.__vy0) / MOTE_GRAVITY * 1.9 + 120;
+    img.__spin = (Math.random() - 0.5) * 3;
+    this.motes.push(img);
+  }
+
+  step() {
+    const now = this.time.now;
+    const totalMs = GROW_MS + HOLD_MS + FADE_MS;
+    let elapsed = now - this.castStart;
+    if (elapsed > totalMs + LOOP_GAP_MS) { this.castStart = now; elapsed = 0; this.motes.forEach(m => m.destroy()); this.motes = []; }
+
+    // motes: spawn through GROW+HOLD, live independently of the envelope after that
+    if (elapsed >= 0 && elapsed < GROW_MS + HOLD_MS) {
+      if (now - this.lastMote >= 60) { this.spawnMote(); this.lastMote = now; }
+    }
+    for (let i = this.motes.length - 1; i >= 0; i--) {
+      const m = this.motes[i];
+      const age = now - m.__born;
+      const t = age / m.__life;
+      if (t >= 1) { m.destroy(); this.motes.splice(i, 1); continue; }
+      // Closed-form projectile motion — position is a pure function of age,
+      // so it's exact regardless of frame timing: x0 + v*t, y0 + v*t + 1/2*g*t^2.
+      m.x = SOURCE_X + m.__vx0 * age;
+      m.y = WATERLINE_Y + m.__vy0 * age + 0.5 * MOTE_GRAVITY * age * age;
+      m.angle += m.__spin;
+      m.setScale(m.__baseScale * (1 - t * 0.4));
+      const fadeIn = Math.min(1, age / 100);
+      m.setAlpha(0.85 * fadeIn * (1 - t));
+    }
+
+    const g = this.g;
+    g.clear();
+    if (elapsed < 0 || elapsed > totalMs) return;
+
+    let envelopeAlpha = 1;
+    if (elapsed > GROW_MS + HOLD_MS) envelopeAlpha = 1 - (elapsed - GROW_MS - HOLD_MS) / FADE_MS;
+    const growT = Math.min(1, elapsed / GROW_MS);
+    const growEase = 1 - Math.pow(1 - growT, 3);
+    const breathe = 0.9 + 0.1 * Math.sin(now / 180);
+
+    // The glow pillar — brightest at the base, soft-fading upward, built
+    // from stacked fading ellipses rather than a single gradient sprite so
+    // it stays a plain Graphics resource.
+    const pillarH = growEase * PILLAR_HEIGHT;
+    const SEGMENTS = 14;
+    for (let i = 0; i < SEGMENTS; i++) {
+      const segT = i / SEGMENTS;
+      const y = WATERLINE_Y - segT * pillarH;
+      const w = (10 - segT * 6) * breathe;
+      const a = (1 - segT) * 0.22 * envelopeAlpha * breathe;
+      g.fillStyle(EMBER, a);
+      g.fillEllipse(SOURCE_X, y, w * 2, 14);
+    }
+
+    // The ground ring — echo-demo.html's flattened-ellipse technique: a
+    // pale core stroke over a wider dim glow stroke, squashed onto the
+    // ground plane rather than facing the camera as a flat circle.
+    const ringR = 8 + growEase * 46;
+    g.lineStyle(10, EMBER, 0.14 * envelopeAlpha * breathe);
+    g.strokeEllipse(SOURCE_X, WATERLINE_Y, ringR * 2, ringR * 2 * RING_SQUASH);
+    g.lineStyle(2.5, EMBER_CORE, 0.85 * envelopeAlpha * breathe);
+    g.strokeEllipse(SOURCE_X, WATERLINE_Y, ringR * 2, ringR * 2 * RING_SQUASH);
+
+    // The core glow — a small bright pulse at the ring's center, standing
+    // in for the loot ref's GlowCore sphere.
+    g.fillStyle(EMBER_CORE, 0.5 * envelopeAlpha * breathe);
+    g.fillCircle(SOURCE_X, WATERLINE_Y, 10 * growEase);
+    g.fillStyle(0xffffff, 0.7 * envelopeAlpha * breathe);
+    g.fillCircle(SOURCE_X, WATERLINE_Y, 4 * growEase);
+  }
+}
+
+window.__game = new Phaser.Game({
+  type: Phaser.AUTO,
+  width: WIDTH,
+  height: HEIGHT,
+  backgroundColor: '#000000',
+  scene: SteepScene,
+});
+</script>
+</body>
+</html>

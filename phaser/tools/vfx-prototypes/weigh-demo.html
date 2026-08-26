@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Phaser weigh demo</title>
+<style>html,body{margin:0;background:#000;overflow:hidden;}</style>
+</head>
+<body>
+<script src="../../node_modules/phaser/dist/phaser.js"></script>
+<script>
+const WIDTH = 400, HEIGHT = 360;
+
+// weigh: an object rises a hand's breadth and hangs at a height set by its
+// heft. This is a continuous suspended STATE, not a one-shot burst — the
+// weakest fit for the firework/particle-burst technique of every other cue
+// in this batch. Borrowed structure (not code) from GodotLootVFX's
+// LootVFX_Common scene: a hovering item held up by two crossed rings, a
+// glow core, and slow orbiting motes, not sparks. That composition is
+// built for exactly this moment — a thing suspended, not exploding.
+const GROUND_Y = 300;
+const REST_Y = 170;         // "a hand's breadth" up
+const OBJECT_X = WIDTH / 2;
+const RISE_MS = 550;
+const HOLD_MS = 1500;
+const LOWER_MS = 480;
+const LOOP_GAP_MS = 350;
+
+// theme.ts dusk — weigh's authored colorKey in cues.json.
+const DUSK = 0xa893c9;
+const DUSK_PALE = 0xe9def0;
+const MOTE_COUNT = 4;
+
+function drawStar(g, cx, cy, outerR, innerR, rotation) {
+  const points = 4;
+  g.beginPath();
+  for (let i = 0; i < points * 2; i++) {
+    const ang = (i / (points * 2)) * Math.PI * 2 - Math.PI / 2 + rotation;
+    const r = i % 2 === 0 ? outerR : innerR;
+    const x = cx + Math.cos(ang) * r, y = cy + Math.sin(ang) * r;
+    if (i === 0) g.moveTo(x, y); else g.lineTo(x, y);
+  }
+  g.closePath();
+  g.fillPath();
+}
+
+class WeighScene extends Phaser.Scene {
+  create() {
+    this.add.text(10, 8, 'Phaser weigh demo — object rises, hangs, held by a slow halo', {
+      fontFamily: 'monospace', fontSize: '12px', color: '#888',
+    });
+    this.add.rectangle(OBJECT_X - 40, GROUND_Y + 6, 80, 3, 0x333333);
+
+    this.objY = { y: GROUND_Y };
+    this.suspend = 0; // 0..1, how "in the hold" we are — drives halo strength
+    this.haloAngle = 0;
+
+    // The object itself — kept neutral/parchment, generic enough for any
+    // item; the magic is the color, not the object.
+    this.objectG = this.add.graphics();
+    this.objectG.fillStyle(0xd8c9a3, 1);
+    this.objectG.fillRoundedRect(-24, -16, 48, 32, 6);
+    this.objectG.setPosition(OBJECT_X, GROUND_Y);
+
+    this.groundGlowG = this.add.graphics();
+    this.groundGlowG.setBlendMode(Phaser.BlendModes.ADD);
+    this.haloG = this.add.graphics();
+    this.haloG.setBlendMode(Phaser.BlendModes.ADD);
+
+    this.castStart = this.time.now;
+    this.phase = 'rise';
+    this.time.addEvent({ delay: 16, loop: true, callback: () => this.step() });
+  }
+
+  step() {
+    const elapsed = this.time.now - this.castStart;
+    this.haloAngle += 0.02;
+
+    if (this.phase === 'rise') {
+      const t = Math.min(1, elapsed / RISE_MS);
+      const eased = Phaser.Math.Easing.Back.Out(t, 1.4);
+      this.objY.y = Phaser.Math.Linear(GROUND_Y, REST_Y, eased);
+      this.suspend = t;
+      if (t >= 1) { this.phase = 'hold'; this.castStart = this.time.now; }
+    } else if (this.phase === 'hold') {
+      this.objY.y = REST_Y;
+      this.suspend = 1;
+      if (elapsed >= HOLD_MS) { this.phase = 'lower'; this.castStart = this.time.now; }
+    } else if (this.phase === 'lower') {
+      const t = Math.min(1, elapsed / LOWER_MS);
+      this.objY.y = Phaser.Math.Linear(REST_Y, GROUND_Y, Phaser.Math.Easing.Cubic.In(t));
+      this.suspend = 1 - t;
+      if (t >= 1) { this.phase = 'gap'; this.castStart = this.time.now; }
+    } else if (this.phase === 'gap') {
+      this.suspend = 0;
+      if (elapsed >= LOOP_GAP_MS) { this.phase = 'rise'; this.castStart = this.time.now; }
+    }
+
+    this.objectG.setPosition(OBJECT_X, this.objY.y);
+    this.draw();
+  }
+
+  draw() {
+    const s = this.suspend;
+    const y = this.objY.y;
+
+    // Ground glow pool — fades in as the object lifts off, marking the
+    // spot it left, not following it up.
+    this.groundGlowG.clear();
+    if (s > 0.02) {
+      this.groundGlowG.fillStyle(DUSK, 0.18 * s);
+      this.groundGlowG.fillEllipse(OBJECT_X, GROUND_Y + 4, 70, 14);
+    }
+
+    this.haloG.clear();
+    if (s > 0.02) {
+      // Two crossed, slowly rotating rings around the suspended object.
+      // Roc call 2026-08-22: "more magical" — each ring is now a soft glow
+      // underlay plus a bright core stroke (the same dual-layer technique
+      // as the fetch/vortex tails), not one flat line.
+      const rx1 = 44, ry1 = 14;
+      const rx2 = 30, ry2 = 20;
+      this.haloG.lineStyle(7, DUSK, 0.16 * s);
+      this.strokeRotatedEllipse(OBJECT_X, y, rx1, ry1, this.haloAngle);
+      this.haloG.lineStyle(2, DUSK_PALE, 0.55 * s);
+      this.strokeRotatedEllipse(OBJECT_X, y, rx1, ry1, this.haloAngle);
+
+      this.haloG.lineStyle(6, DUSK, 0.13 * s);
+      this.strokeRotatedEllipse(OBJECT_X, y, rx2, ry2, -this.haloAngle * 1.3 + 1.2);
+      this.haloG.lineStyle(1.5, DUSK_PALE, 0.45 * s);
+      this.strokeRotatedEllipse(OBJECT_X, y, rx2, ry2, -this.haloAngle * 1.3 + 1.2);
+
+      // Orbiting motes — twinkling stars instead of plain dots, each with
+      // its own shimmer phase so they don't pulse in lockstep. The
+      // flattened-ellipse orbit fakes depth the way the LootVFX reference's
+      // rotate_y particles do.
+      for (let i = 0; i < MOTE_COUNT; i++) {
+        const a = this.haloAngle * 1.6 + (i / MOTE_COUNT) * Math.PI * 2;
+        const orbitR = 30 + (i % 2) * 14;
+        const mx = OBJECT_X + Math.cos(a) * orbitR;
+        const my = y + Math.sin(a) * orbitR * 0.28;
+        const shimmer = 0.55 + 0.45 * Math.sin(this.haloAngle * 3 + i * 1.7);
+        const moteScale = (0.6 + (i % 3) * 0.15) * shimmer;
+        this.haloG.fillStyle(DUSK_PALE, 0.22 * s * shimmer);
+        this.haloG.fillCircle(mx, my, 6 * moteScale);
+        this.haloG.fillStyle(0xffffff, 0.9 * s * shimmer);
+        drawStar(this.haloG, mx, my, 3.2 * moteScale, 1.1 * moteScale, this.haloAngle * 2 + i);
+      }
+    }
+  }
+
+  strokeRotatedEllipse(cx, cy, rx, ry, angle) {
+    const SEG = 24;
+    const cos = Math.cos(angle), sin = Math.sin(angle);
+    this.haloG.beginPath();
+    for (let i = 0; i <= SEG; i++) {
+      const t = (i / SEG) * Math.PI * 2;
+      const ex = Math.cos(t) * rx, ey = Math.sin(t) * ry;
+      const x = cx + ex * cos - ey * sin;
+      const y = cy + ex * sin + ey * cos;
+      if (i === 0) this.haloG.moveTo(x, y); else this.haloG.lineTo(x, y);
+    }
+    this.haloG.strokePath();
+  }
+}
+
+window.__game = new Phaser.Game({
+  type: Phaser.AUTO,
+  width: WIDTH,
+  height: HEIGHT,
+  backgroundColor: '#000000',
+  scene: WeighScene,
+});
+</script>
+</body>
+</html>

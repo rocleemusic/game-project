@@ -1,0 +1,55 @@
+{
+  "spell_id": "fetch",
+  "phrase": "fetch",
+  "role": "Mage",
+  "canon": false,
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-04.",
+  "components": [
+    "item_feather",
+    "item_wool"
+  ],
+  "produces": [],
+  "learn_source": "Watch the newcomer-mage tug something loose from a high shelf in the Forager's Clearing — a collector's reach for what the hand can't get",
+  "confirm_action": "Cast it yourself on a small loose thing once",
+  "mana_effect": "Quality only: at high mana the pull is smooth and lands the thing in your palm; at baseline it hops and drops short, and you pick it up off the ground. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "inert",
+      "receiver_id": "berry_on_high_branch",
+      "physical_outcome": "Pulls free and drops within reach",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "anvil",
+      "physical_outcome": "no_effect — far too heavy; it does not so much as rock",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "stone_wall",
+      "physical_outcome": "Tugs the tempered stone across and seats it into the wall's socket — the way into the Heart of the Wood opens",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "latched_shutter",
+      "physical_outcome": "State-dependent: unlatched, it swings open toward the pull; latched, it rattles once and holds",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "bird",
+      "physical_outcome": "No physical effect — living receivers never catch; the bird is not moved",
+      "reaction_kind": "startle-flight to a higher perch"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "bex",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "names the act plainly to the caster's face, without heat"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "slot": 1,
+  "life": 1,
+  "days": 5,
+  "seed_threads": [
+    {
+      "thread_id": "giver-receive",
+      "soul": "toby",
+      "status": "live"
+    },
+    {
+      "thread_id": "toby-the-shelf",
+      "soul": "toby",
+      "status": "live"
+    },
+    {
+      "thread_id": "kinbound-absence",
+      "soul": "ilsa",
+      "status": "live"
+    },
+    {
+      "thread_id": "ilsa-forge-short",
+      "soul": "ilsa",
+      "status": "live"
+    },
+    {
+      "thread_id": "ilsa-kin-no-show",
+      "soul": "ilsa",
+      "status": "live"
+    },
+    {
+      "thread_id": "ilsa-not-family",
+      "soul": "ilsa",
+      "status": "live"
+    },
+    {
+      "thread_id": "mara-said-out-loud",
+      "soul": "mara",
+      "status": "live"
+    },
+    {
+      "thread_id": "mara-tonic-frost",
+      "soul": "mara",
+      "status": "live"
+    },
+    {
+      "thread_id": "toby-feast-short",
+      "soul": "toby",
+      "status": "live"
+    },
+    {
+      "thread_id": "toby-kept-and-returned",
+      "soul": "toby",
+      "status": "live"
+    }
+  ],
+  "files": [
+    "day-1.json",
+    "day-2.json",
+    "day-3.json",
+    "day-4.json",
+    "day-5.json"
+  ]
+}

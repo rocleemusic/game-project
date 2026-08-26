@@ -1,0 +1,18 @@
+{
+  "item_id": "item_ash",
+  "description": "Gray dust from a burnt log. It is light enough to blow away in a draft, but it clings to the skin when you touch it. Most of it is fine, but there are little hardened bits that feel like tiny stones.",
+  "category": "component",
+  "persistence": "pack-triaged",
+  "collectible": true,
+  "consumable": true,
+  "source_locations": [
+    "The Workshop",
+    "Square"
+  ],
+  "always_available": false,
+  "used_by": [
+    "dry"
+  ],
+  "produced_by": [],
+  "use_family": null
+}

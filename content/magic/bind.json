@@ -1,0 +1,49 @@
+{
+  "spell_id": "bind",
+  "phrase": "bind",
+  "role": "Blacksmith",
+  "canon": false,
+  "status": "rejected",
+  "status_note": "Rejected at Roc's gate 2026-08-04. Kept on record, not deleted.",
+  "components": [
+    "item_tree_sap",
+    "item_wool"
+  ],
+  "produces": [],
+  "learn_source": "Watch the blacksmith join two pieces of the Lantern Arch centerpiece at the bench in the Town scene",
+  "confirm_action": "Cast it yourself on a broken thing once",
+  "mana_effect": "Quality only: at high mana the seam closes invisibly; at baseline the join holds but a hairline shows. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "inert",
+      "receiver_id": "cracked_lantern_pane",
+      "physical_outcome": "The crack seals along its length; the pane holds light again",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "intact_tool",
+      "physical_outcome": "no_effect — there is no break to close",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "arch_joint",
+      "physical_outcome": "State-dependent: two fitted halves held together join at the seam; halves held apart or misaligned take no join — the spell closes a seam, it does not assemble",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "bird_with_dragging_wing",
+      "physical_outcome": "No physical effect — living receivers never catch; the wing is not mended",
+      "reaction_kind": "startle-hop away, resettle at distance"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "mara",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "steady appraisal — she mends by hand and watches what the spell failed to do"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "spell_id": "sift",
+  "phrase": "sift",
+  "role": "Baker",
+  "canon": false,
+  "status": "rejected",
+  "status_note": "Rejected at Roc's gate 2026-08-04. Kept on record, not deleted.",
+  "components": [
+    "item_feather"
+  ],
+  "produces": [],
+  "learn_source": "Watch the baker clear a sack of gritty flour at the counter in the Town scene — feast baking cannot afford a stone in a tooth",
+  "confirm_action": "Cast it yourself on a mixed thing once",
+  "mana_effect": "Quality only: at high mana the separation is total in one pass; at baseline a second cast is needed for a clean split. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "inert",
+      "receiver_id": "gritty_flour_sack",
+      "physical_outcome": "The grit settles out in a thin dark layer beneath clean flour",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "clean_flour",
+      "physical_outcome": "no_effect — there is nothing mixed in to separate",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "well_bucket",
+      "physical_outcome": "State-dependent: muddied water clears as the silt drops; already clear, nothing changes",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "hen",
+      "physical_outcome": "No physical effect — nothing is sifted out of a living body",
+      "reaction_kind": "wing-flap, indignant scatter, returns to pecking"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "juno",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "dry amusement — turns the miscast into a story for whoever is nearest"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "spell_id": "mist",
+  "phrase": "mist",
+  "role": "Herbalist",
+  "canon": false,
+  "status": "rejected",
+  "status_note": "Rejected at Roc's gate 2026-08-04. Kept on record, not deleted.",
+  "components": [
+    "item_spring_water",
+    "item_feather"
+  ],
+  "produces": [],
+  "learn_source": "Watch the herbalist damp the seedling beds at the edge of the Forager's Clearing — tonic herbs are delicate and a bucket would flatten them",
+  "confirm_action": "Cast it yourself on a planted thing once",
+  "mana_effect": "Quality only: at high mana the mist is fine and even across the whole bed; at baseline it falls patchy and close. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "herb_bed",
+      "physical_outcome": "State-dependent: wilting, the leaves lift and firm within the hour; already watered, the extra beads off and nothing changes",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "lit_candle",
+      "physical_outcome": "State-dependent: lit, the flame gutters out under the damp; unlit, the wick is merely wet and harder to light",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "river_stone",
+      "physical_outcome": "Beads and runs off — a wet stone, nothing more",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "cat",
+      "physical_outcome": "No physical effect — the mist parts around the animal without wetting it",
+      "reaction_kind": "recoil-hop sideways, suspicious sniff at the damp ground"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "pip",
+      "physical_outcome": "No physical effect — his coat stays dry",
+      "reaction_kind": "wonder — turns the miss into an inspection of how the droplets parted"
+    }
+  ]
+}

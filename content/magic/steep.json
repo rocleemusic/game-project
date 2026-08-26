@@ -1,0 +1,49 @@
+{
+  "spell_id": "steep",
+  "phrase": "steep",
+  "role": "Herbalist",
+  "canon": false,
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-04.",
+  "components": [
+    "item_berry",
+    "item_spring_water"
+  ],
+  "produces": [],
+  "learn_source": "Watch the herbalist draw a batch of the festival tonic in the Town scene — the tonic that wards off the first frost takes hours by fire, minutes by cast",
+  "confirm_action": "Cast it yourself on a vessel of water with something in it once",
+  "mana_effect": "Quality only: at high mana the draw is deep and the brew comes out full-strength; at baseline it is weak and needs a second pass or a longer sit. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "kettle_of_water",
+      "physical_outcome": "State-dependent: with herbs in it, the water takes their colour and virtue in moments; plain, no_effect — there is nothing to draw",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "dry_herb_bundle",
+      "physical_outcome": "no_effect — steeping needs water; the bundle just sits there",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "well_water",
+      "physical_outcome": "Faintly discolours from whatever leaf-litter is floating in it — an honest but unwanted brew",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "goat",
+      "physical_outcome": "No physical effect — nothing is drawn out of a living body",
+      "reaction_kind": "chews on, unimpressed"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "juno",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "folds the caster into the work — hands over the actual kettle"
+    }
+  ]
+}

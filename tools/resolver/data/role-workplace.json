@@ -1,0 +1,74 @@
+{
+  "provisional": true,
+  "generated": "layout-pass 2026-07-29",
+  "status": "PROPOSAL — pending Roc's gate. Not wired anywhere.",
+  "note": "Architect proposal: plausible workplace fits grounded in the layout draft's screens. Screen names are placeholder flavor, so every fit is provisional by construction; rows with 'uncertain: true' have a structural doubt beyond flavor. Capacity and who actually stands where remain the permutation resolver's output — this table only proposes each role's home base. `goal` (D7, gdd/07-cast.md's role pool table) and `goal_threads` (D7, src/roleGoals.ts) added 2026-08-01: goal_threads lists only the thread_id(s) a real authored scene's state_actions actually moves for a soul dealt that role — an empty list is a real content gap, never a guess.",
+  "roles": [
+    {
+      "role_tag": "Mage",
+      "workplace_screens": [],
+      "time_blocks": [],
+      "rationale": "Personal goal (collect magic), not civic — no fixed workplace; the newcomer roams both locations.",
+      "uncertain": true,
+      "goal": "Personal, not civic: collect magic from around the world",
+      "goal_threads": []
+    },
+    {
+      "role_tag": "Blacksmith",
+      "workplace_screens": ["T4"],
+      "time_blocks": ["afternoon"],
+      "rationale": "The Workshop is the slice's only craft interior (its sole time state is afternoon); the Lantern Arch centerpiece is forged here.",
+      "uncertain": true,
+      "note": "T4's placeholder flavor is a general workshop, not explicitly a smithy — confirm at flavor pass.",
+      "goal": "Forges the new Lantern Arch centerpiece",
+      "goal_threads": ["ilsa-forge-short"],
+      "goal_threads_note": "Filled 2026-08-24 (T9, festival scoring). `ilsa-forge-short` is v01's licensed want × role-goal tension row for the soul dealt Blacksmith this life — its own thread doc states it in the `toby-feast-short` form (\"role-goal: forge the Lantern Arch centerpiece\"), and v01's authored ink really does call `recordThreadMove(\"ilsa-forge-short\")`. Was empty because the row predates the thread; that emptiness made the Blacksmith goal permanently uncompletable, which capped the festival tier at Warm by construction. Soul-specific by the same rule as the Baker row above: this file asserts which thread a role's goal moves FOR THE SOUL DEALT THAT ROLE, and does not survive a reshuffle."
+    },
+    {
+      "role_tag": "Baker",
+      "workplace_screens": ["T2"],
+      "time_blocks": ["morning"],
+      "rationale": "Market Row stalls, mornings — feast prep and trade; the Giver-as-Baker scene (SC-T2-04) already sits on T2.",
+      "goal": "Prepares the communal feast",
+      "goal_threads": ["toby-feast-short"],
+      "goal_threads_note": "SC-T2-04's CH-T2-04 (both options) moves the Baker's feast-can't-be-finished-alone thread, gdd/03-core-loop.md:35's worked example (the Giver dealt the Baker). Id changed from `giver-receive` to `toby-feast-short` on 2026-08-04, when Roc ratified Toby's thread registry and retired `giver-receive` — see arc-festival-slice.md's Threads to Not Drop table, whose id column is now the join. NOTE: v01's authored content still emits `giver-receive`, so this row and the content disagree until v01 is re-authored. That is deliberate: this file is where the system asserts which thread a role's goal moves, and it should name the ratified id."
+    },
+    {
+      "role_tag": "Postman",
+      "workplace_screens": ["T1", "T3"],
+      "time_blocks": ["morning", "afternoon"],
+      "rationale": "Delivery rounds: the Square's notice-board (T1) and the Commons' doorsteps (T3).",
+      "goal": "Delivers the festival letters",
+      "goal_threads": []
+    },
+    {
+      "role_tag": "Herbalist",
+      "workplace_screens": ["T2", "F1"],
+      "time_blocks": ["morning", "afternoon"],
+      "rationale": "Herbs forage at both Market Row and the Forager's Clearing — stall by morning, gathering by afternoon.",
+      "goal": "Brews the festival tonic that wards off the first frost",
+      "goal_threads": ["mara-tonic-frost"],
+      "goal_threads_note": "Filled 2026-08-24 (T9, festival scoring), same reasoning as the Blacksmith row. `mara-tonic-frost` is Mara's one licensed want × role-goal tension row for the Herbalist she is dealt this life (\"role-goal: brew the festival tonic that wards off the first frost\"), and v01's ink calls `recordThreadMove(\"mara-tonic-frost\")`. Soul-specific; does not survive a reshuffle."
+    },
+    {
+      "role_tag": "Priest",
+      "workplace_screens": ["T1", "T8"],
+      "time_blocks": ["evening", "night"],
+      "rationale": "The rite lights the Lantern Arch (T1, evenings); the Old Shrine (T8) is the town's relic site.",
+      "uncertain": true,
+      "note": "T8 is the stretch 8th screen — if cut, fallback is T1 only.",
+      "goal": "Leads the rite that lights the Lantern Arch and calls the souls home",
+      "goal_threads": []
+    },
+    {
+      "role_tag": "Farmer",
+      "workplace_screens": ["T2"],
+      "time_blocks": ["afternoon"],
+      "rationale": "No farm screens exist in the two-location slice; selling produce at Market Row is the nearest fit.",
+      "uncertain": true,
+      "note": "Proper workplace awaits the Farm stretch location (draft §10 slot).",
+      "goal": "Brings in the harvest that feeds the festival week, not just feast night",
+      "goal_threads": []
+    }
+  ]
+}

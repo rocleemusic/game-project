@@ -1,0 +1,541 @@
+
+> @game-project/resolver@0.1.0 test
+> node --test "test/*.test.ts"
+
+✔ dayWindow: a bare floor never closes — catch-up is the default (2.6848ms)
+✔ dayWindow: reads every comparator the predicate compiler accepts (0.5219ms)
+✔ an empty day window is caught (2.7496ms)
+✔ a beat gated past the end of a life is caught (0.342ms)
+✔ two bands for one soul on one beat can never both hold (0.2327ms)
+✔ different souls' bands on one beat are legal (0.1791ms)
+✔ ordinary gates are not flagged — no false alarms on legal content (0.2248ms)
+✔ partial band coverage is reported: a run in the missing band falls through (0.3066ms)
+✔ full coverage is silent, and a scene with no bands is silent (0.263ms)
+✔ THE SHIPPED CONTENT IS CLEAN — no unsatisfiable gate, no partial band (10.8258ms)
+✔ normalizes an item fixture (22.0994ms)
+✔ normalizes a key-item fixture, including status (12.9103ms)
+✔ underscore-prefixed files are skipped (12.5108ms)
+✔ content/magic/ is never read, even when it holds valid-looking JSON (11.8657ms)
+✔ source_locations is copied verbatim, not parsed or normalized (12.0074ms)
+✔ entries are sorted by id (9.212ms)
+✔ diffIndex classifies an added id (1.0755ms)
+✔ diffIndex classifies a removed id and does not silently drop it (0.3114ms)
+✔ diffIndex classifies a changed label/category/status, diffing emitted fields only (0.4427ms)
+✔ diffIndex ignores drift in fields that are not part of the emitted shape (0.367ms)
+✔ diffIndex reports clean when nothing drifted (0.318ms)
+✔ souls[] depth "deep"/"texture" normalizes to the deep flag, with a warning (107.1394ms)
+✔ seed is SHA-256 of slot|life|day (2.4833ms)
+✔ same seed in = identical output (deep equality) (26.9232ms)
+✔ a different slot|life|day gives a different seed (0.8514ms)
+✔ slot fill honors capacities and one-place-at-a-time (0.6374ms)
+✔ guarantee floor: the deep soul with a live thread stands in the picked location (10.0111ms)
+✔ no floor for unstarted/done threads — ordinary draw only (may sit a day out) (9.7724ms)
+✔ item rolls come from the bucket, with explicit empty entries (0.5975ms)
+✔ aliveness bands gate rare entries as selection weights (2.3369ms)
+✔ live leads: 2-3 picked from the authored pool, passthrough band (0.571ms)
+✔ rule: a matching patch applies (content_id target) (6.6936ms)
+✔ rule 1: old_text mismatch -> rejected and surfaced, never forced (1.62ms)
+✔ rule 2: missing target -> orphan report (1.4112ms)
+✔ rule 3: two patches to one target apply in timestamp order, later wins (1.5057ms)
+✔ "<choice_id>.<field>" targets patch choice-node fields (1.4692ms)
+✔ "<option_id>.<field>" targets patch option fields (surface_action) (1.2976ms)
+✔ entry_gate survives buildGraph's scene whitelist (5.6411ms)
+✔ the hub guards entry on the gate, and an ungated conversation stays ungated (24.3281ms)
+✔ MUST COMPILE, and the gated conversation is not offered until the first one plays (268.105ms)
+✔ a conversation gated on having played itself is caught, not shipped (1.092ms)
+✔ two entry gates waiting on each other are caught — neither scene looks wrong alone (0.5496ms)
+✔ played() naming a scene outside the graph fails the build (1.0287ms)
+✔ the shipped content's entry gates are satisfiable (13.5888ms)
+✔ an examinable's knowledge_flag is declared in KnownPhrases (6.9621ms)
+✔ the examinable is listed as a writer of KnownPhrases (1.7654ms)
+✔ no knowledge_flag means no phrase and no writer — the field is optional (1.6816ms)
+✔ the examinable stitch records the flag, guarded on not-already-known (67.7389ms)
+✔ the look stays sticky and re-clickable (2.37ms)
+✔ an examinable with no flag emits no state lines (3.0406ms)
+✔ the tree with a pickup still compiles clean (195.6009ms)
+✔ the declaration table parses, and the heading supplies PROPOSED (1.589ms)
+✔ an explicit Status column beats the heading's default (0.4188ms)
+✔ prose about examinables with no table declares nothing (0.3765ms)
+✔ THE FAILURE THIS EXISTS FOR: declared, never built (0.4878ms)
+✔ built but setting no flag is still a failure — a pickup that picks nothing up (0.231ms)
+✔ built with the wrong flag (0.1831ms)
+✔ built on the wrong screen (0.6108ms)
+✔ built as declared — no problems (0.2426ms)
+✔ a declaration with no flag column checks existence only (0.2227ms)
+✔ TimeOfDay = night is written exactly once in the whole story, inside home_hub_final (2.024ms)
+✔ home_hub_final offers no calendar — its only forward option is the Festival (1.5637ms)
+✔ walking day 5's evening to its end reaches home_hub_final, and choosing the Festival writes night and lands on T7 (305.2287ms)
+✔ festival_vignette and final_screen contain no divert back into the day cycle (0.56ms)
+✔ day_end's old day-overrun ending is retired: day can never exceed days_per_life (0.5115ms)
+✔ the vignette is reachable early, before any night scene is played (93.0754ms)
+✖ the vignette starts automatically once every night scene has been played (144.7847ms)
+✔ the night screen sits between the vignette and the final screen, then the story ends (76.1673ms)
+✔ advance_time() only ever cycles morning -> afternoon -> evening (0.4948ms)
+✔ evenings before the life's last day still land on the ordinary home_hub/calendar (90.2639ms)
+✔ a gated choice node emits a fallback divert to its gather (1.4565ms)
+✔ a non-gated node emits no fallback (its options are always available) (37.7487ms)
+✔ MUST COMPILE, and a failed gate skips the beat instead of dead-ending (197.4638ms)
+✔ graph.json: screens carry every spec field plus ink_address (1.5155ms)
+✔ graph.json: seams pass through as { from, to, name } (1.5353ms)
+✔ graph.json: scenes inline lines and choice_nodes, with both ID and address forms (0.2111ms)
+✔ graph.json: variables carry declarations with derived readers and writers (0.3983ms)
+✔ buildGraph rejects a condition outside the predicate vocabulary (2.7796ms)
+✔ HOME is a real ScreenSpec entry: not a start screen, not a calendar destination (1.4268ms)
+✔ the Home Hub carries its own #screen: tag, and mints no generic world file (0.4397ms)
+✔ walking into the Home Hub sets the #screen: tag to HOME, not the previous real screen (203.4086ms)
+✔ the calendar never opens on its own: closed on arrival, closed after looking around, open only on the explicit pick (111.3042ms)
+✔ ink-address rule: T1 -> t1 (1.9468ms)
+✔ ink-address rule: CH-T2-04 -> ch_t2_04 (0.4285ms)
+✔ ink-address rule: scene address is <soul>.<scene> — toby.sc_t2_04 (0.2763ms)
+✔ ink-address rule: gather label takes g_ prefix — g_ch_t2_04 (0.2856ms)
+✔ ink-address rule: every non-alphanumeric becomes _ (0.2896ms)
+✔ mintIds fills missing ids deterministically and keeps existing ones (5.0939ms)
+✔ emitted tree has the S4 file split (3.6789ms)
+✔ state.ink is the single declaration site (0.8268ms)
+✔ tag contract: #screen: / #choice: / #opt: plus per-line id tags (1.5505ms)
+✔ state_actions emit as EXTERNAL calls with no-op fallback stubs (0.2745ms)
+✔ MUST COMPILE: inkjs Compiler compiles the emitted project with zero errors (306.1226ms)
+✔ the compiled story can enter the scene stitch by address and walk a branch (111.9713ms)
+✔ a sub-node emits inside its option at the next weave level (27.3872ms)
+✔ the LAST sub-node gathers at the parent OPTION's label (2.9061ms)
+✔ a sub-node is emitted once — inside the option, never also at scene level (2.4406ms)
+✔ gather_line replaces the generated placeholder at that gather (3.8244ms)
+✔ a gather_line is not mistaken for the node's set-up line (2.7944ms)
+✔ parent_option must name an option that exists in the scene (2.289ms)
+✔ a second level is allowed, and emits at *** / --- (290.018ms)
+✔ nesting past 2 levels is refused (1.7743ms)
+✔ a parent_option cycle is reported, not looped on (1.3765ms)
+✔ an option cannot both divert and carry a sub-conversation (2.103ms)
+✔ MUST COMPILE: the nested weave compiles with zero errors and zero warnings (97.8641ms)
+✔ PLAY-PROOF: the sub-conversation only plays inside its own option, and every path converges (394.313ms)
+✔ a node entered normally prints its -norm prose (376.8015ms)
+✔ the same node entered by a divert prints its -div prose (141.6665ms)
+✔ a variant player line reports the id of the line the player actually said (221.4956ms)
+✔ the divert-path flag is cleared at the node's gather (110.1468ms)
+✔ a node with no variants is emitted exactly as before (1.6ms)
+✔ MUST COMPILE: per-path prose compiles with zero errors and zero warnings (123.9612ms)
+✔ the live SC-T2-09 wiring emits both readings of Toby's closing beat (1184.9031ms)
+✔ applies a rect to a declared region (3.3149ms)
+✔ unknown screen -> orphan, other entries still apply (0.5371ms)
+✔ unknown region -> orphan (0.2723ms)
+✔ an invalid rect is skipped and reported as an orphan (0.4018ms)
+✔ empty map is a no-op (0.2321ms)
+✔ screen+region keying: same region_id on two screens does not collide (0.3185ms)
+✔ parseRect accepts the boundary case: a rect filling the whole image (0.2043ms)
+✔ parseRect rejects non-object and missing rect (0.1763ms)
+✔ soulRoleGoalStatus: a moved goal_thread reads as advanced (2.5296ms)
+✔ soulRoleGoalStatus: the role's goal_thread not yet moved reads as not advanced (0.2825ms)
+✔ soulRoleGoalStatus: a role with no goal_threads authored is a content gap, not a false score (0.2202ms)
+✔ soulRoleGoalStatus: a soul with no dealt role_tag has no goal at all (0.2071ms)
+✔ GUARDRAIL: moving a thread that is NOT in the role's goal_threads never advances it — bond/inner-arc threads must not leak into the tier (0.2251ms)
+✔ roleWorkplaceFor: looks up by role_tag, undefined for no tag / unknown tag (0.1657ms)
+✔ allRoleGoalStatuses / roleGoalsAdvancedCount: counts only authored, moved role goals (0.3324ms)
+✔ real data: buildGraph carries role_workplace through, like bond and souls (38.9419ms)
+✔ real data: toby is dealt Baker, and toby-feast-short is his role's authored goal_thread (42.0276ms)
+✔ real data: the retired giver-receive id no longer advances the Baker's goal (93.4989ms)
+✔ real data: ilsa is dealt Blacksmith, but her role has no goal_threads authored yet — a real gap, honestly reported (10.7415ms)
+✔ real data: Mage carries no goal_threads — personal, not civic, never feeds the tier (gdd/07-cast.md:23) (17.3132ms)
+✔ round trip: a Lantern edit survives regeneration, and the rebuilt story compiles and plays it (1383.3614ms)
+✔ stale edit: source text changed upstream -> rejected, surfaced, source wins (324.9491ms)
+✔ orphaned edit: target deleted upstream -> lands in the orphan report (239.3325ms)
+✔ loadTuning: no tuning.json (fixtures, or any bare dir) -> the built-in defaults, no warnings (4.8043ms)
+✔ loadTuning: data/tuning.json reads clean — floor is ruled on, the playtest nulls still hold (1.5972ms)
+✔ loadTuning: unknown keys and wrong types warn; defaults kept (2.7301ms)
+✔ regression: no tuning file -> day.json identical to pre-tuning output (pinned hashes, days 1-5) (31.8489ms)
+✖ regression: data/ with the floor forced off -> still byte-identical to pre-tuning output (13.3152ms)
+✖ regression: data/tuning.json as shipped (floor ON, B1 ruled) -> the re-pinned output (13.6489ms)
+✔ availability_weights override changes the draw (2.0789ms)
+✔ per_block_multiplier scales declared capacity: round half-up, floor at 0 (1.8416ms)
+✔ floor.prefer_unlocked_screens=true: guaranteed souls stand on start/reachable screens, days 1-5, both locations (15.3415ms)
+✔ floor.prefer_unlocked_screens null/false: byte-identical to current behavior (49.5972ms)
+✔ live_leads: min/max range respected, capped by the pool (13.0849ms)
+✔ buildGraph stamps tuning arch_promote numbers into the Arch's promotes_to condition (54.4024ms)
+✔ bondBandOf: thresholds are inclusive minimums, and match predicates.ts BAND_VALUE (0.2126ms)
+✔ bondDelta: category weights it, the soul's trait coefficient scales it (0.7334ms)
+✖ RULED (Roc, 2026-07-30): one attentive life earns mid; high needs a second (13.0987ms)
+✔ every deep soul with an arc can move its band — the arc turns are reachable (12.0565ms)
+✔ a bond_band-gated beat exists for every band, so no variant is dead content (12.3548ms)
+✖ demo_multiplier reaches high inside ONE life, which is what it is for (12.9704ms)
+✔ bond: inverted thresholds warn and fall back; unknown keys warn (2.55ms)
+✔ trait_coefficients is open-keyed: souls are data, not tuning (2.3796ms)
+✔ graph.json carries the bond block, so the host needs no second reader on tuning.json (23.0662ms)
+✔ day_loop.moves_per_day is tunable and defaults to the old hard-coded 3 (3.298ms)
+✔ floor.prefer_scene_screens: a guaranteed soul lands where they have a scene (15.4196ms)
+✔ floor.prefer_scene_screens off -> byte-identical to the flag never existing (14.5281ms)
+✔ a soul with no authored scenes is unaffected by the scene floor (10.7829ms)
+✔ the bare day loop terminates: five End-the-day choices reach the final sequence and END (53.5986ms)
+✔ a played week completes and reaches the final sequence (0.355ms)
+✔ a greedy first-choice walk also terminates (no dead end at index 0) (136.8094ms)
+✔ story.onError never fires: externals all bound, no bad diverts (41.107ms)
+✔ the four EXTERNALs are bound (fallbacks off) and actually fire (0.9064ms)
+✖ every authored scene is either entered or explicitly unreachable with a reason (0.8543ms)
+✖ every authored scene is reachable: some week really enters each one (1.4371ms)
+✔ no route promises more screens than a day can actually stand on (7.278ms)
+✖ a truncated search can never be read as a proof of unreachability (0.4171ms)
+✔ reported ids are authored ids, and reachable/unreachable partition them (0.6079ms)
+✖ nothing is unreachable for a reason that is not by design (0.6584ms)
+✖ a band-gated beat one life cannot reach is EXPECTED, not a defect (0.3517ms)
+✖ a day-gated scene is entered on a day its gate allows (0.519ms)
+✔ determinism: the same strategy twice gives byte-identical results (304.6455ms)
+✔ determinism: a fresh Walker is independent of any earlier walk (397.5053ms)
+✔ determinism: searchReachable repeats itself (timings aside) (53697.081ms)
+✔ bond is ONE number per soul — never a per-category score (0.2861ms)
+✔ the band reported for each soul is derived from that soul's count (0.1734ms)
+✔ max bond per soul: achieved in a real week, and never above its ceiling (0.5317ms)
+✔ a soul's max-bond figure is backed by a week that really ran (0.2264ms)
+✔ souls with an authored, reachable bond_event end the week above zero (0.6688ms)
+✔ a walk only ever reports authored ids (0.6615ms)
+✔ a scene entry is once-only across the whole week (0.2003ms)
+✔ scene opportunities are consistent with the day files and the map (9.8089ms)
+✔ enumerateRoutes reads connects_to as a path, not a one-way door (14.287ms)
+✔ presence is re-applied mid-day, not just at day start (0.4897ms)
+✔ the day loop spends moves and advances the clock (0.444ms)
+✔ walkWeek rejects a strategy that returns an out-of-range index (84.8599ms)
+✔ the step cap truncates rather than hanging, and says so (36.9924ms)
+✔ the world layer always offers a way to end the day (0.3837ms)
+✖ seedThreadsFromContent finds every thread the authored content can move (5.4946ms)
+✔ resolveWeek writes one day per day of the life (43.2548ms)
+✔ an unseeded life guarantees nobody — which is why seeding is explicit (4.221ms)
+✔ the week REACTS: a different play produces a different week (3.9872ms)
+✔ a picked_location change carries into the following days (5.1151ms)
+✔ resolveWeek is deterministic — same play, same week (4.0432ms)
+✔ applyOutcome promotes unstarted -> live and never invents done (0.3215ms)
+✔ every deep soul with an arc is guaranteed on a scene screen on every day (2.7352ms)
+ℹ tests 199
+ℹ suites 0
+ℹ pass 187
+ℹ fail 12
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 112045.8527
+
+✖ failing tests:
+
+test at test\festival-night.test.ts:168:1
+✖ the vignette starts automatically once every night scene has been played (144.7847ms)
+  AssertionError [ERR_ASSERTION]: once every night scene is spent, the hub auto-diverts to the vignette, which falls straight through to the night screen
+  
+  'T7' !== 'TN'
+  
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/festival-night.test.ts:195:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'T7',
+    expected: 'TN',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\tuning.test.ts:170:1
+✖ regression: data/ with the floor forced off -> still byte-identical to pre-tuning output (13.3152ms)
+  AssertionError [ERR_ASSERTION]: data day 1 drifted with the floor off
+  + actual - expected
+  
+  + '6f93659eb040d3e38ed84f4c0a27bff8db78821c823c3bc48b9589a774c080e0'
+  - '8249c05695a584dd3d6e83f5161b057d75af185244c360564915894fb6764544'
+  
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/tuning.test.ts:175:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '6f93659eb040d3e38ed84f4c0a27bff8db78821c823c3bc48b9589a774c080e0',
+    expected: '8249c05695a584dd3d6e83f5161b057d75af185244c360564915894fb6764544',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\tuning.test.ts:179:1
+✖ regression: data/tuning.json as shipped (floor ON, B1 ruled) -> the re-pinned output (13.6489ms)
+  AssertionError [ERR_ASSERTION]: data day 1 drifted
+  + actual - expected
+  
+  + '6f93659eb040d3e38ed84f4c0a27bff8db78821c823c3bc48b9589a774c080e0'
+  - '8249c05695a584dd3d6e83f5161b057d75af185244c360564915894fb6764544'
+  
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/tuning.test.ts:186:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '6f93659eb040d3e38ed84f4c0a27bff8db78821c823c3bc48b9589a774c080e0',
+    expected: '8249c05695a584dd3d6e83f5161b057d75af185244c360564915894fb6764544',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\tuning.test.ts:395:1
+✖ RULED (Roc, 2026-07-30): one attentive life earns mid; high needs a second (13.0987ms)
+  AssertionError [ERR_ASSERTION]: mara: one attentive life must land in MID, got 128 (mid>=12, high>=82)
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/tuning.test.ts:411:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\tuning.test.ts:461:1
+✖ demo_multiplier reaches high inside ONE life, which is what it is for (12.9704ms)
+  AssertionError [ERR_ASSERTION]: toby: at 1.0 an attentive life stops at mid
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/tuning.test.ts:466:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\walk.test.ts:182:1
+✖ every authored scene is either entered or explicitly unreachable with a reason (0.8543ms)
+  AssertionError [ERR_ASSERTION]: scene SC-T2-11 must be exactly one of entered / unreachable-with-reason (entered=false, unreachable=false)
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/walk.test.ts:189:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\walk.test.ts:205:1
+✖ every authored scene is reachable: some week really enters each one (1.4371ms)
+  AssertionError [ERR_ASSERTION]: every authored scene must be entered by some searched week
+  + actual - expected
+  
+    [
+      'SC-F1-03',
+      'SC-T2-04',
+      'SC-T2-08',
+      'SC-T2-09',
+      'SC-T2-10',
+  -   'SC-T2-11',
+      'SC-T2-12',
+      'SC-T2-13',
+      'SC-T2-14',
+      'SC-T2-15',
+      'SC-T2-16',
+  
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/walk.test.ts:214:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [
+      'SC-F1-03', 'SC-T2-04',   'SC-T2-08',
+      'SC-T2-09', 'SC-T2-10',   'SC-T2-12',
+      'SC-T2-13', 'SC-T2-14',   'SC-T2-15',
+      'SC-T2-16', 'SC-T2-17',   'SC-T2-18',
+      'SC-T2-19', 'SC-T2-20',   'SC-T2-21',
+      'SC-T2-22', 'SC-T2-23',   'SC-T2-24',
+      'SC-T2-25', 'SC-T4-03',   'SC-T4-04',
+      'SC-T4-05', 'SC-T4-06',   'SC-T4-07',
+      'SC-T4-08', 'SC-T4-09',   'SC-T4-10',
+      'SC-T4-11', 'SC-T4-12',   'SC-T4-13',
+      'SC-T6-01', 'SC-T7-ilsa', 'SC-T7-toby'
+    ],
+    expected: [
+      'SC-F1-03',   'SC-T2-04', 'SC-T2-08',
+      'SC-T2-09',   'SC-T2-10', 'SC-T2-11',
+      'SC-T2-12',   'SC-T2-13', 'SC-T2-14',
+      'SC-T2-15',   'SC-T2-16', 'SC-T2-17',
+      'SC-T2-18',   'SC-T2-19', 'SC-T2-20',
+      'SC-T2-21',   'SC-T2-22', 'SC-T2-23',
+      'SC-T2-24',   'SC-T2-25', 'SC-T4-03',
+      'SC-T4-04',   'SC-T4-05', 'SC-T4-06',
+      'SC-T4-07',   'SC-T4-08', 'SC-T4-09',
+      'SC-T4-10',   'SC-T4-11', 'SC-T4-12',
+      'SC-T4-13',   'SC-T6-01', 'SC-T7-ilsa',
+      'SC-T7-toby'
+    ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\walk.test.ts:236:1
+✖ a truncated search can never be read as a proof of unreachability (0.4171ms)
+  AssertionError [ERR_ASSERTION]: search bound hit, so the unreachable lists are INCONCLUSIVE: ["never entered: SC-T2-11 (entry gate [\"played(SC-T2-10)\",\"knows(shelf_named)\"])"]
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/walk.test.ts:240:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\walk.test.ts:272:1
+✖ nothing is unreachable for a reason that is not by design (0.6584ms)
+  AssertionError [ERR_ASSERTION]: unreachable for a reason that is not by design
+  + actual - expected
+  
+  + [
+  +   'CH-T2-11-1 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-2 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-3 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-4 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-5 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T7-toby-2 [defect] never offered inside SC-T7-toby, which the search explored exhaustively; gate: ["day >= 5","bond_band(toby) = low"]',
+  +   'CH-T7-ilsa-2 [defect] never offered inside SC-T7-ilsa, which the search explored exhaustively; gate: ["day >= 5","bond_band(ilsa) = low"]',
+  +   'CH-T4-10-4 [defect] never offered inside SC-T4-10, which the search explored exhaustively; gate: ["knows(ore_sourced)"]',
+  +   'CH-T4-04-5 [defect] never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(cover_witnessed)"]',
+  +   'CH-T2-16-5 [defect] never offered inside SC-T2-16, which the search explored exhaustively; gate: ["bond_band(toby) = low"]',
+  +   'CH-T2-11-1-a [scene-unexplored] CH-T2-11-1: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-1-b [scene-unexplored] CH-T2-11-1: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-1-c [scene-unexplored] CH-T2-11-1: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-2-a [scene-unexplored] CH-T2-11-2: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-2-b [scene-unexplored] CH-T2-11-2: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-3-a [scene-unexplored] CH-T2-11-3: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-3-b [scene-unexplored] CH-T2-11-3: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-4-a [scene-unexplored] CH-T2-11-4: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-4-b [scene-unexplored] CH-T2-11-4: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-5-a [scene-unexplored] CH-T2-11-5: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T2-11-5-b [scene-unexplored] CH-T2-11-5: scene SC-T2-11 was never explored inside the search budget',
+  +   'CH-T7-toby-2-a [defect] CH-T7-toby-2: never offered inside SC-T7-toby, which the search explored exhaustively; gate: ["day >= 5","bond_band(toby) = low"]',
+  +   'CH-T7-toby-2-b [defect] CH-T7-toby-2: never offered inside SC-T7-toby, which the search explored exhaustively; gate: ["day >= 5","bond_band(toby) = low"]',
+  +   'CH-T7-ilsa-2-a [defect] CH-T7-ilsa-2: never offered inside SC-T7-ilsa, which the search explored exhaustively; gate: ["day >= 5","bond_band(ilsa) = low"]',
+  +   'CH-T7-ilsa-2-b [defect] CH-T7-ilsa-2: never offered inside SC-T7-ilsa, which the search explored exhaustively; gate: ["day >= 5","bond_band(ilsa) = low"]',
+  +   'CH-T4-10-4-a [defect] CH-T4-10-4: never offered inside SC-T4-10, which the search explored exhaustively; gate: ["knows(ore_sourced)"]',
+  +   'CH-T4-10-4-b [defect] CH-T4-10-4: never offered inside SC-T4-10, which the search explored exhaustively; gate: ["knows(ore_sourced)"]',
+  +   'CH-T4-04-5-a [defect] CH-T4-04-5: never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(cover_witnessed)"]',
+  +   'CH-T4-04-5-b [defect] CH-T4-04-5: never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(cover_witnessed)"]',
+  +   'CH-T2-16-5-a [defect] CH-T2-16-5: never offered inside SC-T2-16, which the search explored exhaustively; gate: ["bond_band(toby) = low"]',
+  +   'CH-T2-16-5-b [defect] CH-T2-16-5: never offered inside SC-T2-16, which the search explored exhaustively; gate: ["bond_band(toby) = low"]'
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/walk.test.ts:279:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ 'CH-T2-11-1 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-2 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-3 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-4 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-5 [scene-unexplored] scene SC-T2-11 was never explored inside the search budget', 'CH-T7-toby-2 [defect] never offered inside SC-T7-toby, which the search explored exhaustively; gate: ["day >= 5","bond_band(toby) = low"]', 'CH-T7-ilsa-2 [defect] never offered inside SC-T7-ilsa, which the search explored exhaustively; gate: ["day >= 5","bond_band(ilsa) = low"]', 'CH-T4-10-4 [defect] never offered inside SC-T4-10, which the search explored exhaustively; gate: ["knows(ore_sourced)"]', 'CH-T4-04-5 [defect] never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(cover_witnessed)"]', 'CH-T2-16-5 [defect] never offered inside SC-T2-16, which the search explored exhaustively; gate: ["bond_band(toby) = low"]', 'CH-T2-11-1-a [scene-unexplored] CH-T2-11-1: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-1-b [scene-unexplored] CH-T2-11-1: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-1-c [scene-unexplored] CH-T2-11-1: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-2-a [scene-unexplored] CH-T2-11-2: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-2-b [scene-unexplored] CH-T2-11-2: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-3-a [scene-unexplored] CH-T2-11-3: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-3-b [scene-unexplored] CH-T2-11-3: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-4-a [scene-unexplored] CH-T2-11-4: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-4-b [scene-unexplored] CH-T2-11-4: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-5-a [scene-unexplored] CH-T2-11-5: scene SC-T2-11 was never explored inside the search budget', 'CH-T2-11-5-b [scene-unexplored] CH-T2-11-5: scene SC-T2-11 was never explored inside the search budget', 'CH-T7-toby-2-a [defect] CH-T7-toby-2: never offered inside SC-T7-toby, which the search explored exhaustively; gate: ["day >= 5","bond_band(toby) = low"]', 'CH-T7-toby-2-b [defect] CH-T7-toby-2: never offered inside SC-T7-toby, which the search explored exhaustively; gate: ["day >= 5","bond_band(toby) = low"]', 'CH-T7-ilsa-2-a [defect] CH-T7-ilsa-2: never offered inside SC-T7-ilsa, which the search explored exhaustively; gate: ["day >= 5","bond_band(ilsa) = low"]', 'CH-T7-ilsa-2-b [defect] CH-T7-ilsa-2: never offered inside SC-T7-ilsa, which the search explored exhaustively; gate: ["day >= 5","bond_band(ilsa) = low"]', 'CH-T4-10-4-a [defect] CH-T4-10-4: never offered inside SC-T4-10, which the search explored exhaustively; gate: ["knows(ore_sourced)"]', 'CH-T4-10-4-b [defect] CH-T4-10-4: never offered inside SC-T4-10, which the search explored exhaustively; gate: ["knows(ore_sourced)"]', 'CH-T4-04-5-a [defect] CH-T4-04-5: never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(cover_witnessed)"]', 'CH-T4-04-5-b [defect] CH-T4-04-5: never offered inside SC-T4-04, which the search explored exhaustively; gate: ["knows(cover_witnessed)"]', 'CH-T2-16-5-a [defect] CH-T2-16-5: never offered inside SC-T2-16, which the search explored exhaustively; gate: ["bond_band(toby) = low"]', 'CH-T2-16-5-b [defect] CH-T2-16-5: never offered inside SC-T2-16, which the search explored exhaustively; gate: ["bond_band(toby) = low"]' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\walk.test.ts:291:1
+✖ a band-gated beat one life cannot reach is EXPECTED, not a defect (0.3517ms)
+  AssertionError [ERR_ASSERTION]: CH-T2-11-2 asks for low (needs 0) and toby reaches 155, so it should have been offered
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/walk.test.ts:315:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\walk.test.ts:325:1
+✖ a day-gated scene is entered on a day its gate allows (0.519ms)
+  AssertionError [ERR_ASSERTION]: CH-T7-toby-2 is day-gated ["day >= 5","bond_band(toby) = low"] and SC-T7-toby is reachable, so some week must enter it on a day the gate allows
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/walk.test.ts:349:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\week.test.ts:28:1
+✖ seedThreadsFromContent finds every thread the authored content can move (5.4946ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      'giver-receive',
+  +   'ilsa-forge-short',
+  +   'ilsa-kin-no-show',
+  +   'ilsa-not-family',
+      'kinbound-absence',
+  +   'mara-said-out-loud',
+  +   'mara-tonic-frost',
+  +   'toby-feast-short',
+  +   'toby-kept-and-returned',
+      'toby-the-shelf'
+    ]
+  
+      at TestContext.<anonymous> (file:///P:/GitHub/RL_MAP/RL_MAP/ProjectOS/game-project/tools/resolver/test/week.test.ts:31:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'giver-receive', 'ilsa-forge-short', 'ilsa-kin-no-show', 'ilsa-not-family', 'kinbound-absence', 'mara-said-out-loud', 'mara-tonic-frost', 'toby-feast-short', 'toby-kept-and-returned', 'toby-the-shelf' ],
+    expected: [ 'giver-receive', 'kinbound-absence', 'toby-the-shelf' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

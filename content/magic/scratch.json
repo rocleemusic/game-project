@@ -1,0 +1,48 @@
+{
+  "spell_id": "scratch",
+  "phrase": "scratch",
+  "role": "Postman",
+  "canon": true,
+  "status": "approved",
+  "status_note": "Canon starter spell, ruled in by Roc 2026-08-05 with an amended effect: it soothes itches in unreachable places. The GDD fixes scratch's component (wool) but never stated its effect, so the amendment adds to canon rather than contradicting it.",
+  "components": [
+    "item_wool"
+  ],
+  "produces": [],
+  "learn_source": "Watch the postman pause at a fencepost mid-route under the full festival mailbag — the strap-itch between the shoulder blades that no hand reaches, cast away without ever setting the bag down",
+  "confirm_action": "Cast it yourself on an itch out of reach once",
+  "mana_effect": "Quality only: at high mana the relief is complete and the itch stays gone; at baseline it dulls and creeps back before long. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "soul",
+      "receiver_id": "mara",
+      "physical_outcome": "The itch between the shoulder blades, where no hand reaches, subsides; the skin settles flat",
+      "reaction_kind": "shoulders drop and roll once, then back to the work at hand"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "pip",
+      "physical_outcome": "no_effect — nothing itches anywhere on him, so there is nothing to soothe",
+      "reaction_kind": "pats himself down hunting for whatever was supposed to happen"
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "dog",
+      "physical_outcome": "The deep itch behind the ear its hind leg could never reach subsides; the leg stops mid-scratch",
+      "reaction_kind": "one last reflex kick, then flops down and settles"
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "scabbed_graze",
+      "physical_outcome": "State-dependent: still knitting, the itch around the scab quiets and the scab stays unbroken; long healed over, nothing itches and nothing happens",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "wooden_route_post",
+      "physical_outcome": "no_effect — nothing here itches",
+      "reaction_kind": null
+    }
+  ]
+}

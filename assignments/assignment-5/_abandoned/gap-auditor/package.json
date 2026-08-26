@@ -1,0 +1,16 @@
+{
+  "name": "feature-gap-auditor",
+  "version": "1.0.0",
+  "description": "Goal-oriented agent: reads the GDD, scans the codebase, detects gaps, prioritizes, and generates code for one missing feature (Assignment #5).",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "offline": "node src/index.js --offline",
+    "test:generated": "node --test out/generated/"
+  },
+  "engines": { "node": ">=22.6" },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.60.0"
+  }
+}

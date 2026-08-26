@@ -1,0 +1,50 @@
+- There's currently no way to move items between satchel and arms. It tells you that you have it in your arm, but you can't see it in your arm when you switch over
+- We still have buttons that are using brackets
+- Not all fonts are consistent
+- We want to look at the visual novel buttons. They should not be visible all the time
+- We want to revisit HUD layout to be more usable, Buttons in top right feels wrong, Possibly in explore mode and dialogue mode With buttons along the bottom like Diablo or World of Warcraft
+- We want the overlay scrim to be closable or remove it so that we see more of the level
+- Need to go ahead and actually determine what is on each screen That is examinable
+- Need to redo NPC dialog to have story points where they introduce the spells and where they do greetings and where they talk about the things that you examine. This is something where we might write one and then try to use the narrative assignment to generate more and possibly hook it up to an LLM
+- We want to simplify the festival night thing so it will only just be based on how many goals you complete. So one for low, two for medium, three for high, And bond level will simply be how many times you talk to a specific NPC. 
+- We want to simplify branching dialogue. There will be like one or two choices in short conversations
+- Can't be longer, so they talk more about themselves and give descriptions
+- Want to make sure that NPCs are placed on the ground
+- We need an intro story flow to introduce the mage and why you're there
+- We need item descriptions that fit into the world
+- We need the locked points to have hover descriptions
+- We might want a mini map
+- In Home Hub we want to hide the go-to buttons
+- The satchel count and banked we need to figure out that mechanic a little bit better and the display is not in the world
+- Currently the decorate your home button is kind of hidden
+- Home hub should just be the home hub screen, The blocks or regions right now should just be Viewable if I toggle on debug mode, they want to normally be hidden, and then we want to get the white background to be black
+- By default, the home hub should be zoomed in a little bit more so that the drag actually has functionality
+- We want a toggle to be able to hide the hints, And hints also are unreadable because there's not enough contrast
+- We should just be able to click and drag specific items don't need a move button, And selecting a different item should remove the selection of previous item, Currently the move, flip, and remove buttons stay stuck on
+- Should be able to click and drag from your banked items onto the screen and they should be removed from the banked area when you move them onto the screen, Right now it's possible to put multiples of a single item on the screen and that doesn't make sense
+- Clicking on a placed item should toggle its selection
+- In shelf view we should be able to click and drag to place as well, And it is not saving what is stored in a shelf location between screens
+- We're going to change this slightly and If a save is not erased and you play through to day five, You can resume and start over at day one, but the year count goes up And the game remembers everything that you've done so you can continue to play through and get dialogue you haven't seen and items you haven't collected, So we don't need the MetaHub and we don't want the new life button in the home hub, Those will be handled by saves
+- Currently in the save screen the empty slots don't do anything. They should start a new game so we need to be able to track save states for different games
+- We should have an option for the player to be able to give themselves a name And be able to save that
+- First load is slow. I wonder if we can speed that up or preload while we're on a different screen so player doesn't have to wait
+- In HomeHub on the calendar, we aren't able to select where we go. That should match the Game start calendar behavior Where we can select if we go to the forest or the town
+- All NPCs should have the hover halo and be able to click to talk, The spell options to learn should be wired in for the other NPCs
+- Screen transition should be fade out of the current screen and fade in of the next screen So we get a crossfade
+- We should have a wait button so a player can wait at a location and advance the time, 
+- On pickup of an item that the player has not seen before, it should pop open the satchel so we can see its description
+- Drop does not actually remove something from the inventory, And when something is dropped, it should be placed in the world So it can be picked back up if the player wants to
+- is open, the cast should just cast the spell in the preview pane and remove the play button, And we don't want to autoplay the vfx
+- In the Notebook the The SX window is huge and the VFX is playing pretty small because we're limited by the vertical space. Can we adjust it so that the VFX window height and width take up more of the page and increase the VFX preview size
+- wonder if we can Draw irregular shapes for examine regions
+- Is it possible to do custom Loading screens?
+- The item hover is too far away from the item, If it can just hover above the cursor, And we don't need the take-click button on the item hover
+- Edit mode sets regions but then the regions are not actually hoverable or clickable, They should react in the same way that items do And the description will just be in the hover tooltip.  Hovering over one seconds will mean that the player has seen it, Or if they click, Click will not remove the region and it will not close the hover
+- The regions should be mapped to the picture location, so it should not move with the pan
+- In edit mode I should be able to define new locations With a note that you can read and wire up after
+
+
+later ideas:
+- the vfx preview lets make a pretty image instead, now that we have trial cast
+- captured sounds take a slot, and we dont have a mechanism for capturing sounds
+- maybe allow stacking the same type of item

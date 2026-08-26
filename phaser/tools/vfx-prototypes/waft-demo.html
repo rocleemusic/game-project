@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Phaser waft demo</title>
+<style>html,body{margin:0;background:#000;overflow:hidden;}</style>
+</head>
+<body>
+<script src="../../node_modules/phaser/dist/phaser.js"></script>
+<script>
+const WIDTH = 400, HEIGHT = 480;
+
+// waft: a Priest spell that rises dust/smoke in a straight column — mana
+// quality affects the column's height and straightness, never success
+// (content/magic/waft.json). Visual target: a loose, wavering vertical
+// column of soft overlapping puffs, thinning and dispersing near the top —
+// not a spiral (that's vortex's shape) and not a burst (that's scratch's
+// or temper's).
+//
+// Roc call 2026-08-23 (2nd pass): three changes —
+// 1) two ground-plane rings, staggered, ported from echo-demo.html's
+//    flattened-ellipse technique (same squash-and-stroke approach) rather
+//    than invented fresh — the top ring (slightly higher) fires first, the
+//    bottom ring follows ~160ms later, both golden.
+// 2) the smoke reads thin at the base — fixed by spawning denser and
+//    bigger near the ground instead of growing from near-nothing.
+// 3) multiple columns (3, not 1) so the base reads as a fuller plume
+//    instead of one thin stream.
+//
+// Roc call 2026-08-23 (3rd pass): the 3 columns had their own fixed x
+// offsets from spawn to death, so they read as 3 separate parallel pipes,
+// not one plume. Rebuilt as a cone: every puff spawns from the SAME point
+// and its lane assignment is a target lateral spread reached only at full
+// climb, scaled by how far it's risen — together at the base, fanned out
+// by the top.
+
+const BASE = { x: WIDTH / 2, y: HEIGHT - 60 };
+const TOP_Y = 60;
+const RISE_MS = 1500;       // one puff's full climb, base -> top
+const SPAWN_INTERVAL_MS = 45;
+const CAST_MS = 900;        // spawning window — matches waft's durationMs in cues.json
+const LOOP_GAP_MS = 500;
+const CONE_LANES = [-34, 0, 34]; // target spread AT FULL HEIGHT, not a spawn offset — the cone's 3 lanes
+
+// theme.ts dusk / muted — waft's authored colorKeys in cues.json (effect / no-effect).
+const DUSK = 0xa893c9;
+const MUTED = 0xa89a7c;
+// theme.ts vfxGold — the rings' color, Roc call 2026-08-23: "golden."
+const GOLD = 0xffd479;
+const GOLD_PALE = 0xfff0c9;
+
+const RING_SQUASH = 0.32;
+const RING_MAX_R = 100;
+const RING_GROW_MS = 480;
+const RING_STAGGER_MS = 160; // top fires first, bottom follows this much later
+
+class WaftScene extends Phaser.Scene {
+  create() {
+    const g = this.add.graphics();
+    g.fillStyle(0xffffff, 0.5); g.fillCircle(16, 16, 16);
+    g.fillStyle(0xffffff, 0.8); g.fillCircle(16, 16, 9);
+    g.fillStyle(0xffffff, 1); g.fillCircle(16, 16, 4);
+    g.generateTexture('puff', 32, 32);
+    g.destroy();
+
+    this.add.text(10, 8, 'Phaser waft demo — fuller base, 3 columns, staggered golden ground rings', {
+      fontFamily: 'monospace', fontSize: '12px', color: '#888',
+    });
+    this.add.text(10, 26, `tint ${DUSK.toString(16)} (dusk) — swap to ${MUTED.toString(16)} (muted) to preview no-effect`, {
+      fontFamily: 'monospace', fontSize: '12px', color: '#666',
+    });
+    this.add.circle(BASE.x, BASE.y, 3, 0x444444).setStrokeStyle(1, 0x666666);
+
+    this.ringG = this.add.graphics();
+    this.ringG.setBlendMode(Phaser.BlendModes.ADD);
+    this.rings = []; // { y, color, start } — drawn fresh each step(), not per-tween, so the two rings never clear each other's frame
+
+    this.puffs = [];
+    // Each lane gets its own next-spawn clock, seeded with a random phase
+    // offset — without this all 3 lanes spawn in lockstep and the result
+    // reads as a rigid grid of circles, not smoke (Roc call 2026-08-23,
+    // caught in a paused-frame screenshot sweep: perfectly aligned rows).
+    this.nextSpawnAt = CONE_LANES.map(() => Math.random() * SPAWN_INTERVAL_MS);
+    this.castStart = this.time.now;
+    this.fireRings();
+    this.time.addEvent({ delay: 16, loop: true, callback: () => this.step() });
+  }
+
+  fireRings() {
+    const now = this.time.now;
+    // Top ring (slightly higher, y smaller) fires first, pale/bright as the
+    // "source" moment — same convention echo-demo.html uses for its first ring.
+    this.rings.push({ y: BASE.y - 16, color: GOLD_PALE, start: now });
+    this.rings.push({ y: BASE.y + 4, color: GOLD, start: now + RING_STAGGER_MS });
+  }
+
+  spawnPuff(laneIndex) {
+    // Every puff spawns from the same point — Roc call 2026-08-23 (4th
+    // pass): "the bottom can be more of a point" — tightened from ±5px to
+    // ±2px, and the puff itself now starts small (see __baseScale below)
+    // instead of already-large, so the very base reads as a narrow vent
+    // rather than a cluster of blobs. It still fattens into a full body
+    // fast (step()'s quick early ramp) so the "fuller lower plume" from
+    // the 2nd pass doesn't come back — that fullness now starts just
+    // above the point, not at the point itself.
+    const x = BASE.x + (Math.random() - 0.5) * 4;
+    const img = this.add.image(x, BASE.y, 'puff');
+    img.setBlendMode(Phaser.BlendModes.ADD);
+    img.setTint(DUSK);
+    img.__baseScale = 0.22 + Math.random() * 0.12;
+    img.setScale(img.__baseScale);
+    img.setAlpha(0);
+    img.__born = this.time.now;
+    img.__baseX = x;
+    img.__riseMs = RISE_MS * (0.85 + Math.random() * 0.3);
+    // The lane's spread only applies at full climb (t=1) — see step()'s
+    // lerp against t. Together at the base, fanned into a cone by the top.
+    img.__coneTarget = CONE_LANES[laneIndex] + (Math.random() - 0.5) * 12;
+    // each puff gets its own gentle sideways sway, out of phase with the
+    // others — the thing that makes a stack of puffs read as one wavering
+    // column instead of a straight pipe of identical shapes.
+    img.__swayPhase = Math.random() * Math.PI * 2;
+    img.__swayAmp = 8 + Math.random() * 10;
+    this.puffs.push(img);
+  }
+
+  step() {
+    const now = this.time.now;
+    const elapsedCast = now - this.castStart;
+    if (elapsedCast > CAST_MS + RISE_MS + LOOP_GAP_MS) {
+      this.castStart = now;
+      this.fireRings();
+    }
+
+    if (elapsedCast >= 0 && elapsedCast < CAST_MS) {
+      for (let c = 0; c < CONE_LANES.length; c++) {
+        if (now >= this.nextSpawnAt[c]) {
+          this.spawnPuff(c);
+          // Jittered, not fixed — a fixed interval is what produced the
+          // grid read even with a random phase offset alone.
+          this.nextSpawnAt[c] = now + SPAWN_INTERVAL_MS * (0.6 + Math.random() * 0.8);
+        }
+      }
+    }
+
+    for (let i = this.puffs.length - 1; i >= 0; i--) {
+      const p = this.puffs[i];
+      const age = now - p.__born;
+      const t = age / p.__riseMs;
+      if (t >= 1) { p.destroy(); this.puffs.splice(i, 1); continue; }
+
+      const eased = 1 - Math.pow(1 - t, 2); // eases upward, slows near the top
+      p.y = BASE.y - eased * (BASE.y - TOP_Y);
+      // cone spread: lerp from the shared spawn point toward the lane's
+      // target offset as t climbs — 0 spread at the base, full spread at
+      // the top — plus the same sway as before, out of phase per puff.
+      const coneX = p.__baseX + p.__coneTarget * eased;
+      p.x = coneX + Math.sin(t * 3 + p.__swayPhase) * p.__swayAmp * t;
+      // Quick ramp from the point-sized spawn up to a full body within the
+      // first ~12% of the climb, then the same continued growth as before
+      // for dispersal near the top — fullness starts just above the vent,
+      // not at it.
+      const bodyT = Math.min(1, t / 0.12);
+      const bodyScale = p.__baseScale + (0.72 - p.__baseScale) * bodyT;
+      p.setScale(bodyScale + t * 0.75);
+      const fadeIn = Math.min(1, age / 140);
+      const fadeOut = t > 0.6 ? 1 - (t - 0.6) / 0.4 : 1;
+      p.setAlpha(0.5 * fadeIn * fadeOut);
+    }
+
+    this.ringG.clear();
+    for (const r of this.rings) {
+      const elapsed = now - r.start;
+      if (elapsed < 0 || elapsed > RING_GROW_MS) continue;
+      const growT = elapsed / RING_GROW_MS;
+      const growEase = 1 - Math.pow(1 - growT, 3); // Expo-ish out, matching echo's ring feel
+      const radius = 4 + growEase * RING_MAX_R;
+      const thickness = 10 - growT * 8;
+      const alpha = 0.6 * (1 - Math.max(0, (growT - 0.4) / 0.6));
+      this.ringG.lineStyle(thickness, r.color, alpha);
+      this.ringG.strokeEllipse(BASE.x, r.y, radius * 2, radius * 2 * RING_SQUASH);
+    }
+  }
+}
+
+window.__game = new Phaser.Game({
+  type: Phaser.AUTO,
+  width: WIDTH,
+  height: HEIGHT,
+  backgroundColor: '#000000',
+  scene: WaftScene,
+});
+</script>
+</body>
+</html>

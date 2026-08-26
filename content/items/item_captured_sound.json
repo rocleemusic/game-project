@@ -1,0 +1,19 @@
+{
+  "item_id": "item_captured_sound",
+  "description": "It is a small, clear-sounding thing. When you press your ear to the surface, a voice or a bird-call comes through, as if from the other side of a thin wall. The sound is not quite as loud as a real one, but it does not fade away. It stays. It has a certain weight to it.",
+  "category": "sound",
+  "persistence": "free",
+  "collectible": true,
+  "consumable": false,
+  "source_locations": [
+    "Square",
+    "Town scene",
+    "Festival Grounds"
+  ],
+  "always_available": true,
+  "used_by": [
+    "echo"
+  ],
+  "produced_by": [],
+  "use_family": null
+}

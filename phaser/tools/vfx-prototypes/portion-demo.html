@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Phaser portion demo</title>
+<style>html,body{margin:0;background:#000;overflow:hidden;}</style>
+</head>
+<body>
+<script src="../../node_modules/phaser/dist/phaser.js"></script>
+<script>
+const WIDTH = 500, HEIGHT = 320;
+
+// portion: divides a mass into equal measures. Technique borrowed from
+// kapowfx-starter's pickup_sparkle.gd — N identical shapes pop in on a
+// staggered tween (i * delay, Back.easeOut scale), not a random burst.
+// Here that staggered-identical-pop IS the point: every measure gets the
+// exact same size, color and timing curve, because the spell's whole
+// promise is "divided equally," not "scattered."
+const SOURCE = { x: WIDTH / 2, y: HEIGHT - 60 };
+const MEASURE_COUNT = 4;
+const TARGET_Y = 110;
+const TARGET_SPACING = 78;
+const POP_STAGGER_MS = 70;
+const POP_MS = 320;
+const HOLD_MS = 500;
+const FADE_MS = 260;
+const LOOP_GAP_MS = 450;
+
+// theme.ts dusk — portion's authored colorKey in cues.json.
+const DUSK = 0xa893c9;
+const DUSK_CORE = 0xe9def0;
+
+function drawStar(g, cx, cy, outerR, innerR) {
+  const points = 4;
+  g.beginPath();
+  for (let i = 0; i < points * 2; i++) {
+    const ang = (i / (points * 2)) * Math.PI * 2 - Math.PI / 2;
+    const r = i % 2 === 0 ? outerR : innerR;
+    const x = cx + Math.cos(ang) * r, y = cy + Math.sin(ang) * r;
+    if (i === 0) g.moveTo(x, y); else g.lineTo(x, y);
+  }
+  g.closePath();
+  g.fillPath();
+}
+
+// Roc call 2026-08-22: "more magic treatment than just white circles."
+// Swapped the plain circle core for a 4-point star, and baked in a small
+// cluster of satellite sparkles around it — a measure now reads as a knot
+// of light, not one dot.
+function makeGlowOrb(scene) {
+  const g = scene.add.graphics();
+  g.setBlendMode(Phaser.BlendModes.ADD);
+  g.fillStyle(DUSK, 0.2); g.fillCircle(0, 0, 18);
+  g.fillStyle(DUSK, 0.38); g.fillCircle(0, 0, 11);
+  g.fillStyle(DUSK_CORE, 0.95);
+  drawStar(g, 0, 0, 6.5, 2.2);
+  const satellites = [
+    { a: 0.3, r: 11, outer: 3.2 },
+    { a: 2.5, r: 9, outer: 2.6 },
+    { a: 4.4, r: 12, outer: 3.0 },
+  ];
+  for (const sat of satellites) {
+    const sx = Math.cos(sat.a) * sat.r, sy = Math.sin(sat.a) * sat.r;
+    g.fillStyle(DUSK_CORE, 0.85);
+    drawStar(g, sx, sy, sat.outer, sat.outer * 0.35);
+  }
+  return g;
+}
+
+class PortionScene extends Phaser.Scene {
+  create() {
+    this.add.text(10, 8, 'Phaser portion demo — one mass, N equal measures', {
+      fontFamily: 'monospace', fontSize: '12px', color: '#888',
+    });
+    this.add.circle(SOURCE.x, SOURCE.y, 5, 0x444444).setStrokeStyle(1, 0x666666);
+    for (let i = 0; i < MEASURE_COUNT; i++) {
+      const tx = SOURCE.x + (i - (MEASURE_COUNT - 1) / 2) * TARGET_SPACING;
+      this.add.circle(tx, TARGET_Y, 8, 0x2a2a2a).setStrokeStyle(1, 0x555555);
+    }
+
+    this.ringG = this.add.graphics();
+    this.ringG.setBlendMode(Phaser.BlendModes.ADD);
+
+    this.puff();
+  }
+
+  puff() {
+    // A quick pulse at the source, the moment of division.
+    const ring = { r: 2, alpha: 0.55 };
+    this.tweens.add({
+      targets: ring, r: 20, alpha: 0, duration: 260, ease: 'Cubic.easeOut',
+      onUpdate: () => {
+        this.ringG.clear();
+        this.ringG.lineStyle(2.5, DUSK, ring.alpha);
+        this.ringG.strokeCircle(SOURCE.x, SOURCE.y, ring.r);
+      },
+      onComplete: () => this.ringG.clear(),
+    });
+
+    const orbs = [];
+    for (let i = 0; i < MEASURE_COUNT; i++) {
+      const tx = SOURCE.x + (i - (MEASURE_COUNT - 1) / 2) * TARGET_SPACING;
+      const orb = makeGlowOrb(this);
+      orb.setPosition(SOURCE.x, SOURCE.y);
+      orb.setScale(0);
+      orbs.push(orb);
+      const delay = i * POP_STAGGER_MS;
+      this.tweens.add({
+        targets: orb, x: tx, y: TARGET_Y, duration: POP_MS, delay,
+        ease: 'Cubic.easeOut',
+      });
+      this.tweens.add({
+        targets: orb, scale: 1, duration: POP_MS * 0.7, delay,
+        ease: 'Back.easeOut',
+        onComplete: () => {
+          // A slow continuous spin plus a gentle breathing pulse while it
+          // holds — the shimmer that sells "magic," not a static sprite.
+          this.tweens.add({ targets: orb, angle: 360, duration: 2600, repeat: -1 });
+          this.tweens.add({
+            targets: orb, scale: 1.12, duration: 420, yoyo: true, repeat: -1,
+            ease: 'Sine.easeInOut',
+          });
+        },
+      });
+    }
+
+    // Every measure holds, then ALL fade together — simultaneous, not
+    // staggered, because the measures are equal, not a sequence.
+    const lastPopEnd = (MEASURE_COUNT - 1) * POP_STAGGER_MS + POP_MS;
+    this.time.delayedCall(lastPopEnd + HOLD_MS, () => {
+      this.tweens.add({
+        targets: orbs, alpha: 0, duration: FADE_MS, ease: 'Quad.easeIn',
+        onComplete: () => orbs.forEach(o => o.destroy()),
+      });
+    });
+
+    this.time.delayedCall(lastPopEnd + HOLD_MS + FADE_MS + LOOP_GAP_MS, () => this.puff());
+  }
+}
+
+window.__game = new Phaser.Game({
+  type: Phaser.AUTO,
+  width: WIDTH,
+  height: HEIGHT,
+  backgroundColor: '#000000',
+  scene: PortionScene,
+});
+</script>
+</body>
+</html>

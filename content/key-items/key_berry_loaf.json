@@ -1,0 +1,19 @@
+{
+  "key_item_id": "key_berry_loaf",
+  "description": "A loaf made with dried berries, still in the paper wrapping. It is soft and smells like summer, though the fruit is tart. I carried it back to the camp to see if the others wanted some.",
+  "category": "gift",
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-05.",
+  "role": "Baker",
+  "origin": "made",
+  "made_from": [
+    "item_berry",
+    "item_salt",
+    "item_spring_water"
+  ],
+  "source_locations": [],
+  "persistence": "pack-triaged",
+  "consumable": true,
+  "use_family": null,
+  "role_link_note": "A small loaf from the Baker's feast preparations — berries held at fresh with salt, dough worked with spring water."
+}

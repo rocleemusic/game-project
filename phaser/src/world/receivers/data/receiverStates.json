@@ -1,0 +1,481 @@
+{
+  "provenance": "AUTHORED 2026-08-17, Wave 2 Track A. Every `clause` was COPIED BY HAND, character for character, out of the matching `physical_outcome` in content/magic/*.json (bundled to public/content/magic.json). Nothing here is regex-derived: all 18 stateful outcomes share the shape 'State-dependent: A; B', and several branches carry their own semicolons and em-dashes, so a split-by-pattern would silently render the wrong half of the prose. tests/ReceiverState.test.ts asserts every clause is a verbatim substring of its record, so content drift fails a test instead of reaching a player. State ids, labels, `initial` and `becomes` are design data authored here; the prose is not.",
+  "receivers": [
+    {
+      "receiverId": "berry_basket",
+      "initial": "just_picked",
+      "states": [
+        { "id": "just_picked", "label": "just-picked, still firm" },
+        { "id": "turning", "label": "already turning soft" }
+      ]
+    },
+    {
+      "receiverId": "chimney",
+      "initial": "smoky",
+      "states": [
+        { "id": "smoky", "label": "backing up and smoky" },
+        { "id": "drawing_fine", "label": "drawing fine already" }
+      ]
+    },
+    {
+      "receiverId": "cold_lantern",
+      "initial": "dressed",
+      "states": [
+        { "id": "dressed", "label": "wick dressed for the rite" },
+        { "id": "bare", "label": "wick bare" }
+      ]
+    },
+    {
+      "receiverId": "festival_bell",
+      "initial": "hanging_free",
+      "states": [
+        { "id": "hanging_free", "label": "hanging free" },
+        { "id": "muffled", "label": "muffled or held" }
+      ]
+    },
+    {
+      "receiverId": "festival_grounds",
+      "initial": "ordinary_day",
+      "states": [
+        { "id": "festival_night", "label": "festival night" },
+        { "id": "ordinary_day", "label": "any ordinary day" }
+      ]
+    },
+    {
+      "receiverId": "field_soil",
+      "initial": "tilled",
+      "states": [
+        { "id": "tilled", "label": "tilled and soft" },
+        { "id": "packed", "label": "packed hard or frozen" }
+      ]
+    },
+    {
+      "receiverId": "forge_billet",
+      "initial": "hot",
+      "states": [
+        { "id": "hot", "label": "glowing hot" },
+        { "id": "cold", "label": "already cold" }
+      ]
+    },
+    {
+      "receiverId": "furnace",
+      "initial": "cold",
+      "states": [
+        { "id": "cold", "label": "unlit — stocked, or long cold and down to dead ash" },
+        { "id": "lit_by_hand", "label": "lit by hand" },
+        { "id": "magic_lit", "label": "recently magic-lit" }
+      ]
+    },
+    {
+      "receiverId": "kettle_of_water",
+      "initial": "herbs_in",
+      "states": [
+        { "id": "herbs_in", "label": "with herbs in it" },
+        { "id": "plain", "label": "plain water" }
+      ]
+    },
+    {
+      "receiverId": "lantern_arch",
+      "initial": "dressed",
+      "states": [
+        { "id": "dressed", "label": "wicks dressed for the rite" },
+        { "id": "undressed", "label": "wicks undressed" }
+      ]
+    },
+    {
+      "receiverId": "latched_shutter",
+      "initial": "unlatched",
+      "states": [
+        { "id": "unlatched", "label": "unlatched" },
+        { "id": "latched", "label": "latched" }
+      ]
+    },
+    {
+      "receiverId": "parcel",
+      "initial": "dry",
+      "states": [
+        { "id": "dry", "label": "dry wrapping" },
+        { "id": "soaked", "label": "soaked wrapping" }
+      ]
+    },
+    {
+      "receiverId": "scabbed_graze",
+      "initial": "knitting",
+      "states": [
+        { "id": "knitting", "label": "still knitting" },
+        { "id": "healed", "label": "long healed over" }
+      ]
+    },
+    {
+      "receiverId": "soaked_letter",
+      "initial": "caught_early",
+      "states": [
+        { "id": "caught_early", "label": "caught early, ink intact" },
+        { "id": "ink_run", "label": "the ink has already run" }
+      ]
+    },
+    {
+      "receiverId": "stew_cauldron",
+      "initial": "full",
+      "states": [
+        { "id": "full", "label": "full" },
+        { "id": "empty", "label": "near-empty, scraped down" }
+      ]
+    }
+  ],
+  "branches": [
+    {
+      "spellId": "breath",
+      "receiverId": "furnace",
+      "branches": [
+        {
+          "whenState": "cold",
+          "clause": "dead ash only swirls — breath feeds fire, it does not start one",
+          "noEffect": false,
+          "becomes": null,
+          "note": "The ash physically swirls, so this is a diminished effect, not an authored nothing. Reviewed as borderline."
+        },
+        {
+          "whenState": "lit_by_hand",
+          "clause": "banked embers brighten and flare under the draft",
+          "noEffect": false,
+          "becomes": null
+        },
+        {
+          "whenState": "magic_lit",
+          "clause": "banked embers brighten and flare under the draft",
+          "noEffect": false,
+          "becomes": null,
+          "note": "Same authored clause as lit_by_hand. Embers are embers however the fire was started; breath does not read residue, glimmer does."
+        }
+      ]
+    },
+    {
+      "spellId": "dry",
+      "receiverId": "soaked_letter",
+      "branches": [
+        {
+          "whenState": "caught_early",
+          "clause": "caught early, it dries flat with the ink intact",
+          "noEffect": false,
+          "becomes": null,
+          "note": "No authored 'dried' state exists on this receiver, so `becomes` stays null rather than invent one."
+        },
+        {
+          "whenState": "ink_run",
+          "clause": "if the ink has already run, it dries smeared — dry fixes wet, not ruin",
+          "noEffect": false,
+          "becomes": null
+        }
+      ]
+    },
+    {
+      "spellId": "echo",
+      "receiverId": "festival_bell",
+      "branches": [
+        {
+          "whenState": "hanging_free",
+          "clause": "hanging free, the bell reproduces the sound with its own ring under it",
+          "noEffect": false,
+          "becomes": null
+        },
+        {
+          "whenState": "muffled",
+          "clause": "muffled or held, only a dull knock escapes",
+          "noEffect": false,
+          "becomes": null
+        }
+      ]
+    },
+    {
+      "spellId": "fetch",
+      "receiverId": "latched_shutter",
+      "branches": [
+        {
+          "whenState": "unlatched",
+          "clause": "unlatched, it swings open toward the pull",
+          "noEffect": false,
+          "becomes": null
+        },
+        {
+          "whenState": "latched",
+          "clause": "latched, it rattles once and holds",
+          "noEffect": false,
+          "becomes": null,
+          "note": "It rattles — an authored physical result, so not a no-effect. Reviewed as borderline."
+        }
+      ]
+    },
+    {
+      "spellId": "furrow",
+      "receiverId": "field_soil",
+      "branches": [
+        {
+          "whenState": "tilled",
+          "clause": "tilled and soft, a clean furrow opens the cast's length",
+          "noEffect": false,
+          "becomes": null
+        },
+        {
+          "whenState": "packed",
+          "clause": "packed hard or frozen, only a scuffed line — the ground has to be worked first",
+          "noEffect": false,
+          "becomes": null
+        }
+      ]
+    },
+    {
+      "spellId": "glimmer",
+      "receiverId": "furnace",
+      "branches": [
+        {
+          "whenState": "cold",
+          "clause": "lit by hand or long cold, none rise",
+          "noEffect": false,
+          "becomes": null,
+          "note": "Borderline. 'none rise' is close to an authored nothing, but the author did not use the no_effect marker here and this table does not upgrade prose into a marker. Flip it in this file if Roc rules otherwise — no code changes."
+        },
+        {
+          "whenState": "lit_by_hand",
+          "clause": "lit by hand or long cold, none rise",
+          "noEffect": false,
+          "becomes": null,
+          "note": "One clause covers both conditions because the author wrote both into it: 'lit by hand or long cold'."
+        },
+        {
+          "whenState": "magic_lit",
+          "clause": "recently magic-lit, a few lights dance at the firebox mouth",
+          "noEffect": false,
+          "becomes": null,
+          "note": "Reachable because `ignite` on a cold furnace sets magic_lit. That chain is authored content talking to itself, not new machinery."
+        }
+      ]
+    },
+    {
+      "spellId": "glimmer",
+      "receiverId": "festival_grounds",
+      "branches": [
+        {
+          "whenState": "festival_night",
+          "clause": "on festival night, the grounds fill with dancing lights far past what any one surface carries — the past casts of many years rise and dance at once",
+          "noEffect": false,
+          "becomes": null
+        },
+        {
+          "whenState": "ordinary_day",
+          "clause": "on any ordinary day, only the sparse traces of recent local casts rise and fade",
+          "noEffect": false,
+          "becomes": null
+        }
+      ]
+    },
+    {
+      "spellId": "ignite",
+      "receiverId": "furnace",
+      "branches": [
+        {
+          "whenState": "cold",
+          "clause": "unlit and stocked, the banked fuel catches and the furnace lights, draft picking up",
+          "noEffect": false,
+          "becomes": "magic_lit"
+        },
+        {
+          "whenState": "lit_by_hand",
+          "clause": "already lit, nothing changes",
+          "noEffect": true,
+          "becomes": null
+        },
+        {
+          "whenState": "magic_lit",
+          "clause": "already lit, nothing changes",
+          "noEffect": true,
+          "becomes": null
+        }
+      ]
+    },
+    {
+      "spellId": "leap",
+      "receiverId": "cold_lantern",
+      "branches": [
+        {
+          "whenState": "dressed",
+          "clause": "wick dressed for the rite, the sent flame takes and burns steady",
+          "noEffect": false,
+          "becomes": null
+        },
+        {
+          "whenState": "bare",
+          "clause": "wick bare, the flame touches metal and dies — the cast's flame is spent either way",
+          "noEffect": false,
+          "becomes": null
+        }
+      ]
+    },
+    {
+      "spellId": "leap",
+      "receiverId": "lantern_arch",
+      "branches": [
+        {
+          "whenState": "dressed",
+          "clause": "wicks dressed for the rite, the one sent flame runs lantern to lantern along the whole span in one pass",
+          "noEffect": false,
+          "becomes": null
+        },
+        {
+          "whenState": "undressed",
+          "clause": "wicks undressed, it dies at the first bare one",
+          "noEffect": false,
+          "becomes": null
+        }
+      ]
+    },
+    {
+      "spellId": "portion",
+      "receiverId": "stew_cauldron",
+      "branches": [
+        {
+          "whenState": "full",
+          "clause": "full, it measures out into even servings",
+          "noEffect": false,
+          "becomes": null
+        },
+        {
+          "whenState": "empty",
+          "clause": "near-empty, it still parts even — into portions too small to serve anyone",
+          "noEffect": false,
+          "becomes": null
+        }
+      ]
+    },
+    {
+      "spellId": "preserve",
+      "receiverId": "berry_basket",
+      "branches": [
+        {
+          "whenState": "just_picked",
+          "clause": "just-picked, the berries hold at ripe",
+          "noEffect": false,
+          "becomes": null,
+          "note": "The hold keeps the basket in the state it is already in, so no transition."
+        },
+        {
+          "whenState": "turning",
+          "clause": "already turning, the soft ones stay soft — the hold is not a rewind",
+          "noEffect": false,
+          "becomes": null
+        }
+      ]
+    },
+    {
+      "spellId": "scratch",
+      "receiverId": "scabbed_graze",
+      "branches": [
+        {
+          "whenState": "knitting",
+          "clause": "still knitting, the itch around the scab quiets and the scab stays unbroken",
+          "noEffect": false,
+          "becomes": null
+        },
+        {
+          "whenState": "healed",
+          "clause": "long healed over, nothing itches and nothing happens",
+          "noEffect": true,
+          "becomes": null
+        }
+      ]
+    },
+    {
+      "spellId": "seal",
+      "receiverId": "parcel",
+      "branches": [
+        {
+          "whenState": "dry",
+          "clause": "dry wrapping seals tight at every seam",
+          "noEffect": false,
+          "becomes": null
+        },
+        {
+          "whenState": "soaked",
+          "clause": "soaked wrapping will not take the seal until it dries",
+          "noEffect": false,
+          "becomes": null,
+          "note": "Borderline. Refusal is described as a condition of the wrapping, not with the no_effect marker, so it is left an effect. One JSON edit flips it."
+        }
+      ]
+    },
+    {
+      "spellId": "steep",
+      "receiverId": "kettle_of_water",
+      "branches": [
+        {
+          "whenState": "herbs_in",
+          "clause": "with herbs in it, the water takes their colour and virtue in moments",
+          "noEffect": false,
+          "becomes": null
+        },
+        {
+          "whenState": "plain",
+          "clause": "plain, no_effect — there is nothing to draw",
+          "noEffect": true,
+          "becomes": null,
+          "note": "One of the two mid-string no_effect markers the anchored regex in CastResolver could never see."
+        }
+      ]
+    },
+    {
+      "spellId": "temper",
+      "receiverId": "forge_billet",
+      "branches": [
+        {
+          "whenState": "hot",
+          "clause": "glowing hot, it hardens evenly with a hiss and holds its shape",
+          "noEffect": false,
+          "becomes": "cold"
+        },
+        {
+          "whenState": "cold",
+          "clause": "already cold, no_effect — there is no heat to set",
+          "noEffect": true,
+          "becomes": null,
+          "note": "The headline case. Setting the metal takes the heat out of it, so a second temper on the same billet is the authored nothing."
+        }
+      ]
+    },
+    {
+      "spellId": "waft",
+      "receiverId": "chimney",
+      "branches": [
+        {
+          "whenState": "smoky",
+          "clause": "backing up and smoky, the draft rights itself and pulls clean",
+          "noEffect": false,
+          "becomes": "drawing_fine"
+        },
+        {
+          "whenState": "drawing_fine",
+          "clause": "drawing fine already, nothing changes",
+          "noEffect": true,
+          "becomes": null
+        }
+      ]
+    },
+    {
+      "spellId": "weigh",
+      "receiverId": "stew_cauldron",
+      "branches": [
+        {
+          "whenState": "full",
+          "clause": "full, it hangs low off its resting place and the hang reads the batch",
+          "noEffect": false,
+          "becomes": null
+        },
+        {
+          "whenState": "empty",
+          "clause": "scraped empty, it hangs high — only the pot's own weight left to bear",
+          "noEffect": false,
+          "becomes": null
+        }
+      ]
+    }
+  ]
+}

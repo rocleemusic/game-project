@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>game-project — the territory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#e9e0cc; --paper-2:#e2d7be; --paper-3:#ded1b3;
+    --ink:#223038; --ink-soft:#4a5560; --ink-faint:#7c8288;
+    --water:#c9d8d6; --water-2:#bcd0cd; --water-line:#8fb0ac;
+    --land-design:#e5dcc4; --land-build:#dfd9c9;
+    --sound:#3f6c73; --caution:#a83c33; --caution-soft:#a83c3322;
+    --review:#6a5a86; --line:#b9ab8a;
+    --display:'IM Fell English','Iowan Old Style',Georgia,serif;
+    --body:'Spectral','Iowan Old Style',Palatino,Georgia,serif;
+    --mono:'IBM Plex Mono',ui-monospace,'Cascadia Mono',Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:#ddd2b6}
+  body{font-family:var(--body);color:var(--ink);background:#ddd2b6;line-height:1.6;font-size:16.5px}
+  .sheet{max-width:1180px;margin:22px auto;background:var(--paper);
+    background-image:
+      radial-gradient(circle at 18% 12%, #efe7d4 0%, transparent 45%),
+      radial-gradient(circle at 82% 78%, #e3d8bf 0%, transparent 50%);
+    border:1px solid #7a6f52;
+    box-shadow:0 1px 0 #f3ecd9 inset, 0 0 0 7px var(--paper) inset, 0 0 0 8px #b9ab8a inset, 0 12px 40px rgba(40,30,10,.28);
+    padding:clamp(20px,3.5vw,52px)}
+  a{color:var(--sound)} a:hover{text-decoration:underline}
+  code{font-family:var(--mono);font-size:.84em;color:var(--ink-soft)}
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+  :is(button,summary,a):focus-visible{outline:2px solid var(--sound);outline-offset:2px;border-radius:2px}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+  /* ---- title block ---- */
+  .titleblock{display:flex;flex-wrap:wrap;gap:16px 48px;justify-content:space-between;align-items:flex-start;
+    border-bottom:2px solid var(--ink);padding-bottom:16px}
+  .titleblock .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft)}
+  h1{font-family:var(--display);font-size:clamp(34px,5.4vw,58px);font-weight:400;line-height:1;letter-spacing:.01em;margin:6px 0 8px}
+  .titleblock .sub{font-size:15.5px;color:var(--ink-soft);max-width:46ch}
+  .titleblock .sub em{font-style:italic;color:var(--ink)}
+  .titleleft{flex:1 1 auto;min-width:0}
+  .titleright{min-width:210px;text-align:right}
+  .snapshot{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);line-height:1.7}
+  .snapshot b{color:var(--ink);font-weight:500}
+  .snapshot .dot{display:inline-block;width:8px;height:8px;border-radius:50%;vertical-align:1px;margin-right:5px}
+  .snapshot.stale b{color:var(--caution)}
+
+  /* ---- do-next panel (top 3) ---- */
+  .donext{margin-top:20px;max-width:560px;border:1px solid var(--line);background:var(--paper-2);border-radius:2px;padding:10px 14px 11px;text-align:left}
+  .donext .h{font-family:var(--display);font-size:16px;display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:2px}
+  .donext .h span{font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint)}
+  .donext ol{list-style:none;counter-reset:d}
+  .dtask{display:flex;gap:8px;align-items:baseline;width:100%;text-align:left;padding:6px 4px 6px 0;border-top:1px solid var(--paper-3);font-size:13px;color:var(--ink)}
+  .dtask:hover{color:var(--sound)}
+  .dtask .id{font-family:var(--mono);font-size:11px;color:var(--ink-soft);flex:none}
+  .dtask .body{line-height:1.3}
+  .dtask .noun{font-family:var(--mono);font-size:10px;color:var(--ink-faint)}
+  .dtask .nm{border-radius:2px;padding:0 2px;transition:background .12s,color .12s}
+  .dtask:hover .nm,.dtask:focus-visible .nm{background:var(--sound);color:var(--paper)}
+
+  /* ---- controls ---- */
+  .controls{margin-top:22px}
+  .controls .lead{font-family:var(--display);font-size:22px;margin-bottom:12px}
+  .chiprow{display:flex;flex-wrap:wrap;gap:9px}
+  .chip{font-size:16px;min-height:50px;padding:9px 20px;border:1.5px solid var(--line);
+    background:var(--paper-2);color:var(--ink);border-radius:2px;
+    transition:border-color .18s,background .18s;font-family:var(--body)}
+  .chip .q{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);text-align:left}
+  .chip:hover{border-color:var(--ink-soft)}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .chip[aria-pressed="true"] .q{color:#b7c0b2}
+
+  /* ---- the route (steps) ---- */
+  .route{margin-top:16px;border:1px solid var(--line);border-left:4px solid var(--caution);
+    background:var(--paper-2);padding:18px 24px;display:none;border-radius:2px}
+  .route.open{display:block}
+  .route h2{font-family:var(--display);font-size:23px;font-weight:400;margin-bottom:4px}
+  .route .summary{font-size:15px;color:var(--ink-soft);max-width:82ch;margin-bottom:14px}
+  .route ol{list-style:none;counter-reset:hop}
+  .route li{font-size:15.5px;margin:11px 0;max-width:84ch;counter-increment:hop;display:flex;gap:14px;align-items:baseline}
+  .route li::before{content:counter(hop);font-family:var(--mono);font-size:13px;color:var(--caution);
+    border:1.5px solid var(--caution);border-radius:50%;width:26px;height:26px;flex:none;
+    display:inline-flex;align-items:center;justify-content:center;transform:translateY(4px)}
+  .route li b{color:var(--ink)}
+  .hoptag{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;padding:1px 7px;border-radius:2px;margin-left:8px;white-space:nowrap}
+  .hoptag.byhand{color:var(--caution);border:1px dashed var(--caution)}
+  .hoptag.auto{color:var(--ink-soft);border:1px solid var(--line)}
+  .route .warn{margin-top:12px;padding:9px 14px;border-left:3px solid var(--caution);font-size:14.5px;color:var(--ink-soft);max-width:78ch;background:var(--paper-3)}
+  .route .warn b{color:var(--caution)}
+
+  /* ---- how to read ---- */
+  .legend{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+  .legend .cell{background:var(--paper-2);border:1px solid var(--line);border-radius:2px;padding:11px 14px;font-size:13.5px;color:var(--ink-soft)}
+  .legend .cell b{font-family:var(--display);color:var(--ink);display:block;font-size:16px;margin-bottom:3px;font-weight:400}
+  .legend svg{vertical-align:-2px;margin-right:5px}
+  @media (max-width:820px){.legend{grid-template-columns:1fr 1fr}}
+
+  /* ---- the chart ---- */
+  .chartwrap{position:relative;margin-top:7px;border:1px solid #8a7d5c;background:var(--paper);overflow:hidden;
+    box-shadow:0 0 0 1px var(--paper) inset, 0 0 0 3px #cabf9e inset}
+  .chartwrap svg{display:block;width:100%;height:auto;touch-action:none;cursor:grab}
+  .chartwrap svg.grabbing{cursor:grabbing}
+  .neat{fill:none;stroke:var(--ink);stroke-width:1.2}
+  .neat.inner{stroke:var(--line);stroke-width:.8}
+  .tick{stroke:var(--ink);stroke-width:1.2}
+  .shoreband{opacity:.5}
+  .region-label{font-family:var(--display);font-size:21px;letter-spacing:.14em;text-transform:uppercase;fill:var(--ink)}
+  .region-sub{font-family:var(--body);font-size:14px;font-style:italic;fill:var(--ink-soft)}
+  .seam-label{font-family:var(--mono);font-size:12px;letter-spacing:.3em;text-transform:uppercase;fill:var(--water-line)}
+  .rose text{font-family:var(--display);font-size:13px;fill:var(--ink-soft)}
+  .rose .star{fill:var(--ink-soft);opacity:.8}
+  .rose .star2{fill:var(--paper);stroke:var(--ink-soft);stroke-width:.8}
+  .rose-note{font-family:var(--body);font-size:13px;font-style:italic;fill:var(--ink-soft)}
+
+  .edge{fill:none;stroke:var(--ink);stroke-width:1.1;opacity:.34;transition:opacity .25s,stroke .25s,stroke-width .25s}
+  .edge.byhand{stroke:var(--caution);stroke-dasharray:5 5;opacity:.5}
+  .chart.focused .edge:not(.lit){opacity:.09}
+  .edge.lit{stroke:var(--caution);stroke-width:3.4;opacity:1;filter:drop-shadow(0 1px 1.5px rgba(168,60,51,.4))}
+  .edge.lit.auto{stroke:var(--sound);filter:drop-shadow(0 1px 1.5px rgba(63,108,115,.4))}
+
+  .node{cursor:pointer}
+  .node .halo{fill:none;stroke:var(--sound);stroke-width:1.5;opacity:0}
+  .node text{transition:opacity .25s}
+  .node .name{font-family:var(--display);font-weight:400}
+  .node .role{font-family:var(--body);fill:var(--ink-soft);font-size:13px;font-style:italic}
+  .node .sounding{font-family:var(--mono);font-size:11px;fill:var(--sound);font-weight:500}
+  .node .wtag{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;fill:var(--caution);opacity:0;transition:opacity .2s}
+  .chart.focused .node:not(.lit):not(.wrongdoor){opacity:.24}
+  .node.lit .halo{opacity:.9}
+  .node.wrongdoor .halo{opacity:.95;stroke:var(--caution);stroke-dasharray:4 4;stroke-width:2}
+  .node.wrongdoor .wtag{opacity:1}
+  .node.selected .halo{opacity:1;stroke:var(--ink);stroke-width:2}
+  .node:hover circle.core{filter:brightness(.97)}
+  .badge circle{stroke:var(--paper);stroke-width:1.5}
+  .badge text{font-family:var(--mono);font-size:11px;font-weight:600;text-anchor:middle;fill:var(--paper)}
+
+  /* ---- chart toolbar (above the chart) ---- */
+  .charttools{display:flex;align-items:center;gap:6px;margin-top:18px;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft)}
+  .charttools .hint{letter-spacing:.02em}
+  .charttools .grow{flex:1}
+  .charttools button{border:1px solid var(--ink-soft);background:var(--paper);border-radius:3px;height:28px;min-width:30px;font-size:15px;line-height:1;color:var(--ink)}
+  .charttools button.reset{padding:0 10px;font-size:11.5px}
+  .charttools button:hover{background:var(--paper-2)}
+  /* ---- jump-down control, bottom-right of the map ---- */
+  .jumpbtn{position:absolute;z-index:3;right:12px;bottom:12px;width:40px;height:40px;font-size:20px;color:var(--ink);
+    background:var(--paper);border:1px solid var(--ink-soft);border-radius:3px;box-shadow:0 1px 4px rgba(40,30,10,.2);
+    display:none;align-items:center;justify-content:center}
+  .jumpbtn.show{display:flex}
+  .jumpbtn:hover{background:var(--paper-2)}
+
+  /* ---- detail ---- */
+  .detail{margin-top:16px;border:1px solid var(--line);background:var(--paper-2);padding:20px 24px;display:none;border-radius:2px}
+  .detail.open{display:block}
+  .detail .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .detail .kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+  .detail h3{font-family:var(--display);font-size:30px;font-weight:400;margin:2px 0}
+  .detail .rec{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);margin:2px 0 12px}
+  .detail .rec b{color:var(--sound);font-weight:500}
+  .detail .what{font-size:15px;color:var(--ink-soft);max-width:78ch;margin-bottom:16px}
+  .dcols{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .dblock{background:var(--paper);border:1px solid var(--line);border-radius:2px;padding:12px 16px}
+  .dblock h4{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:var(--sound);margin-bottom:6px}
+  .dblock.wrong h4{color:var(--caution)}
+  .dblock p{font-size:14.5px}
+  .touches{margin-top:14px;font-size:14.5px;color:var(--ink-soft)}
+  .touches b{color:var(--ink)}
+  .nounlink{font:inherit;font-size:14.5px;color:var(--sound);border-bottom:1px dotted var(--sound);padding:0;cursor:pointer;white-space:nowrap}
+  .nounlink:hover,.nounlink:focus-visible{color:var(--ink);border-bottom-style:solid}
+  .openwork{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
+  .openwork h4{font-family:var(--display);font-size:17px;font-weight:400;margin-bottom:8px}
+  .openwork .none{font-size:14px;color:var(--ink-faint);font-style:italic}
+  .task{display:flex;gap:10px;align-items:baseline;font-size:14px;margin:5px 0}
+  .task .id{font-family:var(--mono);font-size:12px;color:var(--ink-soft);flex:none}
+  .task .st{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;padding:1px 6px;border-radius:2px;flex:none}
+  .st-inprogress{color:var(--caution);border:1px solid var(--caution)}
+  .st-inreview{color:var(--review);border:1px solid var(--review)}
+  .st-todo{color:var(--ink-soft);border:1px solid var(--line)}
+  .detail .door{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:14.5px;color:var(--ink-soft)}
+  .detail .door code{color:var(--sound)}
+  .closebtn{font-family:var(--mono);font-size:13px;color:var(--ink-soft);min-height:44px;padding:0 10px}
+  .closebtn .hint{color:var(--ink-faint)}
+  .closebtn:hover{color:var(--ink)}
+
+  /* ---- lower ---- */
+  .lower{display:grid;grid-template-columns:1.35fr 1fr;gap:30px;margin-top:44px}
+  .lower h2{font-family:var(--display);font-size:22px;font-weight:400;margin-bottom:4px}
+  .lower p.lead{color:var(--ink-soft);font-size:14.5px;margin-bottom:12px;max-width:68ch}
+  .trap{border-left:2px solid var(--caution);padding:7px 14px;margin-bottom:7px;background:var(--paper-2);font-size:14.5px;color:var(--ink-soft)}
+  .trap b{color:var(--ink)}
+  .scoped{font-size:14.5px;color:var(--ink-soft);margin-left:18px}
+  .scoped li{margin:5px 0}
+  footer{margin-top:46px;padding-top:16px;border-top:2px solid var(--ink);font-size:14px;color:var(--ink-soft)}
+  footer p{max-width:74ch} footer p+p{margin-top:6px}
+
+  /* ---- floating tooltip ---- */
+  .tip{position:fixed;z-index:50;max-width:320px;pointer-events:none;opacity:0;transition:opacity .12s;
+    background:var(--ink);color:var(--paper);font-family:var(--body);font-size:13px;line-height:1.45;
+    padding:8px 11px;border-radius:4px;box-shadow:0 4px 16px rgba(30,22,8,.4)}
+  .tip.show{opacity:1}
+  .tip .tname{font-family:var(--display);font-size:15.5px;display:block;margin-bottom:1px}
+  .tip .tmeta{font-family:var(--mono);font-size:10px;color:#c6bea9;letter-spacing:.04em;text-transform:uppercase}
+  .tip .ttask{font-size:12px;margin-top:4px;display:flex;gap:6px;align-items:baseline}
+  .tip .ttask .id{font-family:var(--mono);font-size:10.5px;color:#c6bea9;flex:none}
+  .tip .tmore{font-size:11px;color:#c6bea9;margin-top:4px;font-style:italic}
+
+  @media (max-width:820px){
+    .dcols,.lower{grid-template-columns:1fr}
+    .titleright{min-width:0;text-align:left}
+    .donext{max-width:none}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header class="titleblock">
+  <div class="titleleft">
+    <p class="eyebrow">A survey of the territory · walked 2026-08-25</p>
+    <h1>game-project</h1>
+    <p class="sub">A high-level overview of the current state of game-project. Pick a change or domain below to see what a change would affect.</p>
+    <div class="donext" id="donext"></div>
+  </div>
+  <div class="titleright">
+    <p class="snapshot" id="snapshot"></p>
+  </div>
+</header>
+
+<div class="controls">
+  <p class="lead">I want to change…</p>
+  <div class="chiprow" id="chiprow" role="group" aria-label="Pick the kind of change"></div>
+</div>
+
+<div class="route" id="route" aria-live="polite"></div>
+
+<div class="legend" aria-label="How to read the chart">
+  <div class="cell"><b><svg width="30" height="16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="#e2d7be" stroke="#223038"/><circle cx="22" cy="8" r="3" fill="#dfd9c9" stroke="#223038"/></svg>Size = reach</b>
+    A bigger circle moves more when you touch it. The small teal number counts the routes running through it.</div>
+  <div class="cell"><b><svg width="34" height="16" aria-hidden="true"><line x1="0" y1="8" x2="15" y2="8" stroke="#3f6c73" stroke-width="2.6"/><line x1="19" y1="8" x2="34" y2="8" stroke="#a83c33" stroke-width="2.6" stroke-dasharray="4 3"/></svg>Line = how it carries</b>
+    A solid line carries the change on its own. A dashed red line means a person carries it by hand. Miss that hop and the change is lost.</div>
+  <div class="cell"><b><svg width="30" height="16" aria-hidden="true"><circle cx="9" cy="8" r="7.5" fill="#a83c33" stroke="#e9e0cc" stroke-width="1.5"/><text x="9" y="11.5" font-family="monospace" font-size="9" font-weight="700" fill="#e9e0cc" text-anchor="middle">6</text></svg>Filled dot = open work</b>
+    A filled dot counts open tasks on that noun. Red is in motion, purple is waiting on you, grey is queued.</div>
+  <div class="cell"><b><svg width="26" height="16" aria-hidden="true"><rect x="2" y="2" width="22" height="12" rx="2" fill="none" stroke="#a83c33" stroke-width="1.8" stroke-dasharray="4 3"/></svg>Dashed ring = wrong turn</b>
+    Pick a change and one noun may get a dashed red ring. That's the wrong turn — the name you'll reach for that doesn't do the work.</div>
+</div>
+
+<div class="charttools">
+  <span class="hint">Scroll to zoom · drag to move</span>
+  <span class="grow"></span>
+  <button id="zoomIn" aria-label="Zoom in" title="Zoom in">+</button>
+  <button id="zoomOut" aria-label="Zoom out" title="Zoom out">−</button>
+  <button id="zoomReset" class="reset" aria-label="Reset zoom" title="Reset zoom and position">reset</button>
+</div>
+<div class="chartwrap">
+  <svg id="chart" class="chart" viewBox="0 0 1240 756" role="img"
+    aria-label="A survey chart of game-project. Design-side nouns sit on the left, build-side nouns on the right, with the design/build seam as a water channel between them. Off-to-the-side nouns run along the lower margin. Pick a change above to list the same routes as numbered steps.">
+    <defs>
+      <marker id="arrow" viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0,0.8 L7,4 L0,7.2" fill="none" stroke="context-stroke" stroke-width="1.5"/>
+      </marker>
+      <pattern id="stipple" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(20)">
+        <circle cx="1" cy="1" r=".7" fill="#8fb0ac" opacity=".5"/>
+      </pattern>
+      <clipPath id="frameclip"><rect x="15" y="15" width="1210" height="726"/></clipPath>
+    </defs>
+
+    <g id="viewport" clip-path="url(#frameclip)">
+      <!-- land washes -->
+      <rect class="shoreband" x="8" y="8" width="612" height="740" fill="var(--land-design)"/>
+      <rect class="shoreband" x="700" y="8" width="532" height="740" fill="var(--land-build)"/>
+
+      <!-- the seam, as a water channel -->
+      <path d="M 660 -10 C 622 150, 700 270, 652 410 C 604 550, 700 660, 662 830"
+            fill="none" stroke="var(--water)" stroke-width="66" stroke-linecap="round"/>
+      <path d="M 660 -10 C 622 150, 700 270, 652 410 C 604 550, 700 660, 662 830"
+            fill="none" stroke="url(#stipple)" stroke-width="66" stroke-linecap="round"/>
+      <path d="M 660 -10 C 622 150, 700 270, 652 410 C 604 550, 700 660, 662 830"
+            fill="none" stroke="var(--water-line)" stroke-width="1" opacity=".7" stroke-dasharray="2 6"/>
+      <text class="seam-label" transform="translate(672 130) rotate(76)">the seam</text>
+      <text class="seam-label" transform="translate(628 560) rotate(104)">most changes cross here</text>
+
+      <!-- region labels -->
+      <text class="region-label" x="42" y="52">Design side</text>
+      <text class="region-sub"  x="43" y="72">what the game says and means</text>
+      <text class="region-label" x="1196" y="52" text-anchor="end">Build side</text>
+      <text class="region-sub"  x="1196" y="72" text-anchor="end">what actually runs</text>
+      <text class="region-label" x="42" y="676">Off to the side</text>
+      <text class="region-sub"  x="43" y="696">real, but on neither side</text>
+
+      <!-- compass rose -->
+      <g class="rose" transform="translate(1120 150)" aria-hidden="true">
+        <circle cx="0" cy="0" r="34" fill="none" stroke="var(--line)" stroke-width="1"/>
+        <polygon class="star" points="0,-40 7,-6 0,0 -7,-6"/>
+        <polygon class="star2" points="0,40 6,6 0,0 -6,6"/>
+        <polygon class="star2" points="-40,0 -6,-6 0,0 -6,6"/>
+        <polygon class="star2" points="40,0 6,-6 0,0 6,6"/>
+        <text x="0" y="-46" text-anchor="middle">N</text>
+        <text x="0" y="58" text-anchor="middle">S</text>
+        <text x="-52" y="4" text-anchor="middle">W</text>
+        <text x="52" y="4" text-anchor="middle">E</text>
+        <text class="rose-note" x="0" y="82" text-anchor="middle">changes flow west → east</text>
+      </g>
+
+      <g id="edgeLayer"></g>
+      <g id="nodeLayer"></g>
+    </g>
+
+    <!-- fixed neat-line frame + corner ticks -->
+    <rect class="neat" x="8" y="8" width="1224" height="740"/>
+    <rect class="neat inner" x="15" y="15" width="1210" height="726"/>
+    <g class="tick">
+      <line x1="8" y1="28" x2="15" y2="28"/><line x1="28" y1="8" x2="28" y2="15"/>
+      <line x1="1232" y1="28" x2="1225" y2="28"/><line x1="1212" y1="8" x2="1212" y2="15"/>
+      <line x1="8" y1="728" x2="15" y2="728"/><line x1="28" y1="748" x2="28" y2="741"/>
+      <line x1="1232" y1="728" x2="1225" y2="728"/><line x1="1212" y1="748" x2="1212" y2="741"/>
+    </g>
+  </svg>
+  <button class="jumpbtn" id="jumpBtn" aria-label="Jump down to the open card" title="Jump to the open card">⌄</button>
+</div>
+
+<div class="detail" id="detail"></div>
+
+<div class="lower">
+  <section>
+    <h2>Naming traps</h2>
+    <p class="lead">Same name, different things. Grab the wrong one and the change vanishes, breaks an honest test,
+    or drags in a dead ruling. Full entries in <code>map/collisions.md</code>.</p>
+    <div id="trapList"></div>
+  </section>
+  <section>
+    <h2>Left off on purpose</h2>
+    <ul class="scoped">
+      <li><code>.obsidian/</code> — editor settings, not territory.</li>
+      <li><code>phaser/src</code> interior — one noun here; its doors (<code>ARCHITECTURE.md</code>, <code>GAPS.md</code>) carry the inside.</li>
+      <li><code>game-project-ideas.md</code>, <code>-resources.md</code> — an idea inbox and a link list. Neither is state.</li>
+      <li><code>locations/</code> — one art doc, carried by the appearance.md trap.</li>
+      <li>Debris — <code>bash.exe.stackdump</code>, <code>.playtest/</code>, <code>.adversary/</code>, <code>dist/</code>, <code>out-calib/</code> — regenerated or accidental, wired to nothing.</li>
+    </ul>
+  </section>
+</div>
+
+<footer>
+  <p>Two doors, one survey. A model enters through <code>map/catalog.md</code>. This page is the door for a person. Both end at the same cards.</p>
+  <p>Every route is asserted by a card's Hits line and cited to the prose — none is computed. If this page and a card disagree, the card wins. If a card and the real file disagree, the file wins.</p>
+</footer>
+
+</div>
+<script>
+// ======= DATA — pure projection of map/catalog.md + map/cards/ =======
+const NOUNS = {
+  "gdd":               {shore:"design", status:"live", pos:[170,180], r:26, role:"the design doc",
+    card:"cards/gdd.md", record:"gdd/",
+    what:"The design doc as 17 numbered domain files read in order, not one compiled document. 00-world-bible reads first.",
+    hits:"Rulings land in CONTEXT.md and reach these files via gdd-sync. A mechanic change in 04-magic-system.md reaches the build only by hand: a ruling applied to content/magic/ records, then re-bundled by prep:content. There is no automatic sync — the bundle reads content/, never gdd/.",
+    wrong:"resources/_archive/build-gdd-v*_draft.md — the retired compile lineage. Map 'Build GDD section N' references to the numbered files."},
+  "gdd-sync":          {shore:"design", status:"live", pos:[70,268], r:13, role:"rulings → gdd",
+    card:"cards/gdd-sync.md", record:"../../commands/gdd-sync.md",
+    what:"The ruling-reconciliation process. Spec lives at the RL_MAP root, outside the territory. It proposes diffs; Roc gates every one.",
+    hits:"A run writes approved diffs into gdd files, and supersession banners into knowledge-base docs when a ruling reverses a recommendation.",
+    wrong:"The rulings themselves — it moves rulings into gdd, never mints or edits one. And not Paca: task status is the board's."},
+  "knowledge base":    {shore:"design", status:"live", pos:[92,388], r:14, role:"external reference",
+    card:"cards/knowledge-base.md", record:"knowledge-base/",
+    what:"Distilled external reference — Frieren analysis, the 4,735-turn dialogue corpus, engine research. Not the project's own decisions.",
+    hits:"register.md names synthesis/voice-style-guide.md as the in-fiction voice authority and the corpus as the cadence source. Reversed recommendations get supersession banners the same session.",
+    wrong:"Engine decisions: ink-unreal-integration.md still ranks inkcpp first and that call is dead (runtime is Inkpot, ruled 2026-08-02)."},
+  "register":          {shore:"design", status:"live", pos:[250,330], r:21, role:"the voice contract",
+    card:"cards/register.md", record:"narrative-pipeline/register.md",
+    what:"The output voice contract for all player-facing text — Frieren-flat, with measured numbers (median turn 5–7 words).",
+    hits:"Guardrails item 6 makes the Content Agent and Verifier enforce it. A register change means re-reviewing pending generated text before the polish pass. It also governs the content descriptions phaser-build ships (T17 ruling). Honest dead end: nothing re-passes the register over already-shipped ink, story.json, or bundles.",
+    wrong:"assignment-7/style-guide.md — a derived coursework restatement. And gdd/14-visual-style-guide.md — 'style guide' there means visuals."},
+  "soul":              {shore:"design", status:"live", pos:[178,478], r:22, role:"a character, in cast/",
+    card:"cards/soul.md", record:"cast/",
+    what:"A character. One markdown card per soul in cast/ — the canonical persona: voice, threads, relationships. A pipeline run reads a few souls, never the folder.",
+    hits:"Future pipeline output rides the card in. Souls also ride in run-folder-v01 (personas.json, ink/souls/*.ink) — a card change reaches the playable week only through regeneration, an inklecate recompile, then prep:content. Rulings made mid-session must flow back to cast/ or the next run works from a stale persona. Open question: whether a soul change should trigger the adversary run.",
+    wrong:"pipeline-runs/*/ copies of soul cards — frozen, knowingly divergent. And gdd/07-cast.md: roster design, not any one soul's persona."},
+  "narrative pipeline":{shore:"design", status:"live", pos:[402,258], r:18, role:"the content contracts",
+    card:"cards/narrative-pipeline.md", record:"narrative-pipeline/",
+    what:"A folder of contracts, not code: build-loop, guardrails, steering, npc-codex, agent seats, templates. The deterministic half lives in resolver.",
+    hits:"guardrails.md item 6 is where register gets enforced. Soul cards ride into every run through persona-card-schema.md. A template or seat change changes the next pipeline run.",
+    wrong:"pipeline-runs/*/ — same-named copies of these docs, frozen at run time. Editing a copy changes nothing."},
+  "pipeline run":      {shore:"design", status:"live", pos:[420,432], r:21, role:"dated run output",
+    card:"cards/pipeline-run.md", record:"pipeline-runs/",
+    what:"Dated snapshots of narrative runs. Older runs are frozen photographs. Live only because 2026-08-25-full-content-generation is fresh, unconsumed raw material.",
+    hits:"Only the newest run hits anything, via the polish pass: approved text folds into dialogue-inventory rows and run-folder-v01's ink/ (inklecate recompile). Once folded, the folder freezes and hits nothing.",
+    wrong:"cast/ and narrative-pipeline/ — the live originals. Run folders hold live-looking copies; none are wired."},
+  "dialogue inventory":{shore:"design", status:"live", pos:[330,580], r:16, role:"the fill tracker",
+    card:"cards/dialogue-inventory.md", record:"gdd/15-dialogue-inventory.md",
+    what:"One row per authored dialogue entry (43 core rows). Its own header states the boundary: this table tracks; the rulings rule.",
+    hits:"Row statuses are the burn-down toward the 2026-08-28 freeze. Marking built asserts the text is in ink — run-folder-v01's ink/, where touching source means an inklecate recompile.",
+    wrong:"The rulings themselves — a table row contradicting a ruling is a table bug. And not the Paca board: content fill, not task state."},
+  "design record":     {shore:"design", status:"live", pos:[540,120], r:15, role:"why, in plans/",
+    card:"cards/design-record.md", record:"plans/",
+    what:"One file per decision, named for the decision. The 2026-08-23 ruling cluster currently governs the content-freeze push. Superseded in place with banners, never deleted.",
+    hits:"Rulings here are scope authority downstream: dialogue-inventory defers to the 2026-08-23 rulings; gdd-sync reconciles them into gdd/.",
+    wrong:"Status — that is the Paca board (run /pm). And not plans/_handoffs/ — safe to read, never safe to cite."},
+  "spell record":      {shore:"design", status:"live", pos:[452,620], r:19, role:"content/magic/",
+    card:"cards/spell-record.md", record:"content/magic/",
+    what:"26 JSON records, 16 approved, 10 rejected — rejected stay on disk beside approved, same shape, because nothing is deleted. _index.md carries the schema rulings.",
+    hits:"Runtime selection filters on status === \"approved\" in bundle-content.mjs and MagicDB — selecting by filename would ship rejected content. produces/produced_by must agree with content/items/, verified by content-check.mjs. Components keyed by item_id, never prose.",
+    wrong:"gdd/04-magic-system.md — the design-altitude spec, not the record; its slice count follows the records. And not cues.json — visuals are a separate noun."},
+  "item record":       {shore:"design", status:"live", pos:[236,600], r:16, role:"content/items/",
+    card:"cards/item-record.md", record:"content/items/",
+    what:"One JSON per common item (17) and key item (12). Items satisfy spell components and forage; key items serve soul storylines.",
+    hits:"An item id change hits every spell whose components or produces names it — the join is by item_id. World items are collectible:false and must stay so: cast on and cast from, never pocketed.",
+    wrong:"gdd/05-collectibles.md — category design, not records. And _component-requirements.json — derived; regenerate, don't hand-edit."},
+  "seat contract":     {shore:"design", status:"live", pos:[560,300], r:13, role:"agent seats",
+    card:"cards/seat-contract.md", record:"agents/",
+    what:"One file per agent seat, each with feature owned, trigger, I/O, and an escape hatch — a seat without a hatch guesses.",
+    hits:"Editing a contract triggers the audit. Contracts drift fastest right after a ruling. Reference depth must stay ≤ 1.",
+    wrong:"gdd/11-ai-agents-and-pipeline.md — contracts reference it, never redefine it. And not .claude/agents/ runners — harness plumbing."},
+  "resolver":          {shore:"build", status:"live", pos:[800,180], r:24, role:"mints the week from data",
+    card:"cards/resolver.md", record:"tools/resolver/",
+    what:"The deterministic half of the pipeline. Input is human-gated layout data in data/; data/tuning.json is the single home for tunable game settings.",
+    hits:"A resolver change hits every regenerated run folder (build --emit-story, resolve-week), then phaser's prep:content re-sync. tuning.json rides the same chain. It declares present_<soul> with writer DAY_START_WRITER — lantern-player's applyPresence fulfills it; change either side alone and it breaks silently. Tests are node --test; vitest here collects 0.",
+    wrong:"out-calib/ and out/ — disposable outputs. Content edited there vanishes on the next build."},
+  "lantern player":    {shore:"build", status:"live", pos:[992,132], r:20, role:"the host layer",
+    card:"cards/lantern-player.md", record:"tools/lantern/src/lib/play.ts",
+    what:"LanternPlayer loads story.json through inkjs and owns satchel, day loop, move budget, NPC presence — host-written state the ink only reads.",
+    hits:"Phaser imports this class via a Vite alias — a change here changes the shipping game. The presence contract is two-sided with resolver. The one-writer rule is precedent. The Unreal port's first job is porting this layer.",
+    wrong:"The ink graph — present_<soul> looking unwritten in ink is not an ink gap. That conclusion was already made once and corrected."},
+  "run folder v01":    {shore:"build", status:"live", pos:[822,428], r:28, role:"the playable week",
+    card:"cards/run-folder-v01.md", record:"lantern-projects/v01/",
+    what:"The current playable week: compiled story.json (the seam both hosts read), graph.json, day JSONs, manifest, backdrops, and the ink source.",
+    hits:"Editing v01 content means regenerating via resolver, then prep:content to re-sync Phaser's bundled copy. Touching ink/ means an inklecate recompile.",
+    wrong:"out-calib/ — same interior shape, disposable. And scratch/ — a scratch copy, not the week. story.json is five files; edit only this one."},
+  "phaser build":      {shore:"build", status:"live", pos:[1044,520], r:34, role:"the ship target",
+    card:"cards/phaser-build.md", record:"phaser/",
+    what:"The ship target. A presentation layer over LanternPlayer (aliased, never forked) adding casting, hub decoration, screens, inventory.",
+    hits:"UI changes need a real headless playtest, not just tsc/vitest. Ink owns the clock — Phaser must never write movesLeft/TimeOfDay/day. After a resolver reroll: prep:content. Save/gates/inventory/cast/day-loop changes trigger an adversary run. Changes under src/render/vfx/ move cue entries.",
+    wrong:"tools/lantern/ — fixing game-loop logic 'in Phaser' by copying would mint the drift the alias exists to prevent."},
+  "cue":               {shore:"build", status:"live", pos:[1130,360], r:17, role:"a spell's look",
+    card:"cards/cue.md", record:"phaser/src/render/vfx/cues.json",
+    what:"A spell's VFX entry: which spritesheet plays, at what rate, anchored where. Data, not code — the backend plays what cues.json says.",
+    hits:"Kind changes hit the no-effect-honesty parity check (neutrals can flip). leap's originY 0.6667 is texture-baked — do not recompute; ignite's 0.371 is measured — re-measure. A cue change is a phaser-build change and rides its playtest rule. A new approved spell needs no cue entry — the neutral fallback covers it.",
+    wrong:"phaser/src/magic/ — 'it's a spell', but that is casting mechanics. And not content/magic/*.json — the record decides outcomes; the cue decides looks."},
+  "Unreal port":       {shore:"build", status:"dormant", pos:[1150,232], r:12, role:"parked; wakes post-capstone",
+    card:"cards/unreal-port.md", record:"CONTEXT.md",
+    what:"The UE 5.8 build lives in a Perforce workspace, not this repo. Parked by the pivot: post-capstone, not cancelled. Wakes after 2026-09-01 ships.",
+    hits:"When it wakes, its first job is the host layer (play.ts) — RebirthCore never ported applyPresence. The seam is the same compiled story.json into Inkpot.",
+    wrong:"The current capstone — nothing in phaser/ waits on Unreal. And the knowledge base's inkcpp pick is superseded."},
+  "Paca board":        {shore:"off", status:"live", pos:[352,716], r:11, role:"task state",
+    card:"cards/paca-board.md", record:"CONTEXT.md",
+    what:"The external board is the authority for task state. Paca holds state; markdown holds reasoning — status banners in files cost a session once.",
+    hits:"What is open, late, blocked goes to the board via /pm — never reconstructed from markdown. Scope cuts and date changes need Roc's explicit word.",
+    wrong:"plans/ and _handoffs/ — why and where-we-stopped, not state. A task found only in the archived backlog is not a task."},
+  "session handoff":   {shore:"off", status:"live", pos:[470,716], r:9, role:"where we stopped",
+    card:"cards/session-handoff.md", record:"plans/_handoffs/",
+    what:"One dated file per session, stale by design — a handoff's lifespan is one session. The noun is live because new ones are written constantly.",
+    hits:"Only the next session, as a starting pointer. Anything durable folds into CONTEXT.md, a design record, or Paca.",
+    wrong:"Contracts and rulings — never cite a handoff in a contract. PAUSED.md is the same species but carries live VFX rulings; see collisions."},
+  "assignment":        {shore:"off", status:"live", pos:[630,716], r:9, role:"coursework",
+    card:"cards/assignment.md", record:"assignments/",
+    what:"One self-contained folder per assignment. They read from the game and derive copies — nothing here is a source of truth.",
+    hits:"Grades, not the game. Flow is one-way. Derived copies go stale silently when the source moves, and that is accepted.",
+    wrong:"assignment-7-old/ — 624 superseded files with the same interior names. Check the path segment."},
+  "assignment-7-old":  {shore:"off", status:"leftover", pos:[810,716], r:7, role:"superseded twin",
+    card:"cards/assignment-7-old.md", record:"assignments/assignment-7-old/",
+    what:"The superseded assignment-7 tree, honest about what it is. Marked so a reader spends zero attention on it.",
+    hits:"Nothing. Editing anything here changes nothing anywhere.",
+    wrong:"assignments/assignment-7/ — the live twin. The trap is search results mixing the two trees."},
+  "archive":           {shore:"off", status:"leftover", pos:[985,716], r:7, role:"the graveyard",
+    card:"cards/archive.md", record:"resources/_archive/",
+    what:"The territory's honest graveyard: retired GDD drafts, the frozen pre-Paca backlog, a frozen prior map run.",
+    hits:"Nothing. Nothing reads from here at build or run time.",
+    wrong:"resources/ proper — the parent still holds live items. Only the _archive/ subtree is retired."}
+};
+
+const EDGES = [
+  {f:"soul",t:"pipeline run",k:"auto"},
+  {f:"soul",t:"run folder v01",k:"auto"},
+  {f:"narrative pipeline",t:"pipeline run",k:"auto"},
+  {f:"pipeline run",t:"dialogue inventory",k:"manual"},
+  {f:"pipeline run",t:"run folder v01",k:"manual"},
+  {f:"dialogue inventory",t:"run folder v01",k:"auto"},
+  {f:"design record",t:"dialogue inventory",k:"auto"},
+  {f:"design record",t:"gdd",k:"manual"},
+  {f:"gdd-sync",t:"gdd",k:"manual"},
+  {f:"gdd-sync",t:"knowledge base",k:"manual"},
+  {f:"gdd",t:"spell record",k:"manual"},
+  {f:"spell record",t:"phaser build",k:"auto"},
+  {f:"spell record",t:"item record",k:"auto"},
+  {f:"item record",t:"spell record",k:"auto"},
+  {f:"item record",t:"phaser build",k:"auto"},
+  {f:"resolver",t:"run folder v01",k:"auto"},
+  {f:"resolver",t:"phaser build",k:"auto"},
+  {f:"resolver",t:"lantern player",k:"auto"},
+  {f:"lantern player",t:"resolver",k:"auto"},
+  {f:"run folder v01",t:"phaser build",k:"auto"},
+  {f:"lantern player",t:"phaser build",k:"auto"},
+  {f:"Unreal port",t:"lantern player",k:"manual"},
+  {f:"cue",t:"phaser build",k:"auto"},
+  {f:"phaser build",t:"cue",k:"auto"},
+  {f:"knowledge base",t:"register",k:"auto"},
+  {f:"register",t:"narrative pipeline",k:"auto"},
+  {f:"register",t:"pipeline run",k:"manual"},
+  {f:"register",t:"phaser build",k:"auto"},
+  {f:"session handoff",t:"Paca board",k:"manual"},
+  {f:"Paca board",t:"seat contract",k:"auto"}
+];
+
+const INTENTS = [
+  {label:"a game mechanic", q:"change",
+   summary:"Mechanics live in records, not in the design doc. The GDD hop is a person carrying a ruling.",
+   steps:[
+     {from:"gdd", to:"spell record", k:"manual", text:"Rule the change in <b>gdd</b>, then apply it by hand to <b>spell record</b> JSONs in content/magic/. No automatic sync exists — the bundle reads content/, never gdd/."},
+     {from:"spell record", to:"item record", k:"auto", text:"If components or produces change, <b>item record</b> must agree — the join is by item_id. Run content-check.mjs."},
+     {from:"spell record", to:"phaser build", k:"auto", text:"Re-bundle into <b>phaser build</b> with prep:content. Runtime selects on status === \"approved\" only."}
+   ],
+   wrong:[], warn:"Editing gdd/04-magic-system.md alone changes nothing that runs. And cues.json is looks, not mechanics."},
+  {label:"story / dialogue", q:"change",
+   summary:"Approved text folds from the pending run into the tracker and the playable week, then re-syncs to the build.",
+   steps:[
+     {from:"pipeline run", to:"dialogue inventory", k:"manual", text:"The polish pass folds approved text from the newest <b>pipeline run</b> into <b>dialogue inventory</b> rows. Marking built asserts the text is in ink."},
+     {from:"pipeline run", to:"run folder v01", k:"manual", text:"The same pass writes the text into <b>run folder v01</b>'s ink/ — an inklecate recompile."},
+     {from:"run folder v01", to:"phaser build", k:"auto", text:"Re-sync <b>phaser build</b>'s bundled copy with prep:content."}
+   ],
+   wrong:[], warn:"story.json is five files — edit only lantern-projects/v01/. The copies in pipeline-runs/ are frozen photographs."},
+  {label:"how a spell looks", q:"change",
+   summary:"Looks are data. One file, one playtest, and calibration rulings that are not all the same physics.",
+   steps:[
+     {from:"cue", to:"phaser build", k:"auto", text:"Edit the <b>cue</b> entry in cues.json. It sits inside phaser/src, so it rides <b>phaser build</b>'s rule: verify with a real playtest, not just tsc."},
+     {from:"cue", to:"cue", k:"manual", text:"Check PAUSED.md's per-cue rulings first: leap's originY is texture-baked (do not recompute), ignite's is measured (re-measure). A new approved spell needs no entry — the neutral fallback covers it."}
+   ],
+   wrong:["spell record"], warn:"The wrong turn is 'spell': phaser/src/magic/ and content/magic/ are mechanics and outcomes. The cue only decides what the outcome looks like."},
+  {label:"a character", q:"change",
+   summary:"The card in cast/ is the soul. Everything else is derived from it, and none of it updates itself.",
+   steps:[
+     {from:"soul", to:"pipeline run", k:"auto", text:"Edit the card in cast/ — every future generation call rides the <b>soul</b> card into the next <b>pipeline run</b>. Mid-session rulings must flow back to cast/ or the next run is stale."},
+     {from:"soul", to:"run folder v01", k:"auto", text:"<b>run folder v01</b> carries derived copies (personas.json, ink/souls/). Reaching them means regeneration and an inklecate recompile."},
+     {from:"run folder v01", to:"phaser build", k:"auto", text:"Then prep:content re-syncs <b>phaser build</b>."}
+   ],
+   wrong:[], warn:"The same-named soul cards inside pipeline-runs/ are frozen photographs. Roster shape lives in gdd/07, not in any one soul. Open question on the card: whether a soul change should trigger the adversary run."},
+  {label:"the voice", q:"change",
+   summary:"The register reaches pending text and shipped descriptions. It cannot reach text already built.",
+   steps:[
+     {from:"knowledge base", to:"register", k:"auto", text:"The <b>register</b>'s numbers come from the <b>knowledge base</b> corpus; its in-fiction authority is voice-style-guide.md."},
+     {from:"register", to:"narrative pipeline", k:"auto", text:"Guardrails item 6 in <b>narrative pipeline</b> is where agents enforce it — a register change changes what passes voice review."},
+     {from:"register", to:"pipeline run", k:"manual", text:"Re-review pending generated text in the newest <b>pipeline run</b> before the polish pass copies anything to canon."},
+     {from:"register", to:"phaser build", k:"auto", text:"Its player voice also governs the content descriptions <b>phaser build</b> ships (T17 ruling)."}
+   ],
+   wrong:["assignment"], warn:"Honest dead end: already-shipped text is out of reach — nothing re-passes the register over built ink or bundles. And two other files are called 'style guide'; neither is the voice."}
+];
+
+const COLLISIONS = [
+  ["story.json is five files","v01 is the record; scratch, phaser/public, phaser/dist, and the lantern fixture are copies."],
+  ["PAUSED.md is a retired container holding live rulings","The leap originY canon and the vortex prototypes live only there. Don't trust the file; don't discard the rulings."],
+  ["phaser/README.md is stale in three flagged places","Its own banner says so. CONTEXT.md is authoritative on all three."],
+  ["A soul card is not always the soul","cast/ is the record; pipeline-runs/ copies are frozen; -threads.md files are companions."],
+  ["appearance.md is three files","Character art, key-item art, location art. A bare hit needs its folder."],
+  ["“style guide” is three documents","register.md rules prose voice; gdd/14 rules visuals; assignment-7's copy is never the source."],
+  ["“spell” splits into cue and magic","Visuals in cues.json, mechanics in phaser/src/magic/, the record in content/magic/."],
+  ["assignment-7 is not assignment-7-old","Same interior filenames, one live tree, one superseded. Check the path segment."],
+  ["Tasks live in two worlds","Paca holds state; markdown holds reasoning. A task found only in the archived backlog is not a task."],
+  ["The test command is not one command","resolver runs node --test; lantern and phaser run vitest. The wrong runner looks like a wall of failures."],
+  ["“home” is not what the manifest says","T5 is an NPC's home despite the manifest's filename; the player's Home Hub is HOME."],
+  ["“Forest Unlock 1” is a label, not a screen","It matches no screen id — never minted (GP-106). The graph joins on gate ids."]
+];
+
+// ======= PACA — open-work snapshot, taken at run time. See fallback note. =======
+// Each task is filed to the ONE noun where its change lands, so counts stay honest.
+// A future run that cannot reach Paca must set available:false and empty PACA — the page
+// then shows the reconnect note instead of a stale list. (Recorded in reference/surface-spec.md.)
+const PACA_SNAPSHOT = {
+  available: true,
+  taken: "2026-08-25",
+  counts: {todo:8, inprogress:3, inreview:24},
+  note: "Open tasks read from the Paca board when this page was made. Backlog is not shown. Task state lives in Paca — run /pm for the live list."
+};
+const PACA = [
+  {id:205, s:"inprogress", tier:"must",   noun:"dialogue inventory", t:"T15 — NPC dialogue rework + overnight generation"},
+  {id:206, s:"inprogress", tier:"must",   noun:"pipeline run", t:"T16 — Intro story scene (arrival, name entry)"},
+  {id:207, s:"inprogress", tier:"should", noun:"item record", t:"T17 — Item descriptions, mage's field-notes voice (54 records)"},
+  {id:96,  s:"inreview", tier:"could",  noun:"lantern player", t:"ThreadsPanel — wire thread ids to prose"},
+  {id:137, s:"inreview", tier:"must",   noun:"resolver", t:"26 of 30 line files have no scene in the graph (Mara has zero)"},
+  {id:138, s:"inreview", tier:"must",   noun:"resolver", t:"The 4 imported scenes are a stale copy of the line files"},
+  {id:141, s:"inreview", tier:"must",   noun:"resolver", t:"Scene-level entry gates + played() predicate"},
+  {id:160, s:"inreview", tier:"could",  noun:"phaser build", t:"Collection & Discovery mode — 5 scenes + theme pass"},
+  {id:165, s:"inreview", tier:"must",   noun:"phaser build", t:"Mode5 SRP extraction — CollectScene 1244→832 lines"},
+  {id:166, s:"inreview", tier:"must",   noun:"phaser build", t:"VFX never wired to mode5 — every cast was silent"},
+  {id:167, s:"inreview", tier:"must",   noun:"phaser build", t:"TraversalRow crash on any move toward a refused gate"},
+  {id:168, s:"inreview", tier:"could",  noun:"phaser build", t:"Edit mode — scoped to hotspot drawing only"},
+  {id:169, s:"inreview", tier:"should", noun:"phaser build", t:"Playtest harness vendored — headless Playwright"},
+  {id:176, s:"inreview", tier:"should", noun:"phaser build", t:"Content Approval Editor (standalone tool)"},
+  {id:177, s:"inreview", tier:"should", noun:"phaser build", t:"Screen-flow review tool"},
+  {id:178, s:"inreview", tier:"should", noun:"phaser build", t:"mode-5 DEV-only debug unlock (U key)"},
+  {id:179, s:"inreview", tier:"must",   noun:"phaser build", t:"Spell-unlock rewire — Mage starts with 3, rest NPC-taught"},
+  {id:181, s:"inreview", tier:"must",   noun:"spell record", t:"F8 heated-stone chain — new world items + receivers"},
+  {id:190, s:"inreview", tier:"should", noun:"phaser build", t:"NPC portrait row redesign (NpcTalkSystem)"},
+  {id:191, s:"inreview", tier:"should", noun:"phaser build", t:"Backdrop pan dead-zone system"},
+  {id:192, s:"inreview", tier:"should", noun:"phaser build", t:"Options settings — first live non-preview controls"},
+  {id:193, s:"inreview", tier:"should", noun:"phaser build", t:"Universal fade-in wired into every scene"},
+  {id:199, s:"inreview", tier:"could",  noun:"cue", t:"VFX sprite cue kind — 9 of 16 spells re-authored"},
+  {id:200, s:"inreview", tier:"could",  noun:"phaser build", t:"Content Approval Editor — preview-pane fixes"},
+  {id:202, s:"inreview", tier:"should", noun:"phaser build", t:"T14 — HUD relayout (single bottom bar, move regions)"},
+  {id:203, s:"inreview", tier:"should", noun:"phaser build", t:"Move-region editor in EditModeSystem"},
+  {id:204, s:"inreview", tier:"must",   noun:"phaser build", t:"T13 — Year-loop saves (rollover, 3-slot set + name)"},
+  {id:89,  s:"todo", tier:"should", noun:"resolver", t:"arch_promote 3-of-5 is unsatisfiable — decide the denominator"},
+  {id:92,  s:"todo", tier:"should", noun:"soul", t:"Refactor thread tables into per-life -threads.md files"},
+  {id:93,  s:"todo", tier:"should", noun:"resolver", t:"Day-loop pacing rules — a conversation advances time"},
+  {id:110, s:"todo", tier:"should", noun:"narrative pipeline", t:"Variance must be drawn, never implied"},
+  {id:113, s:"todo", tier:"should", noun:"soul", t:"Author the echo payoff in the Toby × Ilsa festival scene"},
+  {id:119, s:"todo", tier:"should", noun:"narrative pipeline", t:"One slot per call causes convergence — record the tension"},
+  {id:123, s:"todo", tier:"should", noun:"seat contract", t:"Trim narrative-architect.md — it still claims choice_node work"},
+  {id:157, s:"todo", tier:"should", noun:"resolver", t:"NPC presence — wire slot_fill into emitted ink"}
+];
+const ST_LABEL = {inprogress:"in motion", inreview:"waiting on you", todo:"queued"};
+const ST_COLOR = {inprogress:"var(--caution)", inreview:"var(--review)", todo:"var(--ink-soft)"};
+const ST_RANK  = {inprogress:3, inreview:2, todo:1};
+const TIER_RANK = {must:3, should:2, could:1};
+
+// index open work by noun
+const openByNoun = {};
+if (PACA_SNAPSHOT.available) for (const task of PACA){ (openByNoun[task.noun] ||= []).push(task); }
+for (const list of Object.values(openByNoun))
+  list.sort((a,b)=> (ST_RANK[b.s]-ST_RANK[a.s]) || (a.id-b.id));
+
+// top 3: highest tier, then what's in motion, then oldest
+const TOP3 = PACA_SNAPSHOT.available
+  ? [...PACA].sort((a,b)=> ((TIER_RANK[b.tier]||0)-(TIER_RANK[a.tier]||0)) || (ST_RANK[b.s]-ST_RANK[a.s]) || (a.id-b.id)).slice(0,3)
+  : [];
+
+// ======= RENDER =======
+const SVGNS = "http://www.w3.org/2000/svg";
+const chart = document.getElementById("chart");
+const viewport = document.getElementById("viewport");
+const edgeLayer = document.getElementById("edgeLayer");
+const nodeLayer = document.getElementById("nodeLayer");
+const detail = document.getElementById("detail");
+const route = document.getElementById("route");
+const jumpBtn = document.getElementById("jumpBtn");
+let activeIntent = null, selectedNoun = null;
+
+// ---- floating tooltip ----
+const tip = document.createElement("div"); tip.className = "tip"; document.body.appendChild(tip);
+function showTip(html, x, y){
+  tip.innerHTML = html; tip.classList.add("show");
+  const r = tip.getBoundingClientRect(), pad = 14;
+  let tx = x + pad, ty = y + pad;
+  if (tx + r.width > window.innerWidth - 8) tx = x - r.width - pad;
+  if (ty + r.height > window.innerHeight - 8) ty = y - r.height - pad;
+  tip.style.left = Math.max(8,tx) + "px"; tip.style.top = Math.max(8,ty) + "px";
+}
+function hideTip(){ tip.classList.remove("show"); }
+function nodeTip(name){
+  const n = NOUNS[name];
+  const shore = n.shore==="design"?"design side":n.shore==="build"?"build side":"off to the side";
+  return `<span class="tname">${name}</span><span class="tmeta">${shore} · ${n.status} · ${degreeOf(name)} routes · ${n.role}</span>`;
+}
+function badgeTip(name){
+  const open = openByNoun[name] || [];
+  const shown = open.slice(0,5).map(t=>`<div class="ttask"><span class="id">GP-${t.id}</span><span>${t.t}</span></div>`).join("");
+  const more = open.length>5 ? `<div class="tmore">+${open.length-5} more — click the noun for all</div>` : `<div class="tmore">click the noun for details</div>`;
+  return `<span class="tname">${open.length} open · ${ST_LABEL[open[0].s]} hottest</span>${shown}${more}`;
+}
+
+function el(tag, attrs, parent){
+  const e = document.createElementNS(SVGNS, tag);
+  for (const [k,v] of Object.entries(attrs)) e.setAttribute(k, v);
+  (parent||nodeLayer).appendChild(e); return e;
+}
+function degreeOf(name){ return EDGES.filter(e=>e.f===name||e.t===name).length; }
+function anchor(a, b){
+  const dx=b.pos[0]-a.pos[0], dy=b.pos[1]-a.pos[1], d=Math.hypot(dx,dy)||1;
+  return [a.pos[0]+dx/d*(a.r+4), a.pos[1]+dy/d*(a.r+4)];
+}
+function edgePath(f,t){
+  const A=NOUNS[f], B=NOUNS[t];
+  const [x1,y1]=anchor(A,B), [x2,y2]=anchor(B,A);
+  const mx=(x1+x2)/2, my=(y1+y2)/2;
+  const nx=-(y2-y1), ny=(x2-x1), nd=Math.hypot(nx,ny)||1;
+  const bow = Math.min(46, Math.hypot(x2-x1,y2-y1)*.14);
+  return `M ${x1} ${y1} Q ${mx+nx/nd*bow} ${my+ny/nd*bow} ${x2} ${y2}`;
+}
+
+// ---- snapshot stamp + do-next ----
+(function(){
+  const s = document.getElementById("snapshot");
+  const dn = document.getElementById("donext");
+  if (PACA_SNAPSHOT.available){
+    const c = PACA_SNAPSHOT.counts, total = c.todo+c.inprogress+c.inreview;
+    s.innerHTML = `<span class="dot" style="background:var(--review)"></span><b>Paca snapshot</b> · ${PACA_SNAPSHOT.taken} · <b>${total}</b> open<br>`+
+      `${c.inprogress} in motion · ${c.inreview} waiting on you · ${c.todo} queued · run /pm for the live list`;
+    dn.innerHTML = `<div class="h">Do next <span>top 3 · tier, then in motion</span></div><ol>`+
+      TOP3.map(t=>`<button class="dtask" data-noun="${t.noun}" title="Show ${t.noun} on the chart">`+
+        `<span class="id">GP-${t.id}</span><span class="body">${t.t}<br><span class="noun"><span class="nm">${t.noun}</span> · ${ST_LABEL[t.s]}</span></span></button>`).join("")+`</ol>`;
+    dn.querySelectorAll(".dtask").forEach(b=>{
+      b.addEventListener("click", ()=>{ selectNoun(b.dataset.noun); jumpToChart(); });
+    });
+  } else {
+    s.className = "snapshot stale";
+    s.innerHTML = `<span class="dot" style="background:var(--caution)"></span><b>Paca not reached</b> on this run.<br>`+
+      `Open-work counts are hidden. Reconnect Paca and re-run the survey to refresh them.`;
+    dn.style.display = "none";
+  }
+})();
+
+// ---- edges ----
+const edgeEls = EDGES.map(e=>{
+  const p = el("path", {d:edgePath(e.f,e.t), class:"edge"+(e.k==="manual"?" byhand":" auto"), "marker-end":"url(#arrow)"}, edgeLayer);
+  p.dataset.f=e.f; p.dataset.t=e.t; p.dataset.k=e.k; return p;
+});
+
+// ---- nodes ----
+const shoreFill = {design:"var(--paper-2)", build:"var(--land-build)", off:"#cfc4a4"};
+for (const [name,n] of Object.entries(NOUNS)){
+  const dull = n.status!=="live";
+  const g = el("g", {class:"node", tabindex:"0", role:"button", "aria-expanded":"false",
+    "aria-label":`${name}, ${n.role}, ${n.status}`}, nodeLayer);
+  g.dataset.noun = name;
+  el("circle", {class:"halo", cx:n.pos[0], cy:n.pos[1], r:n.r+6}, g);
+  if (n.r>=22 && !dull) el("circle", {cx:n.pos[0], cy:n.pos[1], r:n.r+4, fill:"none", stroke:"var(--ink)", "stroke-width":".8", opacity:".5"}, g);
+  el("circle", {class:"core", cx:n.pos[0], cy:n.pos[1], r:n.r,
+    fill: dull? "var(--paper-3)" : shoreFill[n.shore], "fill-opacity": dull? .5 : 1,
+    stroke:"var(--ink)", "stroke-width": n.status==="dormant"?1.2:1.4,
+    "stroke-dasharray": dull? "4 3" : "none"}, g);
+  el("circle", {cx:n.pos[0], cy:n.pos[1], r:2, fill:"var(--ink)", opacity: dull?.4:.75}, g);
+
+  const bottom = n.pos[1] > 690;
+  const anchorSide = bottom ? "middle" : (n.pos[0] > 1110 ? "end" : (n.pos[0] < 110 ? "start" : "middle"));
+  const lx = anchorSide==="end" ? n.pos[0]+n.r : anchorSide==="start" ? n.pos[0]-n.r : n.pos[0];
+  const fs = Math.max(15, Math.min(23, n.r*0.8));
+  if (bottom){
+    el("text", {class:"name", x:n.pos[0], y:n.pos[1]-n.r-7, "text-anchor":"middle", "font-size":15,
+      fill: dull? "var(--ink-faint)":"var(--ink)"}, g)
+      .textContent = name + (dull? ` (${n.status})` : "");
+  } else {
+    const labelY = n.pos[1] + n.r + fs + 1;
+    el("text", {class:"name", x:lx, y:labelY, "text-anchor":anchorSide, "font-size":fs,
+      fill: dull? "var(--ink-faint)":"var(--ink)"}, g)
+      .textContent = name + (dull? ` (${n.status})` : "");
+    el("text", {class:"role", x:lx, y:labelY+16, "text-anchor":anchorSide}, g).textContent = n.role;
+  }
+
+  // sounding: how many routes run through this noun
+  const deg = degreeOf(name);
+  if (deg>0){
+    const sx = anchorSide==="end" ? n.pos[0]-n.r-8 : anchorSide==="start" ? n.pos[0]+n.r+8 : n.pos[0]+n.r+7;
+    el("text", {class:"sounding", x:sx, y:n.pos[1]-n.r+2, "text-anchor": anchorSide==="end"?"end":"start"}, g)
+      .textContent = deg;
+  }
+
+  // wrong-turn tag (shows only when a change makes this the wrong turn)
+  el("text", {class:"wtag", x:n.pos[0], y: bottom? n.pos[1]+n.r+16 : n.pos[1]-n.r-9, "text-anchor":"middle"}, g)
+    .textContent = "wrong turn";
+
+  // open-work badge (filled dot)
+  const open = openByNoun[name];
+  if (open && open.length){
+    const hottest = open[0].s;
+    const bx = n.pos[0] + n.r*0.72, by = n.pos[1] - n.r*0.72;
+    const bg = el("g", {class:"badge"}, g);
+    el("circle", {cx:bx, cy:by, r:11, fill:ST_COLOR[hottest]}, bg);
+    el("text", {x:bx, y:by+4}, bg).textContent = open.length;
+  }
+
+  g.addEventListener("click", ()=>{ if(!panMoved) selectNoun(name); });
+  g.addEventListener("keydown", ev=>{ if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();selectNoun(name);} });
+  g.addEventListener("mousemove", ev=>{
+    if (dragging){ hideTip(); return; }
+    const onBadge = ev.target.closest && ev.target.closest(".badge");
+    showTip(onBadge && open && open.length ? badgeTip(name) : nodeTip(name), ev.clientX, ev.clientY);
+  });
+  g.addEventListener("mouseleave", hideTip);
+}
+
+// ---- chips ----
+const chiprow = document.getElementById("chiprow");
+INTENTS.forEach((it,i)=>{
+  const c = document.createElement("button");
+  c.className="chip"; c.setAttribute("aria-pressed","false");
+  c.setAttribute("title", it.summary);
+  c.innerHTML = `<span class="q">I want to change</span>${it.label}`;
+  c.addEventListener("click", ()=>toggleIntent(i));
+  chiprow.appendChild(c);
+});
+
+// ---- traps ----
+const trapList = document.getElementById("trapList");
+COLLISIONS.forEach(([b,t])=>{
+  const d=document.createElement("div"); d.className="trap"; d.innerHTML=`<b>${b}.</b> ${t}`;
+  trapList.appendChild(d);
+});
+
+function chainOf(it){ const s=new Set(); it.steps.forEach(st=>{s.add(st.from);s.add(st.to);}); return s; }
+
+function applyFocus(){
+  const focused = activeIntent!==null;
+  chart.classList.toggle("focused", focused || !!selectedNoun);
+  const it = focused? INTENTS[activeIntent] : null;
+  const chain = it? chainOf(it) : null;
+  const litPairs = it? it.steps.filter(s=>s.from!==s.to).map(s=>s.from+"→"+s.to) : [];
+  nodeLayer.querySelectorAll(".node").forEach(g=>{
+    g.classList.remove("lit","wrongdoor");
+    const nm=g.dataset.noun;
+    if (it){ if (chain.has(nm)) g.classList.add("lit"); else if (it.wrong.includes(nm)) g.classList.add("wrongdoor"); }
+    else if (selectedNoun){ if (nm===selectedNoun || EDGES.some(e=>(e.f===selectedNoun&&e.t===nm)||(e.t===selectedNoun&&e.f===nm))) g.classList.add("lit"); }
+  });
+  edgeEls.forEach(p=>{
+    p.classList.remove("lit");
+    const isAuto = p.dataset.k==="auto";
+    if (it && litPairs.includes(p.dataset.f+"→"+p.dataset.t)){ p.classList.add("lit"); p.classList.toggle("auto",isAuto); plot(p); }
+    else if (!it && selectedNoun && (p.dataset.f===selectedNoun||p.dataset.t===selectedNoun)){ p.classList.add("lit"); p.classList.toggle("auto",isAuto); }
+  });
+}
+
+// plot animation: draw the route line
+function plot(p){
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+  const len = p.getTotalLength();
+  p.style.transition="none"; p.style.strokeDasharray=len; p.style.strokeDashoffset=len;
+  p.getBoundingClientRect();
+  p.style.transition="stroke-dashoffset .5s ease-out";
+  p.style.strokeDashoffset="0";
+  setTimeout(()=>{ p.style.strokeDasharray=""; p.style.strokeDashoffset=""; p.style.transition=""; }, 560);
+}
+
+function showJump(on){ jumpBtn.classList.toggle("show", !!on); }
+
+function toggleIntent(i){
+  activeIntent = (activeIntent===i)? null : i;
+  if (activeIntent!==null) closeDetail(true);
+  chiprow.querySelectorAll(".chip").forEach((c,ci)=>c.setAttribute("aria-pressed",String(ci===activeIntent)));
+  if (activeIntent!==null){
+    const it=INTENTS[activeIntent];
+    route.innerHTML = `<h2>To change ${it.label} — the route</h2>
+      <p class="summary">${it.summary}</p>
+      <ol>${it.steps.map(st=>`<li><span>${st.text}<span class="hoptag ${st.k==="manual"?"byhand":"auto"}">${st.k==="manual"?"by hand":"carries itself"}</span></span></li>`).join("")}</ol>
+      <p class="warn"><b>Wrong turn:</b> ${it.warn}</p>`;
+    route.classList.add("open");
+  } else { route.classList.remove("open"); route.innerHTML=""; }
+  applyFocus();
+}
+
+function taskRow(task){
+  return `<div class="task"><span class="id">GP-${task.id}</span>`+
+    `<span class="st st-${task.s}">${ST_LABEL[task.s]}</span>`+
+    `<span>${task.t}</span></div>`;
+}
+
+function jumpToChart(){
+  const wrap = chart.closest(".chartwrap");
+  if (wrap) wrap.scrollIntoView({behavior:"smooth", block:"center"});
+}
+
+function selectNoun(name){
+  if (selectedNoun===name){ closeDetail(); return; }
+  if (activeIntent!==null) toggleIntent(activeIntent);
+  selectedNoun=name;
+  nodeLayer.querySelectorAll(".node").forEach(g=>{
+    g.classList.toggle("selected", g.dataset.noun===name);
+    g.setAttribute("aria-expanded", String(g.dataset.noun===name));
+  });
+  const n=NOUNS[name];
+  const shoreLabel = n.shore==="design"?"design side":n.shore==="build"?"build side":"off to the side";
+  const out=EDGES.filter(e=>e.f===name).map(e=>e.t), inn=EDGES.filter(e=>e.t===name).map(e=>e.f);
+  const nounLink = nm => `<button class="nounlink" data-noun="${nm}" title="Go to ${nm}">${nm}</button>`;
+  const open = openByNoun[name] || [];
+  let openHtml;
+  if (!PACA_SNAPSHOT.available){
+    openHtml = `<p class="none">Paca wasn't reached on this run — reconnect and re-run to see open work.</p>`;
+  } else if (!open.length){
+    openHtml = `<p class="none">No open tasks touch this noun in the snapshot.</p>`;
+  } else {
+    openHtml = open.map(taskRow).join("");
+  }
+  detail.innerHTML = `
+    <div class="top"><p class="kicker">${shoreLabel} · ${n.status} · ${n.role}</p>
+      <button class="closebtn" id="closeD" aria-label="Close and reset the chart">close ✕<span class="hint"> · resets the chart</span></button></div>
+    <h3>${name}</h3>
+    <p class="rec">record: <b>${n.record}</b> — if this panel and the file disagree, the file wins</p>
+    <p class="what">${n.what}</p>
+    <div class="dcols">
+      <div class="dblock"><h4>If you change this</h4><p>${n.hits}</p></div>
+      <div class="dblock wrong"><h4>The wrong turn</h4><p>${n.wrong}</p></div>
+    </div>
+    <p class="touches">${out.length?`<b>Carries to:</b> ${out.map(nounLink).join(" · ")}`:""}${out.length&&inn.length?"<br>":""}${inn.length?`<b>Fed by:</b> ${inn.map(nounLink).join(" · ")}`:""}</p>
+    <div class="openwork"><h4>Open work${open.length?` — ${open.length}`:""}</h4>${openHtml}</div>
+    <p class="door">Full card: <code>${n.card}</code> — what it is, its doors, and citations live there. Open it, then the source, then stop.</p>`;
+  detail.classList.add("open");
+  document.getElementById("closeD").addEventListener("click", ()=>closeDetail());
+  detail.querySelectorAll(".nounlink").forEach(b=> b.addEventListener("click", ()=> selectNoun(b.dataset.noun)));
+  applyFocus();
+  showJump(true);           // offer the jump-down control instead of auto-scrolling
+}
+function closeDetail(keep){
+  selectedNoun=null; detail.classList.remove("open"); detail.innerHTML="";
+  nodeLayer.querySelectorAll(".node").forEach(g=>{g.classList.remove("selected");g.setAttribute("aria-expanded","false");});
+  showJump(false);
+  if(!keep) applyFocus();
+}
+
+jumpBtn.addEventListener("click", ()=>{
+  const target = detail.classList.contains("open") ? detail : route;
+  target.scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+// ======= PAN + ZOOM =======
+const VBW=1240, VBH=756;
+let vScale=1, vtx=0, vty=0;
+let dragging=false, panMoved=false, sx=0, sy=0, stx=0, sty=0;
+function applyView(){ viewport.setAttribute("transform",`translate(${vtx} ${vty}) scale(${vScale})`); }
+function clampView(){
+  vScale = Math.min(4, Math.max(1, vScale));
+  vtx = Math.min(0, Math.max(VBW*(1-vScale), vtx));
+  vty = Math.min(0, Math.max(VBH*(1-vScale), vty));
+}
+function toVB(clientX, clientY){
+  const r = chart.getBoundingClientRect();
+  return [ (clientX-r.left)/r.width*VBW, (clientY-r.top)/r.height*VBH ];
+}
+function zoomAt(clientX, clientY, factor){
+  const [px,py] = toVB(clientX, clientY);
+  const cx = (px-vtx)/vScale, cy = (py-vty)/vScale;
+  vScale *= factor; clampView();
+  vtx = px - cx*vScale; vty = py - cy*vScale;
+  clampView(); applyView();
+}
+chart.addEventListener("wheel", e=>{ e.preventDefault(); zoomAt(e.clientX, e.clientY, e.deltaY<0? 1.15 : 1/1.15); }, {passive:false});
+chart.addEventListener("pointerdown", e=>{
+  if (e.button!==0) return;
+  dragging=true; panMoved=false; sx=e.clientX; sy=e.clientY; stx=vtx; sty=vty;
+  chart.classList.add("grabbing");
+});
+chart.addEventListener("pointermove", e=>{
+  if (!dragging) return;
+  const dx=e.clientX-sx, dy=e.clientY-sy;
+  if (Math.abs(dx)+Math.abs(dy) > 4) panMoved=true;
+  const r = chart.getBoundingClientRect();
+  vtx = stx + dx/r.width*VBW; vty = sty + dy/r.height*VBH;
+  clampView(); applyView();
+});
+function endPan(){ dragging=false; chart.classList.remove("grabbing"); }
+chart.addEventListener("pointerup", endPan);
+chart.addEventListener("pointerleave", endPan);
+document.getElementById("zoomIn").addEventListener("click", ()=> zoomAt(chart.getBoundingClientRect().left+chart.getBoundingClientRect().width/2, chart.getBoundingClientRect().top+chart.getBoundingClientRect().height/2, 1.3));
+document.getElementById("zoomOut").addEventListener("click", ()=> zoomAt(chart.getBoundingClientRect().left+chart.getBoundingClientRect().width/2, chart.getBoundingClientRect().top+chart.getBoundingClientRect().height/2, 1/1.3));
+document.getElementById("zoomReset").addEventListener("click", ()=>{ vScale=1; vtx=0; vty=0; applyView(); });
+</script>
+</body>
+</html>

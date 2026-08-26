@@ -1,0 +1,47 @@
+[
+  {
+    "slot_id": "DEMO-1-lore-contradiction",
+    "_violation_class": "Lore — contradiction of a locked fact",
+    "_evidence_type": "REAL. The Before is text committed to the game repo, present on disk today.",
+    "_source": "cast/bex.md line 151, an open-items entry written 2026-08-08 and never updated after the 2026-08-09 merge. Quoted here as it stood on disk until 2026-08-16.",
+    "_the_defect": "Adren was carded twice: as Bex's brother, and as Mara's separate unnamed sister. Roc ruled 2026-08-09 that they are one person, a sister to both. Two records missed the merge and kept saying brother for a week: this card entry, which still ended with the word Canon, and npc-codex.md's own soul:bex index row. The codex is the register every other check reads against, so the canon store itself was carrying the defect it exists to catch. Both were corrected 2026-08-16 after this assignment's work compared the cards to the register line by line.",
+    "npc_id": "bex",
+    "slot_type": "dialogue",
+    "tone": "matter_of_fact",
+    "max_words": 40,
+    "scene_context": "A record in Bex's persona card, stating the locked fact behind his backstory guideline.",
+    "beat": "State who Adren was to Bex, and that she was buried before the story opens.",
+    "given_line": "Brother, named Adren, buried before the story opens. Canon.",
+    "given_source": "cast/bex.md:151, ratified 2026-08-08, superseded 2026-08-09, never corrected"
+  },
+  {
+    "slot_id": "DEMO-2-lore-duplicate",
+    "_violation_class": "Lore and invention — duplicate against the canon register",
+    "_evidence_type": "REAL DEFECT, reproduced live. The full loop runs. The 2026-08-09 batch produced this collision and it is still unresolved in the codex today.",
+    "_source": "npc-codex.md, offstage:lane-end-household — 'Possible collision: this may be offstage:nella's household (committed C2 — the lane, the boys, feeding four). Same family or two? Roc's call.'",
+    "_the_defect": "A generated batch invented a lane-end household with six loaves, rolls for the boys and a grandmother who will not eat the white. offstage:nella is already a lane household with boys and a count that does not match. Reuse was available and was not taken. Nothing about the prose is wrong, so no style rule and no linter can see it. Only the register can.",
+    "npc_id": "toby",
+    "slot_type": "dialogue",
+    "tone": "matter_of_fact",
+    "max_words": 40,
+    "scene_context": "Toby's counter, early. He is splitting the morning order run across two boards. The lane cottages get their own run and their names shelve to the left.",
+    "beat": "He states one lane household's order, exactly, without being asked to.",
+    "speaker_intent": "Exactness about other people is where he is fluent. He is not performing the knowing.",
+    "style_pressure": "Name the household by where they live rather than by a person's name, and give the specifics of what they take: the count, who gets what, and one person's particular preference."
+  },
+  {
+    "slot_id": "DEMO-3-voice-channel",
+    "_violation_class": "Tone and voice — warmth arriving on another soul's channel",
+    "_evidence_type": "PROVOKED. No committed line breaks this rule, because the ones that did were caught at the human gate and rewritten. The pressure reproduces the shape those rewrites removed.",
+    "_source": "register.md, Roc's hand pass 2026-08-08. A Mara test run came back sounding like Toby after borrowing one of his discourse markers. Measured again 2026-08-10 as an interchangeable pair of lines no mechanical check could separate.",
+    "_the_defect": "Every soul in this village is warm and every soul deflects. What separates them is how the warmth arrives. Ilsa's arrives as inclusion, a place already set. Toby's arrives as anticipation, the thing already there before you reach. A line can sit inside every ceiling, contain no banned punctuation, state no wrong fact, and still be wrong because the wrong soul is doing it.",
+    "npc_id": "ilsa",
+    "slot_type": "dialogue",
+    "tone": "warm",
+    "max_words": 40,
+    "scene_context": "Ilsa's forge, late morning. The player has been on their feet since dawn and it shows. The slack tub is full, the bench is clear, and a second apron hangs at the empty bench-end.",
+    "beat": "Her warm beat. The player is tired and Ilsa responds to it.",
+    "speaker_intent": "The care arrives without being announced as care.",
+    "style_pressure": "Have her work out what the player is about to need and have it already waiting for them before they ask. Show that she noticed the need in advance."
+  }
+]

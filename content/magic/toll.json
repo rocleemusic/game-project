@@ -1,0 +1,54 @@
+{
+  "spell_id": "toll",
+  "phrase": "toll",
+  "role": "Priest",
+  "canon": false,
+  "status": "rejected",
+  "status_note": "Rejected at Roc's gate 2026-08-04 — the idea was liked but needed a mechanical effect the Priest's rite actually requires. Superseded by `leap`.",
+  "components": [
+    "item_river_stone"
+  ],
+  "produces": [],
+  "learn_source": "Watch the priest sound the call at the Festival Grounds — the rite that lights the Lantern Arch opens on a true, carrying tone",
+  "confirm_action": "Cast it yourself on something resonant once",
+  "mana_effect": "Quality only: at high mana the tone is pure and carries across the village; at baseline it is true but close, heard only nearby. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "inert",
+      "receiver_id": "festival_bell",
+      "physical_outcome": "Rings a single clear sustained tone without being struck",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "lantern_arch",
+      "physical_outcome": "The metalwork hums low, felt in the ground under it more than heard",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "hay_bale",
+      "physical_outcome": "no_effect — nothing in it can ring",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "well_bucket_on_rope",
+      "physical_outcome": "State-dependent: hanging free, it knells dully against the shaft; sitting on the well lip, only a flat tap",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "dog",
+      "physical_outcome": "No physical effect — no tone sounds from a living body",
+      "reaction_kind": "howl-along at the residual ring in the air"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "ilsa",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "counts heads — a bell means gathering, and she checks who is missing"
+    }
+  ]
+}

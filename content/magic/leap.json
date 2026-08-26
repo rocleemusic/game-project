@@ -1,0 +1,54 @@
+{
+  "spell_id": "leap",
+  "phrase": "leap",
+  "role": "Priest",
+  "canon": false,
+  "status": "approved",
+  "status_note": "Approved by Roc 2026-08-05 with an amendment: the component is an existing flame (`item_flame`), since the cast moves a flame that already exists and therefore spends it.",
+  "components": [
+    "item_flame"
+  ],
+  "produces": [],
+  "learn_source": "Watch the priest at the Festival Grounds dip a flame from the rite-fire and send it lantern to lantern up the Lantern Arch — the Arch's lanterns hang past any taper's reach, and every cast spends the flame it sends",
+  "confirm_action": "Cast it yourself once, giving up a flame of your own to a prepared wick",
+  "mana_effect": "Quality only: at high mana the sent flame leaps far and runs many wicks before it is spent; at baseline it crosses only to the nearest prepared wick and a fresh flame must be found to cast again. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "cold_lantern",
+      "physical_outcome": "State-dependent: wick dressed for the rite, the sent flame takes and burns steady; wick bare, the flame touches metal and dies — the cast's flame is spent either way",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "lantern_arch",
+      "physical_outcome": "State-dependent: wicks dressed for the rite, the one sent flame runs lantern to lantern along the whole span in one pass; wicks undressed, it dies at the first bare one",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "laid_campfire",
+      "physical_outcome": "The sent flame lands in the laid kindling and catches there",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "rain_barrel",
+      "physical_outcome": "no_effect — the flame lands on the water and goes out; nothing catches, and the cast's flame is gone",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "dog",
+      "physical_outcome": "No physical effect — no flame leaps to a living body; the sent flame falls short and gutters out on the ground",
+      "reaction_kind": "head-tilt tracking the flame's arc, backs off a step from where it lands"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "linnet",
+      "physical_outcome": "No physical effect — the sent flame gutters out short of her",
+      "reaction_kind": "steps back and watches where the flame comes to rest"
+    }
+  ]
+}

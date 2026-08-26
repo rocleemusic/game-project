@@ -1,0 +1,365 @@
+{
+  "main": {
+    "id": "2a170d986df69535",
+    "type": "split",
+    "children": [
+      {
+        "id": "db9df64e9c58f169",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "47327c12e87d5a10",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "narrative-pipeline/SOURCES.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "SOURCES"
+            }
+          },
+          {
+            "id": "2abe089416096e5a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "narrative-pipeline/agents/content-dialogue.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "content-dialogue"
+            }
+          },
+          {
+            "id": "dc8aa212ffce98dd",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "narrative-pipeline/guardrails.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "guardrails"
+            }
+          },
+          {
+            "id": "97f244bbb08eb286",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "narrative-pipeline/register-audit.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "register-audit"
+            }
+          },
+          {
+            "id": "9c745c10cda804b7",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "narrative-pipeline/register.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "register"
+            }
+          },
+          {
+            "id": "3775dc9db0a34465",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "cast/linnet.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "linnet"
+            }
+          },
+          {
+            "id": "fa13da2b90edb849",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "cast/juno.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "juno"
+            }
+          },
+          {
+            "id": "d0a8477233fc8438",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "cast/nell.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "nell"
+            }
+          },
+          {
+            "id": "e8492cecc003ba8d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "narrative-pipeline/arc-festival-slice.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "arc-festival-slice"
+            }
+          },
+          {
+            "id": "e37ca230979ddc68",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "narrative-pipeline/npc-codex.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "npc-codex"
+            }
+          }
+        ],
+        "currentTab": 5
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "90250b2e7e5fe095",
+    "type": "split",
+    "children": [
+      {
+        "id": "e661b24e60b81c9c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c3bde87a32078309",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "45efbcadd4ad5a0c",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "dev-crew-archi",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "f3941ab071c67f12",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 347.5
+  },
+  "right": {
+    "id": "58edfd21b7c1d944",
+    "type": "split",
+    "children": [
+      {
+        "id": "caffd5fb39e51a0a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b56c8612e26ea089",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "resources/build-gdd-v3_draft.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for build-gdd-v3_draft"
+            }
+          },
+          {
+            "id": "9fd6220172034979",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "resources/build-gdd-v3_draft.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from build-gdd-v3_draft"
+            }
+          },
+          {
+            "id": "9c800bb2f03ff366",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "d20e92ea07ba8621",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "f4a21b1047374bc7",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "assignments/assignment-7/evidence/palette-before.png",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "c3bde87a32078309",
+  "lastOpenFiles": [
+    "pipeline-runs/2026-08-25-full-content-generation/scripts/_pass2_summary.json",
+    "pipeline-runs/2026-08-25-full-content-generation/scripts/_last_run_summary.json",
+    "pipeline-runs/2026-08-25-full-content-generation/scripts/full_run_stdout.log",
+    "phaser/src/scenes/HubShelfScene.ts.tmp.14124.6c51666ef124",
+    "phaser/src/scenes/HubShelfScene.ts.tmp.14124.abfbf6b51b25",
+    "phaser/src/scenes/HubShelfScene.ts.tmp.14124.d96abe4218d5",
+    "phaser/src/scenes/HubScene.ts.tmp.14124.8bbfd9ab4b59",
+    "phaser/src/scenes/HubScene.ts.tmp.14124.f5df541d5a1d",
+    "phaser/src/scenes/HubScene.ts.tmp.14124.142a4c3436f8",
+    "phaser/src/scenes/SatchelScene.ts.tmp.14124.eae585ff6f96",
+    "phaser/src/scenes/SatchelScene.ts.tmp.14124.ede6a7194e6d",
+    "phaser/public/art/key-items/key_unopened_jar.png",
+    "phaser/public/art/key-items/key_sealed_letter.png",
+    "phaser/public/art/key-items/key_rite_chime.png",
+    "phaser/public/art/key-items/key_knotted_cord.png",
+    "phaser/public/art/key-items/key_handed_plate.png",
+    "phaser/public/art/key-items/key_berry_loaf.png",
+    "phaser/public/art/items/item_wool.png",
+    "phaser/public/art/items/item_tree_sap.png",
+    "phaser/public/art/items/item_tempered_stone.png",
+    "phaser/public/art/items/item_sticks.png",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/lines/SPB-dry-comparison.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/lines/SPB-breath-comparison.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/lines/NGT-toby-comparison.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/lines/NGT-mara-comparison.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/lines/NGT-ilsa-comparison.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/lines/INT-1-comparison.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/lines/ENC-toby-3-comparison.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/lines/ENC-toby-2-comparison.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/lines/ENC-toby-1-comparison.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/lines/ENC-mara-3-comparison.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/lines/ENC-mara-2-comparison.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/lines/ENC-mara-1-comparison.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/lines/ENC-ilsa-3-comparison.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/lines/ENC-ilsa-2-comparison.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/lines/ENC-ilsa-1-comparison.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/dialogue/greetings/GRT-pip-generic.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/dialogue/greetings/GRT-linnet-generic.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/dialogue/greetings/GRT-nell-generic.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/dialogue/greetings/GRT-juno-generic.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/dialogue/greetings/GRT-bex-generic.md",
+    "pipeline-runs/2026-08-25-thread-driven-scenes/RESULTS.md",
+    "map/open-work.md",
+    "pipeline-runs/2026-08-25-full-content-generation/run-log.md",
+    "map/cards/gdd-sync.md",
+    "map/cards/narrative-pipeline.md"
+  ]
+}

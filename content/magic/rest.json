@@ -1,0 +1,55 @@
+{
+  "spell_id": "rest",
+  "phrase": "rest",
+  "role": "Baker",
+  "canon": false,
+  "status": "rejected",
+  "status_note": "Rejected at Roc's gate 2026-08-05. Kept on record, not deleted. The Baker's approved set is `portion` and `weigh`.",
+  "components": [
+    "item_salt",
+    "item_wool"
+  ],
+  "produces": [],
+  "learn_source": "Watch the baker cover the day-before batches at the counter in the Town scene — feast food is made across two days but must all arrive at its moment together",
+  "confirm_action": "Cast it yourself on something mid-change once",
+  "mana_effect": "Quality only: at high mana the hold is clean and lasts until uncovered; at baseline it slips after a while and the change creeps on. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "proofing_dough",
+      "physical_outcome": "State-dependent: mid-rise, the rise stops exactly where it stands and waits until the cloth is next lifted; already collapsed, there is nothing left moving to hold",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "hot_feast_stew",
+      "physical_outcome": "The steam hangs still and the pot holds at serving-hot until the lid is next lifted",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "cooling_loaf",
+      "physical_outcome": "Holds oven-warm where it sits instead of going cold on the rack",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "empty_tray",
+      "physical_outcome": "no_effect — nothing on it is changing, so there is nothing to pause",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "dog",
+      "physical_outcome": "No physical effect — nothing in a living body is paused",
+      "reaction_kind": "sniffs the stilled steam over the pot, sits down to wait by it"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "mara",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "quiet approval — lingers over the held thing, a change kept from slipping past"
+    }
+  ]
+}

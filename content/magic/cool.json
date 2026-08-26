@@ -1,0 +1,49 @@
+{
+  "spell_id": "cool",
+  "phrase": "cool",
+  "role": "Baker",
+  "canon": false,
+  "status": "rejected",
+  "status_note": "Rejected at Roc's gate 2026-08-04. Kept on record, not deleted.",
+  "components": [
+    "item_spring_water",
+    "item_grass"
+  ],
+  "produces": [],
+  "learn_source": "Watch the baker rush loaves off the peel at the counter in the Town scene — feast day means racks full and no time to let anything sit",
+  "confirm_action": "Cast it yourself on a hot thing once",
+  "mana_effect": "Quality only: at high mana the heat leaves evenly and the crumb sets perfectly; at baseline the outside cools ahead of the middle. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "inert",
+      "receiver_id": "hot_loaf",
+      "physical_outcome": "Cools to handling temperature without sinking",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "cold_pie",
+      "physical_outcome": "no_effect — there is no heat to draw",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "furnace",
+      "physical_outcome": "State-dependent: burning low, the embers dim to banked; roaring, the flames barely flinch — the cast is outmatched",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "dog_panting_in_sun",
+      "physical_outcome": "No physical effect — the chill does not attach to a living body",
+      "reaction_kind": "nose-lift at the cooled air, shifts to lie where the cast landed"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "toby",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "deflection — redirects the caster toward a task that could actually use it"
+    }
+  ]
+}

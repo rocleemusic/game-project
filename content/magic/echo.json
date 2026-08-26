@@ -1,0 +1,49 @@
+{
+  "spell_id": "echo",
+  "phrase": "echo",
+  "role": "Mage",
+  "canon": false,
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-04.",
+  "components": [
+    "item_captured_sound",
+    "item_beeswax"
+  ],
+  "produces": [],
+  "learn_source": "Conversation at the well in the Town scene — a neighbour mentions the old trick of pressing a sound into wax so it can be heard again",
+  "confirm_action": "Cast it yourself on a resonant surface once, with a sound you have actually heard and carry",
+  "mana_effect": "Quality only: at high mana the replay is full and clear; at baseline it is thin and short, like the sound heard through a wall. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "inert",
+      "receiver_id": "well_mouth",
+      "physical_outcome": "The captured sound plays back out of the hollow, rounded by the stone",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "hay_bale",
+      "physical_outcome": "no_effect — soft material swallows the cast; nothing sounds",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "festival_bell",
+      "physical_outcome": "State-dependent: hanging free, the bell reproduces the sound with its own ring under it; muffled or held, only a dull knock escapes",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "dog",
+      "physical_outcome": "No physical effect — the sound does not emit from a living body",
+      "reaction_kind": "head-tilt toward the caster, one uncertain bark"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "linnet",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "stillness — she stops what she is doing until the failed cast's quiet passes"
+    }
+  ]
+}

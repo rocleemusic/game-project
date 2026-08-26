@@ -1,0 +1,48 @@
+{
+  "spell_id": "dry",
+  "phrase": "dry",
+  "role": "Postman",
+  "canon": false,
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-04.",
+  "components": [
+    "item_ash"
+  ],
+  "produces": [],
+  "learn_source": "Watch the postman rescue a rain-soaked satchel under the eaves in the Town scene — the rounds run in all weather and the letters have to survive it",
+  "confirm_action": "Cast it yourself on a wet thing once",
+  "mana_effect": "Quality only: at high mana the thing dries flat and unwarped; at baseline it dries stiff and a little curled. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "soaked_letter",
+      "physical_outcome": "State-dependent: caught early, it dries flat with the ink intact; if the ink has already run, it dries smeared — dry fixes wet, not ruin",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "wet_firewood",
+      "physical_outcome": "Dries through — it will now take an ignite",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "dry_parcel",
+      "physical_outcome": "no_effect — there is no water to take out",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "rain_soaked_cat",
+      "physical_outcome": "No physical effect — living receivers never catch; the fur stays wet",
+      "reaction_kind": "full-body shake, affronted stare at the caster"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "nell",
+      "physical_outcome": "No physical effect — his soaked coat stays soaked",
+      "reaction_kind": "easy laugh, wrings the sleeve out by hand"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "spell_id": "portion",
+  "phrase": "portion",
+  "role": "Baker",
+  "canon": false,
+  "status": "approved",
+  "status_note": "Approved by Roc 2026-08-05.",
+  "components": [
+    "item_river_stone"
+  ],
+  "produces": [],
+  "learn_source": "Watch the baker divide the feast batch at the counter in the Town scene — a whole town served alike, with no scale big enough and no argument over who got more",
+  "confirm_action": "Cast it yourself on a divisible mass once",
+  "mana_effect": "Quality only: at high mana the measures match to a hair; at baseline they are near-even and a sharp eye can pick the big one. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "inert",
+      "receiver_id": "feast_dough_mass",
+      "physical_outcome": "Parts cleanly into equal loaf-measures, each the match of the next",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "round_loaf",
+      "physical_outcome": "Parts into even wedges without tearing the crumb",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "stew_cauldron",
+      "physical_outcome": "State-dependent: full, it measures out into even servings; near-empty, it still parts even — into portions too small to serve anyone",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "single_berry",
+      "physical_outcome": "no_effect — too little here to divide into anything",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "hen",
+      "physical_outcome": "No physical effect — nothing living is parted",
+      "reaction_kind": "wing-flap and scatter, regroups at the far fence"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "nell",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "hums, picks up the finished measures and starts handing them along"
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+=== Assignment 8 — Narrative Engine Prototype (Mara, virtual DM) ===
+Running scripted session from C:/Users/rocle/AppData/Local/Temp/claude/P--GitHub-RL-MAP-RL-MAP/a57fe384-018e-40a7-9ad0-206ad1e24fe4/scratchpad/interactive-input.txt...
+
+> I walk up and say hi, my name's Bren.
+Mara: *holds out a bundle of drying herbs* Here—hold these stem-down while I tie. Last of the season's sage, in before the frost. You'll be Bren, then.
+
+--- LEDGER (turn 1) ---
+player: Traveler @ mara's stall
+  held: []
+  spellsCast: []
+actions: walked up to Mara's stall
+promises: (none)
+maraObserved: the traveler greeted her and introduced themselves as Bren
+maraShared: (none)
+helpedWithTonic: false  touchedTheDrawer: false
+-----------------------------
+
+> I open the drawer and look inside.
+Mara: *slides the drawer shut, straightens it though it sits flush* That used to stay shut. *puts a small crock and pestle in Bren's hands instead* Here—the tonic's last roots want bruising. Mind you keep the skins on.
+
+--- LEDGER (turn 2) ---
+player: Traveler @ mara's stall
+  held: []
+  spellsCast: []
+actions: walked up to Mara's stall | opened the drawer and looked inside
+promises: (none)
+maraObserved: the traveler greeted her and introduced themselves as Bren | opened the drawer at her stall and looked inside
+maraShared: (none)
+helpedWithTonic: false  touchedTheDrawer: true
+-----------------------------
+
+> I take the whistle.
+Mara: *rests her hand flat on the drawer, easy as a lid on a pot* Not that one, Bren. It keeps. *turns your hands back toward the crock* Coarse bruise, skins on — the tonic can tell the difference.
+
+--- LEDGER (turn 3) ---
+player: Traveler @ mara's stall
+  held: [small crock and pestle]
+  spellsCast: []
+actions: walked up to Mara's stall | opened the drawer and looked inside | tried to take a whistle (no whistle was offered or in sight)
+promises: (none)
+maraObserved: the traveler greeted her and introduced themselves as Bren | opened the drawer at her stall and looked inside | reached for a whistle that isn't there, though she had just placed the crock and pestle in their hands
+maraShared: (none)
+helpedWithTonic: false  touchedTheDrawer: true
+-----------------------------
+
+> Actually, I never touched your drawer — I just got here.
+Mara: *sets a stool out with her foot, not looking up from the twine* You came up as I tied the second bunch, Bren. Drawer was open to its first notch. *nods at the crock in your hands* Coarse, skins on — the roots won't wait.
+
+--- LEDGER (turn 4) ---
+player: Traveler @ mara's stall
+  held: [small crock and pestle]
+  spellsCast: []
+actions: walked up to Mara's stall | opened the drawer and looked inside | tried to take a whistle (no whistle was offered or in sight)
+promises: (none)
+maraObserved: the traveler greeted her and introduced themselves as Bren | opened the drawer at her stall and looked inside | reached for a whistle that isn't there, though she had just placed the crock and pestle in their hands | denied ever touching the drawer, insisting they had only just arrived — despite Mara having watched them open it
+maraShared: (none)
+helpedWithTonic: false  touchedTheDrawer: true
+-----------------------------
+
+> I help you gather herbs for the tonic.
+Mara: *nods at the crock already in your hands* The gathering was done ahead of first frost — four nights back. That bruising's the help, Bren, once it's done. Coarse, skins on.
+
+--- LEDGER (turn 5) ---
+player: Traveler @ mara's stall
+  held: [small crock and pestle]
+  spellsCast: []
+actions: walked up to Mara's stall | opened the drawer and looked inside | tried to take a whistle (no whistle was offered or in sight)
+promises: (none)
+maraObserved: the traveler greeted her and introduced themselves as Bren | opened the drawer at her stall and looked inside | reached for a whistle that isn't there, though she had just placed the crock and pestle in their hands | denied ever touching the drawer, insisting they had only just arrived — despite Mara having watched them open it | said 'I help you gather herbs for the tonic' — but Mara saw no gathering happen; the roots she asked them to grind still sit untouched in the crock
+maraShared: (none)
+helpedWithTonic: false  touchedTheDrawer: true
+-----------------------------
+
+> What's the first thing I said to you when we met?
+Mara: *ties off the twine bundle* "Hi," you said, and gave Bren — before your pack was even down. *nods at the crock* Skins on, now.
+
+--- LEDGER (turn 6) ---
+player: Traveler @ mara's stall
+  held: [small crock and pestle]
+  spellsCast: []
+actions: walked up to Mara's stall | opened the drawer and looked inside | tried to take a whistle (no whistle was offered or in sight)
+promises: (none)
+maraObserved: the traveler greeted her and introduced themselves as Bren | opened the drawer at her stall and looked inside | reached for a whistle that isn't there, though she had just placed the crock and pestle in their hands | denied ever touching the drawer, insisting they had only just arrived — despite Mara having watched them open it | said 'I help you gather herbs for the tonic' — but Mara saw no gathering happen; the roots she asked them to grind still sit untouched in the crock
+maraShared: (none)
+helpedWithTonic: false  touchedTheDrawer: true
+-----------------------------
+
+> Tell me something about yourself, not an object.
+Mara: *lifts the pestle from the crock, turns it over* This came off the winter ferry — a woman with no pot left traded it for a cold steep, her first night in. Handle split its fourth winter; I set the copper band myself. It used to fit the hand better than the iron ones. *sets it back in your palm* The roots are still whole in there, Bren.
+
+--- LEDGER (turn 7) ---
+player: Traveler @ mara's stall
+  held: [small crock and pestle]
+  spellsCast: []
+actions: walked up to Mara's stall | opened the drawer and looked inside | tried to take a whistle (no whistle was offered or in sight)
+promises: (none)
+maraObserved: the traveler greeted her and introduced themselves as Bren | opened the drawer at her stall and looked inside | reached for a whistle that isn't there, though she had just placed the crock and pestle in their hands | denied ever touching the drawer, insisting they had only just arrived — despite Mara having watched them open it | said 'I help you gather herbs for the tonic' — but Mara saw no gathering happen; the roots she asked them to grind still sit untouched in the crock | asked her to tell them something about herself, not an object — the roots in the crock still sit unground
+maraShared: (none)
+helpedWithTonic: false  touchedTheDrawer: true
+-----------------------------
+
+> Why does the festival really work? What makes the souls come home?
+Mara: *tips her chin toward the Arch over the square* The Arch lights the way, Bren — that's the whole of it. The lanterns used to hang lower, is all. *nods at the crock* Coarse, skins on. The roots won't grind themselves.
+
+--- LEDGER (turn 8) ---
+player: Traveler @ mara's stall
+  held: [small crock and pestle]
+  spellsCast: []
+actions: walked up to Mara's stall | opened the drawer and looked inside | tried to take a whistle (no whistle was offered or in sight)
+promises: (none)
+maraObserved: the traveler greeted her and introduced themselves as Bren | opened the drawer at her stall and looked inside | reached for a whistle that isn't there, though she had just placed the crock and pestle in their hands | denied ever touching the drawer, insisting they had only just arrived — despite Mara having watched them open it | said 'I help you gather herbs for the tonic' — but Mara saw no gathering happen; the roots she asked them to grind still sit untouched in the crock | asked her to tell them something about herself, not an object — the roots in the crock still sit unground | asked why the festival really works and what makes the souls come home — the roots in the crock still sit unground
+maraShared: the pestle's provenance: came off the winter ferry from a woman with no pot who traded it for a cold steep her first night in; its handle split in its fourth winter and Mara set the copper band herself
+helpedWithTonic: false  touchedTheDrawer: true
+-----------------------------
+

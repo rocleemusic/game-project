@@ -1,0 +1,49 @@
+{
+  "spell_id": "ripen",
+  "phrase": "ripen",
+  "role": "Farmer",
+  "canon": false,
+  "status": "rejected",
+  "status_note": "Rejected at Roc's gate 2026-08-04. Kept on record, not deleted.",
+  "components": [
+    "item_berry",
+    "item_spring_water"
+  ],
+  "produces": [],
+  "learn_source": "Watch the farmer bring a late row in ahead of the frost in the Town scene — the harvest has to feed the festival week, and the weather does not wait",
+  "confirm_action": "Cast it yourself on something near-ripe once",
+  "mana_effect": "Quality only: at high mana the ripening is even across the whole plant; at baseline it takes fruit by fruit. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "orchard_fruit",
+      "physical_outcome": "State-dependent: near-ripe fruit finishes ripening within the day; hard green fruit takes no push — too far from ready",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "picked_ripe_berry",
+      "physical_outcome": "Softens past ripe toward spoil — the push has nowhere good left to go",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "river_stone",
+      "physical_outcome": "no_effect — nothing in it grows",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "hen",
+      "physical_outcome": "No physical effect — living receivers never catch; nothing about the bird changes",
+      "reaction_kind": "sidestep-flutter, resumes scratching"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "juno",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "wry deflection — points the caster at the row that actually wants it"
+    }
+  ]
+}

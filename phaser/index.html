@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Suppresses Chrome's out-of-band favicon request, which the walker
+         would otherwise report as a 404 it cannot trace to any resource. -->
+    <link rel="icon" href="data:," />
+    <title>Feature probe — game-project</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #12100c;
+        color: #ffd479;
+        font-family: ui-monospace, monospace;
+      }
+      #status {
+        padding: 24px;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="status">loading run…</div>
+    <div id="game"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

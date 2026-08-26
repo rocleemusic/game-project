@@ -1,0 +1,18 @@
+{
+  "key_item_id": "key_raw_ore",
+  "description": "The ore is heavy and dull, still embedded in the chunk of stone it was pried from. It has a rough, uneven surface and looks like it was pulled out with force. There are small, jagged edges where the metal meets the rock, and a faint, dark color. It feels cold and solid, not polished or finished.",
+  "category": "material",
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-13. Forage-sourced probe-side (phaser/src/world/collectExtraForage.ts, Collection & Discovery mode) — not yet an authored screen-specs.json pool.",
+  "role": "Blacksmith",
+  "origin": "found",
+  "made_from": [],
+  "source_locations": [
+    "The Cave",
+    "Heart of the Wood"
+  ],
+  "persistence": "pack-triaged",
+  "consumable": false,
+  "use_family": null,
+  "role_link_note": "The raw ore that feeds the Blacksmith's centerpiece work — distinct from key_arch_filing, a filing off the already-forged piece back in town."
+}

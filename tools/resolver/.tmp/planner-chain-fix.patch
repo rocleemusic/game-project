@@ -1,0 +1,271 @@
+diff --git a/ProjectOS/game-project/tools/resolver/src/walk.ts b/ProjectOS/game-project/tools/resolver/src/walk.ts
+index c7f4e419..7ffca5fa 100644
+--- a/ProjectOS/game-project/tools/resolver/src/walk.ts
++++ b/ProjectOS/game-project/tools/resolver/src/walk.ts
+@@ -1162,6 +1162,63 @@ interface DayCandidate {
+   route: string[];
+   /** scene_ids this route can enter that day, already filtered to live ones. */
+   scenes: string[];
++  /**
++   * scene_id -> index into TIME_BLOCKS of the EARLIEST block this route can
++   * enter it in. A played() prerequisite entered in an earlier block of the
++   * same day is already true by the time the hub offers the scene that waits
++   * on it, so the assignment needs block order, not just day order — see
++   * chooseBestWeek.
++   */
++  blockOf: Record<string, number>;
++}
++
++// ---------------------------------------------------------------------------
++// played() chain depth
++// ---------------------------------------------------------------------------
++// The length of the longest played() chain ENDING at a scene: 1 for a scene
++// with no played() prerequisite, 2 for one waiting on that, and so on. A scene
++// at depth d needs d entries, in order, inside one week.
++//
++// This is what the coverage objective cannot see. Coverage asks "how many
++// distinct scenes does this week open", and a soul with 4 presence slots opens
++// exactly 4 either way — four unrelated openers, or one 4-deep chain. The two
++// TIE on coverage, so which one the planner picked came down to the route
++// tie-break, i.e. to luck. That is why one depth-4 Toby chain
++// (SC-T2-15..SC-T2-18) was walked every run while its sibling
++// (SC-T2-08..SC-T2-11) never was: nothing in the objective preferred either.
++//
++// So depth is a real, if secondary, good: among weeks that open the same NUMBER
++// of scenes, prefer the one that gets furthest along the chains, because the
++// shallow scenes it defers can still be picked up by a later week, whereas a
++// deep tail that never gets its consecutive visits is content no week reaches.
++const chainDepthCache = new WeakMap<Graph, Map<string, number>>();
++
++function chainDepths(graph: Graph): Map<string, number> {
++  const hit = chainDepthCache.get(graph);
++  if (hit) return hit;
++  const byId = new Map(graph.scenes.map((s) => [s.scene_id, s]));
++  const depths = new Map<string, number>();
++  const visiting = new Set<string>();
++  const depthOf = (id: string): number => {
++    const memo = depths.get(id);
++    if (memo !== undefined) return memo;
++    const scene = byId.get(id);
++    // A cycle cannot be ordered at all; entryGateFacts already reports it as
++    // shut. Depth 1 here just stops the recursion without claiming anything.
++    if (scene === undefined || visiting.has(id)) return 1;
++    visiting.add(id);
++    let deepest = 0;
++    for (const prereq of entryGateTerms(scene).played) {
++      if (byId.has(prereq)) deepest = Math.max(deepest, depthOf(prereq));
++    }
++    visiting.delete(id);
++    const answer = deepest + 1;
++    depths.set(id, answer);
++    return answer;
++  };
++  for (const scene of graph.scenes) depthOf(scene.scene_id);
++  chainDepthCache.set(graph, depths);
++  return depths;
+ }
+ 
+ /** "<scene_id>|<day>" entries a previous week proved wasted, in two strengths. */
+@@ -1231,17 +1288,29 @@ function dayCandidates(
+ 
+     // One candidate per distinct scene set, keeping the smallest route for it.
+     const byKey = new Map<string, DayCandidate>();
++    const nightIndex = TIME_BLOCKS.indexOf("night");
+     for (const route of facts.routes) {
+-      const gain = new Set<string>();
++      // Earliest block per scene, so a same-day prerequisite can be ordered.
++      const gain = new Map<string, number>();
++      const note = (id: string, at: number): void => {
++        const prior = gain.get(id);
++        if (prior === undefined || at < prior) gain.set(id, at);
++      };
+       for (const v of route.visits) {
+-        for (const id of scenesAt.get(`${v.screen}|${v.block}`) ?? []) gain.add(id);
++        const at = TIME_BLOCKS.indexOf(v.block);
++        for (const id of scenesAt.get(`${v.screen}|${v.block}`) ?? []) note(id, at);
+       }
+-      for (const id of nightBonus) gain.add(id);
+-      const scenes = [...gain].sort();
++      for (const id of nightBonus) note(id, nightIndex);
++      const scenes = [...gain.keys()].sort();
+       const key = scenes.join(",");
+       const prior = byKey.get(key);
+       if (prior === undefined || route.screens.join(">") < prior.route.join(">")) {
+-        byKey.set(key, { day: day.day, route: [...route.screens], scenes });
++        byKey.set(key, {
++          day: day.day,
++          route: [...route.screens],
++          scenes,
++          blockOf: Object.fromEntries(gain),
++        });
+       }
+     }
+     // Drop dominated sets. Every value function here is monotone in the set
+@@ -1266,6 +1335,8 @@ function dayCandidates(
+ interface WeekAssignment {
+   routes: Record<number, string[]>;
+   scenes: string[];
++  /** scene_id -> the day the assignment really enters it on. */
++  scheduled: Map<string, number>;
+   capped: boolean;
+ }
+ 
+@@ -1280,16 +1351,59 @@ interface WeekAssignment {
+  *
+  * Bounded: `cap` limits memo states, and `capped` says whether the answer is
+  * the true optimum or the best found before the cap.
++ *
++ * ORDER-FEASIBLE BY CONSTRUCTION. `prereqsOf` carries each scene's played()
++ * prerequisites, and a candidate's scenes only count once those prerequisites
++ * are actually satisfied — either covered on an earlier day, or entered in an
++ * earlier BLOCK of this same day. Before this, the assignment scored a scene as
++ * covered wherever its presence allowed and buildPlan bolted the ordering on
++ * afterwards, which could contradict the plan it was given: the solver was free
++ * to put SC-T2-11 on day 1 and its prerequisite SC-T2-10 on day 5, after which
++ * the ordering pass banned SC-T2-11 from every day before 5 — including the one
++ * day it was scheduled on. The week then entered it nowhere, and the scene read
++ * as unreachable content rather than as an impossible plan. Feasibility has to
++ * be part of what the solver maximises over, not a filter applied to its answer.
+  */
+ function chooseBestWeek(
+   candidates: DayCandidate[][],
+   value: (scenes: ReadonlySet<string>) => number,
+   cap: number,
++  prereqsOf: ReadonlyMap<string, readonly string[]>,
+ ): WeekAssignment {
+   let states = 0;
+   let capped = false;
+   const memo = new Map<string, { value: number; routeKey: string; picks: DayCandidate[] }>();
+ 
++  /**
++   * The scenes this candidate REALLY opens, given what earlier days covered.
++   *
++   * Sweep the day's scenes in block order and admit one only when every played()
++   * prerequisite the planner can schedule is already satisfied — covered by an
++   * earlier day, or admitted in an earlier block of this day. A prerequisite no
++   * candidate anywhere can schedule is not in `prereqsOf` and so does not block:
++   * it may still be picked up free by a route, and refusing the dependent on
++   * that guess would cost coverage the plan could have had.
++   */
++  const admissible = (candidate: DayCandidate, covered: ReadonlySet<string>): string[] => {
++    const order = [...candidate.scenes].sort(
++      (a, b) => (candidate.blockOf[a] ?? 0) - (candidate.blockOf[b] ?? 0) || a.localeCompare(b),
++    );
++    const openedAt = new Map<string, number>();
++    const out: string[] = [];
++    for (const id of order) {
++      const at = candidate.blockOf[id] ?? 0;
++      const ok = (prereqsOf.get(id) ?? []).every((p) => {
++        if (covered.has(p)) return true;
++        const earlier = openedAt.get(p);
++        return earlier !== undefined && earlier < at;
++      });
++      if (!ok) continue;
++      openedAt.set(id, at);
++      out.push(id);
++    }
++    return out.sort();
++  };
++
+   const solve = (i: number, covered: Set<string>): { value: number; routeKey: string; picks: DayCandidate[] } => {
+     if (i === candidates.length) return { value: value(covered), routeKey: "", picks: [] };
+     const key = `${i}|${[...covered].sort().join(",")}`;
+@@ -1304,7 +1418,7 @@ function chooseBestWeek(
+     let best: { value: number; routeKey: string; picks: DayCandidate[] } | null = null;
+     for (const candidate of candidates[i]) {
+       const next = new Set(covered);
+-      for (const id of candidate.scenes) next.add(id);
++      for (const id of admissible(candidate, covered)) next.add(id);
+       const sub = solve(i + 1, next);
+       const routeKey = `${candidate.route.join(">")}|${sub.routeKey}`;
+       // Ties break on the lexicographically smallest route string, so the
+@@ -1321,11 +1435,18 @@ function chooseBestWeek(
+   const solved = solve(0, new Set());
+   const routes: Record<number, string[]> = {};
+   const scenes = new Set<string>();
++  const scheduled = new Map<string, number>();
++  // Replay the picks in day order so `scheduled` records the day each scene is
++  // really entered on, not merely a day its presence allowed. buildPlan turns
++  // this into doNotEnter, so it has to agree with what the solver scored.
+   for (const pick of solved.picks) {
+     routes[pick.day] = pick.route;
+-    for (const id of pick.scenes) scenes.add(id);
++    for (const id of admissible(pick, scenes)) {
++      scenes.add(id);
++      if (!scheduled.has(id)) scheduled.set(id, pick.day);
++    }
+   }
+-  return { routes, scenes: [...scenes].sort(), capped };
++  return { routes, scenes: [...scenes].sort(), scheduled, capped };
+ }
+ 
+ /**
+@@ -1351,16 +1472,44 @@ function buildPlan(
+   want: Set<string>,
+   days: DayJson[],
+   blocked: PlanBlocks = NO_BLOCKS,
+-  /** score a week by the scenes it opens; default is "as many as possible". */
+-  value: (scenes: ReadonlySet<string>) => number = (scenes) => scenes.size,
++  /**
++   * Score a week by the scenes it opens. The default is "as many as possible,
++   * and among those, get as far along the played() chains as possible" — see
++   * chainDepths for why coverage alone leaves deep tails to chance. Coverage
++   * stays STRICTLY dominant: the depth term is divided by a bound on itself, so
++   * it can only ever break a tie, never buy a chain step at the price of a
++   * whole scene.
++   */
++  value?: (scenes: ReadonlySet<string>) => number,
+   cap = 200_000,
+ ): WeekPlan & { capped: boolean } {
+   const screenNames: Record<string, string> = {};
+   for (const s of graph.screens) screenNames[s.screen_id] = cleanText(s.name);
+ 
+-  const candidates = dayCandidates(graph, facts, withEntryPrereqs(graph, want), days, blocked);
++  const wanted = withEntryPrereqs(graph, want);
++  const candidates = dayCandidates(graph, facts, wanted, days, blocked);
+ 
+-  const assignment = chooseBestWeek(candidates, value, cap);
++  // Only prerequisites the planner could actually schedule constrain the order.
++  const plannable = new Set(candidates.flatMap((day) => day.flatMap((c) => c.scenes)));
++  const prereqsOf = new Map<string, readonly string[]>();
++  for (const id of plannable) {
++    const scene = graph.scenes.find((s) => s.scene_id === id);
++    if (scene === undefined) continue;
++    const needs = entryGateTerms(scene).played.filter((p) => plannable.has(p));
++    if (needs.length > 0) prereqsOf.set(id, needs);
++  }
++
++  const depths = chainDepths(graph);
++  const depthBound = 1 + [...plannable].reduce((sum, id) => sum + (depths.get(id) ?? 1), 0);
++  const scoreWeek =
++    value ??
++    ((scenes: ReadonlySet<string>): number => {
++      let depth = 0;
++      for (const id of scenes) depth += (depths.get(id) ?? 1) - 1;
++      return scenes.size + depth / depthBound;
++    });
++
++  const assignment = chooseBestWeek(candidates, scoreWeek, cap, prereqsOf);
+ 
+   // What the strategy must refuse. A scene entry is once-only for the whole
+   // week, so a wrong day does not just waste a turn — it destroys the scene.
+@@ -1368,13 +1517,12 @@ function buildPlan(
+   //   - any day other than the one the plan scheduled it on
+   // A scene the plan did not schedule anywhere is left alone: if a route
+   // happens past it on a day it can play, taking it is free.
+-  const scheduledDay = new Map<string, number>();
+-  for (const [dayStr, route] of Object.entries(assignment.routes)) {
+-    const day = Number(dayStr);
+-    const index = days.findIndex((d) => d.day === day);
+-    const chosen = candidates[index]?.find((c) => c.route.join(">") === route.join(">"));
+-    for (const id of chosen?.scenes ?? []) scheduledDay.set(id, day);
+-  }
++  // Straight from the solver: the day each scene is really entered on, already
++  // order-feasible. Re-deriving it here from the routes (as this used to) put
++  // back every scene the day's presence allowed, including ones the solver had
++  // ruled out for want of their prerequisite — which is how a scheduled scene
++  // ended up banned from its own day.
++  const scheduledDay = assignment.scheduled;
+   const doNotEnter = new Set<string>();
+   for (const day of days) {
+     for (const scene of graph.scenes) {

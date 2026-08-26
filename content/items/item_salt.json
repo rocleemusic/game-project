@@ -1,0 +1,18 @@
+{
+  "item_id": "item_salt",
+  "description": "A small jar of coarse grey salt. It is dry and smells of the sea. For about a week, I have carried it for meals and for drawing circles on the stone.",
+  "category": "component",
+  "persistence": "pack-triaged",
+  "collectible": true,
+  "consumable": true,
+  "source_locations": [
+    "Town scene",
+    "Festival Grounds"
+  ],
+  "always_available": false,
+  "used_by": [
+    "preserve"
+  ],
+  "produced_by": [],
+  "use_family": null
+}

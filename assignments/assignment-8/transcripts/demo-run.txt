@@ -1,0 +1,121 @@
+
+> assignment-8-narrative-engine@1.0.0 demo
+> tsx src/dm.ts --demo
+
+=== Assignment 8 — Narrative Engine Prototype (Mara, virtual DM) ===
+Running canned demo session...
+
+> I walk up to your stall and say hello.
+Mara: *presses a bundle of drying herbs into Wren's hands* "Hold these a moment — stems up. Last of the season, before the frost takes the rest."
+
+--- LEDGER (turn 1) ---
+player: Wren @ mara's stall
+  held: []
+  spellsCast: []
+actions: walked up to Mara's stall
+promises: (none)
+maraObserved: Wren walked up to the stall | Wren said hello to Mara
+maraShared: (none)
+helpedWithTonic: false  touchedTheDrawer: false
+-----------------------------
+
+> I pick up the whistle from the drawer.
+Mara: *closes the drawer, soft — her thumb stays on the pull a moment*
+
+"That was Ovin's, before."
+
+*straightens a jar that was already straight*
+
+"It isn't for sale. It stays."
+
+--- LEDGER (turn 2) ---
+player: Wren @ mara's stall
+  held: [whistle]
+  spellsCast: []
+actions: walked up to Mara's stall | picked up the whistle from the drawer
+promises: (none)
+maraObserved: Wren walked up to the stall | Wren said hello to Mara | Wren opened the drawer and picked up the whistle
+maraShared: (none)
+helpedWithTonic: false  touchedTheDrawer: true
+-----------------------------
+
+> I help you gather herbs for the tonic.
+Mara: *Mara takes the bundle and sorts it — whole leaves kept, frost-bit ones pinched out. Her eyes pass over the whistle in Wren's hand, once, and go back to the work.*
+
+"Good eye — the bit ones go bitter in the steep. That's the tonic gathered, then, ahead of frost."
+
+*sets a small pot on the flame, nods Wren toward it*
+
+"Mind it. No boil. It used to brew in a copper twice this size, before."
+
+--- LEDGER (turn 3) ---
+player: Wren @ mara's stall
+  held: [whistle]
+  spellsCast: []
+actions: walked up to Mara's stall | picked up the whistle from the drawer | helped Mara gather herbs for the tonic
+promises: (none)
+maraObserved: Wren walked up to the stall | Wren said hello to Mara | Wren opened the drawer and picked up the whistle | Wren helped gather herbs for the tonic
+maraShared: The whistle was Ovin's before; it isn't for sale and it stays
+helpedWithTonic: true  touchedTheDrawer: true
+-----------------------------
+
+> Do you have any family in town?
+Mara: *the spoon stills. Her eyes lift to the stall's hinge*
+
+"Ferry-iron, that hinge — nine winters on. Squealed the year the awning froze shut. Took grease and a quiet hand, and it holds true yet."
+
+*she holds out her palm for the whistle, patient*
+
+"Drawer, left side. There's a cloth it sits on."
+
+--- LEDGER (turn 4) ---
+player: Wren @ mara's stall
+  held: [whistle]
+  spellsCast: []
+actions: walked up to Mara's stall | picked up the whistle from the drawer | helped Mara gather herbs for the tonic
+promises: (none)
+maraObserved: Wren walked up to the stall | Wren said hello to Mara | Wren opened the drawer and picked up the whistle | Wren helped gather herbs for the tonic
+maraShared: The whistle was Ovin's before; it isn't for sale and it stays
+helpedWithTonic: true  touchedTheDrawer: true
+-----------------------------
+
+> Tell me about that whistle again.
+Mara: *her open palm waits a breath, then falls*
+
+"It used to hang by the door, before. That's the whole of it."
+
+*lifts the lid — steam, no boil — and passes Wren the spoon*
+
+"One slow stir. Then it goes back on its cloth."
+
+--- LEDGER (turn 5) ---
+player: Wren @ mara's stall
+  held: [whistle]
+  spellsCast: []
+actions: walked up to Mara's stall | picked up the whistle from the drawer | helped Mara gather herbs for the tonic
+promises: (none)
+maraObserved: Wren walked up to the stall | Wren said hello to Mara | Wren opened the drawer and picked up the whistle | Wren helped gather herbs for the tonic | Wren asked Mara to tell them about the whistle again
+maraShared: The whistle was Ovin's before; it isn't for sale and it stays | The stall's hinge is ferry-iron, nine winters on; it squealed the year the awning froze shut, and grease plus a quiet hand set it right | The drawer is on the left side; the whistle sits on a cloth inside
+helpedWithTonic: true  touchedTheDrawer: true
+-----------------------------
+
+> Why does the festival work? What makes the souls come home?
+Mara: *Mara wraps her hands round her own cup, steam rising*
+
+"The Arch lights the way — it always did. Same as a lamp at the lane's end: lit so the ones coming can see it home."
+
+*her eyes go to the whistle still in Wren's hand, then to the drawer*
+
+"Stir's done. Cloth's waiting."
+
+--- LEDGER (turn 6) ---
+player: Wren @ mara's stall
+  held: [whistle]
+  spellsCast: []
+actions: walked up to Mara's stall | picked up the whistle from the drawer | helped Mara gather herbs for the tonic
+promises: (none)
+maraObserved: Wren walked up to the stall | Wren said hello to Mara | Wren opened the drawer and picked up the whistle | Wren helped gather herbs for the tonic | Wren asked Mara to tell them about the whistle again | Wren asked why the festival works and what makes the souls come home
+maraShared: The whistle was Ovin's before; it isn't for sale and it stays | The stall's hinge is ferry-iron, nine winters on; it squealed the year the awning froze shut, and grease plus a quiet hand set it right | The drawer is on the left side; the whistle sits on a cloth inside | The whistle used to hang by the door, before — that's the whole of it
+helpedWithTonic: true  touchedTheDrawer: true
+-----------------------------
+

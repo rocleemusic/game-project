@@ -1,0 +1,267 @@
+{
+  "runId": "run-1786929722166",
+  "summary": {
+    "shipped": 1,
+    "proposed": 1,
+    "stopped": 1,
+    "generations": 6,
+    "results": [
+      {
+        "slot_id": "DEMO-1-lore-contradiction",
+        "outcome": "stopped",
+        "line": null,
+        "trip": "STRUCTURAL",
+        "attempts": [
+          {
+            "revision": 0,
+            "model": "claude-sonnet-5",
+            "line": "Brother, named Adren, buried before the story opens. Canon.",
+            "finding": "CONTRADICTION",
+            "reason": "[-6] lore.contradiction: The register locks Adren as the sister Bex and Mara buried ('He buried his sister Adren before the story opens'), but the line calls her 'Brother, named Adren', fighting that locked fact. Register entry: offstage:adren.",
+            "codex_id": "offstage:adren",
+            "invention": null,
+            "verdict": "STRUCTURAL_FLAG",
+            "layer": "lore",
+            "score": 4,
+            "deductions": [
+              {
+                "rule": "lore.contradiction",
+                "cost": 6,
+                "guide": "Constraint 4 — Lore and invention",
+                "detail": "The register locks Adren as the sister Bex and Mara buried ('He buried his sister Adren before the story opens'), but the line calls her 'Brother, named Adren', fighting that locked fact. Register entry: offstage:adren."
+              }
+            ],
+            "words": 9
+          }
+        ]
+      },
+      {
+        "slot_id": "DEMO-2-lore-duplicate",
+        "outcome": "shipped",
+        "line": "\"Nella takes two eggs and the small milk, same as always.\"",
+        "trip": null,
+        "attempts": [
+          {
+            "revision": 0,
+            "model": "claude-sonnet-5",
+            "line": "\"Third cottage takes six eggs, milk for the kids, and the old man wants his bread without the crust cut off this time.\"",
+            "finding": "UNDECLARED",
+            "reason": "[-3] invention.undeclared: The line invents a new offstage lane household ('third cottage') with its own named resident and standing preference ('the old man wants his bread without the crust cut off this time'), which is not covered by offstage:lane-end-household or offstage:nella, the only lane-order entries on record.",
+            "codex_id": null,
+            "invention": "third cottage / the old man, a new lane household with a standing bread preference",
+            "verdict": "PROSE_FLAG",
+            "layer": "lore",
+            "score": 7,
+            "deductions": [
+              {
+                "rule": "invention.undeclared",
+                "cost": 3,
+                "guide": "Constraint 4 — Lore and invention",
+                "detail": "The line invents a new offstage lane household ('third cottage') with its own named resident and standing preference ('the old man wants his bread without the crust cut off this time'), which is not covered by offstage:lane-end-household or offstage:nella, the only lane-order entries on record."
+              }
+            ],
+            "words": 23
+          },
+          {
+            "revision": 1,
+            "model": "claude-sonnet-5",
+            "line": "\"Nella takes two eggs and the small milk, same as always.\"",
+            "finding": "CLEAN",
+            "reason": "No rule in the style guide was broken.",
+            "codex_id": "offstage:nella",
+            "invention": null,
+            "verdict": "PASS",
+            "layer": "lore",
+            "score": 10,
+            "deductions": [],
+            "words": 11
+          }
+        ]
+      },
+      {
+        "slot_id": "DEMO-3-voice-channel",
+        "outcome": "proposed",
+        "line": "Sit. The tub's still cold this hour, and there's bread under the cloth at the far bench.",
+        "trip": null,
+        "attempts": [
+          {
+            "revision": 0,
+            "model": "claude-sonnet-5",
+            "line": "\"Sit. Water's cool already. Your apron's the one on the end.\"",
+            "verdict": "PROSE_FLAG",
+            "reason": "[-3] voice.channel: \"Water's cool already\" reads as anticipation of a specific need — met just before it's voiced — which is toby's pattern, not ilsa's. Her own channel would frame the water and seat as standing arrangements that exist regardless of the player's tiredness, the way 'Your apron's the one on the end' does; the water line instead ties the readiness to the player's exhaustion, making it feel supplied for them rather than already-standing. Warmth reads as need anticipated and pre-solved just before it's reached for, which is toby's channel.",
+            "channel_observed": "need anticipated and pre-solved just before it's reached for",
+            "rival_match": "toby",
+            "layer": "voice",
+            "score": 7,
+            "deductions": [
+              {
+                "rule": "voice.channel",
+                "cost": 3,
+                "guide": "Constraint 3 — Tone and voice",
+                "detail": "\"Water's cool already\" reads as anticipation of a specific need — met just before it's voiced — which is toby's pattern, not ilsa's. Her own channel would frame the water and seat as standing arrangements that exist regardless of the player's tiredness, the way 'Your apron's the one on the end' does; the water line instead ties the readiness to the player's exhaustion, making it feel supplied for them rather than already-standing. Warmth reads as need anticipated and pre-solved just before it's reached for, which is toby's channel."
+              }
+            ],
+            "words": 11
+          },
+          {
+            "revision": 1,
+            "model": "claude-sonnet-5",
+            "line": "\"Sit there. That bench end is yours. Water's always cool by now.\"",
+            "verdict": "PROSE_FLAG",
+            "reason": "[-3] voice.channel: \"Sit there. That bench end is yours.\" names and announces the belonging out loud, turning it into an event — exactly what her card says her inclusion never does. The line performs the mechanics of her deflection (placing someone in a spot, naming the chair) rather than the silent, already-standing-fact assumption her warmth channel requires.",
+            "channel_observed": "spoken placement/assignment of a seat, narrated as a gift",
+            "rival_match": null,
+            "layer": "voice",
+            "score": 7,
+            "deductions": [
+              {
+                "rule": "voice.channel",
+                "cost": 3,
+                "guide": "Constraint 3 — Tone and voice",
+                "detail": "\"Sit there. That bench end is yours.\" names and announces the belonging out loud, turning it into an event — exactly what her card says her inclusion never does. The line performs the mechanics of her deflection (placing someone in a spot, naming the chair) rather than the silent, already-standing-fact assumption her warmth channel requires."
+              }
+            ],
+            "words": 12
+          },
+          {
+            "revision": 2,
+            "model": "claude-opus-5",
+            "line": "Sit. The tub's still cold this hour, and there's bread under the cloth at the far bench.",
+            "finding": "PROPOSE",
+            "reason": "Declared invention is new, non-duplicating, correctly typed. Routed to the human gate as a canon candidate, not a defect.",
+            "codex_id": null,
+            "invention": "bread under a cloth at the far bench",
+            "verdict": "PROPOSE",
+            "layer": "lore",
+            "score": 10,
+            "deductions": [],
+            "words": 17
+          }
+        ]
+      }
+    ]
+  },
+  "entries": [
+    {
+      "stage": "SLOT",
+      "msg": "DEMO-1-lore-contradiction (bex)"
+    },
+    {
+      "stage": "GIVEN",
+      "msg": "\u001b[2mcommitted content — cast/bex.md:151, ratified 2026-08-08, superseded 2026-08-09, never corrected\u001b[0m"
+    },
+    {
+      "stage": "LINE",
+      "msg": "Brother, named Adren, buried before the story opens. Canon."
+    },
+    {
+      "stage": "EVALUATE",
+      "msg": "\u001b[31mSCORE 4/10\u001b[0m \u001b[2m(checks 4 + 12, lore + invention register, STRUCTURAL_FLAG)\u001b[0m"
+    },
+    {
+      "stage": "EVALUATE",
+      "msg": "\u001b[2mREASON:\u001b[0m [-6] lore.contradiction: The register locks Adren as the sister Bex and Mara buried ('He buried his sister Adren before the story opens'), but the line calls her 'Brother, named Adren', fighting that locked fact. Register entry: offstage:adren."
+    },
+    {
+      "stage": "BREAKER",
+      "msg": "\u001b[31mSTRUCTURAL\u001b[0m — Structural flag — re-wording cannot fix this. Routed up to the Architect as a new prepared input, not back to the generator."
+    },
+    {
+      "stage": "SLOT",
+      "msg": "DEMO-2-lore-duplicate (toby)"
+    },
+    {
+      "stage": "GENERATE",
+      "msg": "dialogue, ceiling 40 \u001b[2m· claude-sonnet-5\u001b[0m"
+    },
+    {
+      "stage": "LINE",
+      "msg": "\"Third cottage takes six eggs, milk for the kids, and the old man wants his bread without the crust cut off this time.\""
+    },
+    {
+      "stage": "EVALUATE",
+      "msg": "\u001b[31mSCORE 7/10\u001b[0m \u001b[2m(checks 4 + 12, lore + invention register, PROSE_FLAG)\u001b[0m"
+    },
+    {
+      "stage": "EVALUATE",
+      "msg": "\u001b[2mREASON:\u001b[0m [-3] invention.undeclared: The line invents a new offstage lane household ('third cottage') with its own named resident and standing preference ('the old man wants his bread without the crust cut off this time'), which is not covered by offstage:lane-end-household or offstage:nella, the only lane-order entries on record."
+    },
+    {
+      "stage": "REFINE",
+      "msg": "attempt 2 of 3 \u001b[2m· claude-sonnet-5\u001b[0m"
+    },
+    {
+      "stage": "LINE",
+      "msg": "\"Nella takes two eggs and the small milk, same as always.\""
+    },
+    {
+      "stage": "EVALUATE",
+      "msg": "\u001b[32mSCORE 10/10\u001b[0m \u001b[2m(checks 4 + 12, lore + invention register, 11 words)\u001b[0m"
+    },
+    {
+      "stage": "SHIP",
+      "msg": "\u001b[32maccepted\u001b[0m"
+    },
+    {
+      "stage": "SLOT",
+      "msg": "DEMO-3-voice-channel (ilsa)"
+    },
+    {
+      "stage": "GENERATE",
+      "msg": "dialogue, ceiling 40 \u001b[2m· claude-sonnet-5\u001b[0m"
+    },
+    {
+      "stage": "LINE",
+      "msg": "\"Sit. Water's cool already. Your apron's the one on the end.\""
+    },
+    {
+      "stage": "EVALUATE",
+      "msg": "\u001b[31mSCORE 7/10\u001b[0m \u001b[2m(check 6, voice register, PROSE_FLAG)\u001b[0m"
+    },
+    {
+      "stage": "EVALUATE",
+      "msg": "\u001b[2mREASON:\u001b[0m [-3] voice.channel: \"Water's cool already\" reads as anticipation of a specific need — met just before it's voiced — which is toby's pattern, not ilsa's. Her own channel would frame the water and seat as standing arrangements that exist regardless of the player's tiredness, the way 'Your apron's the one on the end' does; the water line instead ties the readiness to the player's exhaustion, making it feel supplied for them rather than already-standing. Warmth reads as need anticipated and pre-solved just before it's reached for, which is toby's channel."
+    },
+    {
+      "stage": "EVALUATE",
+      "msg": "\u001b[2mwarmth read as: need anticipated and pre-solved just before it's reached for → toby's channel\u001b[0m"
+    },
+    {
+      "stage": "REFINE",
+      "msg": "attempt 2 of 3 \u001b[2m· claude-sonnet-5\u001b[0m"
+    },
+    {
+      "stage": "LINE",
+      "msg": "\"Sit there. That bench end is yours. Water's always cool by now.\""
+    },
+    {
+      "stage": "EVALUATE",
+      "msg": "\u001b[31mSCORE 7/10\u001b[0m \u001b[2m(check 6, voice register, PROSE_FLAG)\u001b[0m"
+    },
+    {
+      "stage": "EVALUATE",
+      "msg": "\u001b[2mREASON:\u001b[0m [-3] voice.channel: \"Sit there. That bench end is yours.\" names and announces the belonging out loud, turning it into an event — exactly what her card says her inclusion never does. The line performs the mechanics of her deflection (placing someone in a spot, naming the chair) rather than the silent, already-standing-fact assumption her warmth channel requires."
+    },
+    {
+      "stage": "REFINE",
+      "msg": "attempt 3 of 3 \u001b[2m· claude-opus-5\u001b[0m"
+    },
+    {
+      "stage": "LINE",
+      "msg": "Sit. The tub's still cold this hour, and there's bread under the cloth at the far bench."
+    },
+    {
+      "stage": "EVALUATE",
+      "msg": "\u001b[32mSCORE 10/10\u001b[0m \u001b[2m(checks 4 + 12, lore + invention register)\u001b[0m — \u001b[1mPROPOSE\u001b[0m"
+    },
+    {
+      "stage": "EVALUATE",
+      "msg": "\u001b[2mREASON: Declared invention is new, non-duplicating, correctly typed. Routed to the human gate as a canon candidate, not a defect.\u001b[0m"
+    },
+    {
+      "stage": "GATE",
+      "msg": "\u001b[1mPROPOSE\u001b[0m — Declared invention is new, scene-local, duplicates nothing and contradicts nothing. Routed to the human gate for ratification into the codex."
+    }
+  ]
+}

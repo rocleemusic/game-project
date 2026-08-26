@@ -1,0 +1,75 @@
+{
+  "spell_id": "ignite",
+  "phrase": "ignite",
+  "role": "Blacksmith",
+  "canon": true,
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-04.",
+  "components": [
+    "item_sticks"
+  ],
+  "produces": [
+    "item_flame"
+  ],
+  "learn_source": "Watch the blacksmith light the forge at the bench in the Town scene, or watch a neighbour burn a dry hedge to clear it in the Forest",
+  "confirm_action": "Cast it yourself on inert material once — seeing the neighbour's cast gives only the clue",
+  "mana_effect": "Quality only: a bigger, cleaner, steadier flame at high mana; a small sputtering catch at baseline. Never whether the cast is possible.",
+  "unlocks": {
+    "screen": "Forest Unlock 1",
+    "obstacle": "The dry hedge blocking the path",
+    "witnessable_cast": "A neighbour burns a dry hedge to clear it before the player ever tries"
+  },
+  "receivers": [
+    {
+      "receiver_class": "inert",
+      "receiver_id": "stick",
+      "physical_outcome": "Catches at the tip and holds a small, steady flame",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "dry_hedge",
+      "physical_outcome": "Catches along its dry inner branches; smoke first, then the flame burns through, clearing the path it had blocked",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "river_stone",
+      "physical_outcome": "Takes the heat and glows through, holding it — too hot to lift",
+      "reaction_kind": null,
+      "produces": [
+        "item_heated_stone"
+      ]
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "furnace",
+      "physical_outcome": "State-dependent: unlit and stocked, the banked fuel catches and the furnace lights, draft picking up; already lit, nothing changes",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "bread",
+      "physical_outcome": "Crust scorches and blackens at the edges; the loaf is ruined; no flame catches",
+      "reaction_kind": "third-party objection if Toby is present (canon-gated bystander bark)"
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "cat",
+      "physical_outcome": "No physical effect — the spell's light washes over the fur and fades without catching",
+      "reaction_kind": "startle-flee to cover, watch from distance, stress-groom"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "toby",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "deflection — redirects the act toward his own work (canon-gated, ruled 2026-07-26)"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "ilsa",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": null
+    }
+  ]
+}

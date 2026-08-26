@@ -1,0 +1,18 @@
+{
+  "key_item_id": "key_handed_plate",
+  "description": "It is a plain carved plate, wood-heavy and polished with a thick coat of wax. It came from the deep end of her stack, a place where the things she keeps aren't usually on display. The carving is simple, enough to show the grain, but smooth to the touch. It feels solid and finished, like a small piece of home meant to be used.",
+  "category": "gift",
+  "status": "out-of-slice",
+  "status_note": "Not rejected on merit. Roc capped soul-tied key items at two per soul for the slice (2026-08-05), and Ilsa's two are `key_spare_apron` and `key_knotted_cord`. Kept on record as the first candidate if the cap lifts past the slice.",
+  "soul": "ilsa",
+  "origin": "made",
+  "made_from": [
+    "item_sticks",
+    "item_beeswax"
+  ],
+  "source_locations": [],
+  "persistence": "pack-triaged",
+  "consumable": false,
+  "use_family": null,
+  "soul_link_note": "Ilsa keeps her stack one plate deeper than the house needs, and handing one over is how she assumes you into the group without saying so. The plate leaves her table in your hands, and inclusion needs no role, so the habit and the object both survive the reshuffle."
+}

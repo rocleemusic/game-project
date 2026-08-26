@@ -1,0 +1,242 @@
+{
+  "generated": "2026-08-11",
+  "entries": [
+    {
+      "id": "item_ash",
+      "kind": "item",
+      "label": "ash",
+      "category": "component",
+      "source_locations": [
+        "Town scene",
+        "Square"
+      ]
+    },
+    {
+      "id": "item_beeswax",
+      "kind": "item",
+      "label": "beeswax",
+      "category": "component",
+      "source_locations": [
+        "Town scene",
+        "Festival Grounds"
+      ]
+    },
+    {
+      "id": "item_berry",
+      "kind": "item",
+      "label": "a berry",
+      "category": "component",
+      "source_locations": [
+        "Forager's Clearing",
+        "Forest Unlock 2"
+      ]
+    },
+    {
+      "id": "item_captured_sound",
+      "kind": "item",
+      "label": "a captured sound",
+      "category": "sound",
+      "source_locations": [
+        "Square",
+        "Town scene",
+        "Festival Grounds"
+      ]
+    },
+    {
+      "id": "item_dirt",
+      "kind": "item",
+      "label": "dirt",
+      "category": "component",
+      "source_locations": [
+        "Forager's Clearing",
+        "Forest Unlock 1"
+      ]
+    },
+    {
+      "id": "item_feather",
+      "kind": "item",
+      "label": "a feather",
+      "category": "component",
+      "source_locations": [
+        "Forager's Clearing",
+        "Square",
+        "Forest Unlock 2"
+      ]
+    },
+    {
+      "id": "item_flame",
+      "kind": "item",
+      "label": "an existing flame",
+      "category": "component",
+      "source_locations": [
+        "Town scene",
+        "Square",
+        "Festival Grounds"
+      ]
+    },
+    {
+      "id": "item_grass",
+      "kind": "item",
+      "label": "grass",
+      "category": "component",
+      "source_locations": [
+        "Forager's Clearing",
+        "Festival Grounds"
+      ]
+    },
+    {
+      "id": "item_river_stone",
+      "kind": "item",
+      "label": "a river stone",
+      "category": "component",
+      "source_locations": [
+        "Forager's Clearing",
+        "Forest Unlock 2"
+      ]
+    },
+    {
+      "id": "item_salt",
+      "kind": "item",
+      "label": "salt",
+      "category": "component",
+      "source_locations": [
+        "Town scene",
+        "Festival Grounds"
+      ]
+    },
+    {
+      "id": "item_spring_water",
+      "kind": "item",
+      "label": "spring water",
+      "category": "component",
+      "source_locations": [
+        "Town scene",
+        "Forest Unlock 2"
+      ]
+    },
+    {
+      "id": "item_sticks",
+      "kind": "item",
+      "label": "sticks",
+      "category": "component",
+      "source_locations": [
+        "Forager's Clearing",
+        "Forest Unlock 1"
+      ]
+    },
+    {
+      "id": "item_tree_sap",
+      "kind": "item",
+      "label": "tree sap",
+      "category": "component",
+      "source_locations": [
+        "Forager's Clearing",
+        "Forest Unlock 1"
+      ]
+    },
+    {
+      "id": "item_wool",
+      "kind": "item",
+      "label": "wool",
+      "category": "component",
+      "source_locations": [
+        "Town scene",
+        "Festival Grounds"
+      ]
+    },
+    {
+      "id": "key_arch_filing",
+      "kind": "key-item",
+      "label": "a filing from the Lantern Arch centerpiece",
+      "category": "memento",
+      "source_locations": [
+        "Square",
+        "Town scene"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "key_berry_loaf",
+      "kind": "key-item",
+      "label": "a preserved-berry loaf",
+      "category": "gift",
+      "source_locations": [],
+      "status": "approved"
+    },
+    {
+      "id": "key_dawn_bundle",
+      "kind": "key-item",
+      "label": "a small wool-wrapped bundle of provisions, tied the night before",
+      "category": "gift",
+      "source_locations": [],
+      "status": "approved"
+    },
+    {
+      "id": "key_handed_plate",
+      "kind": "key-item",
+      "label": "a plain carved plate, wax-polished, from the deep end of her stack",
+      "category": "gift",
+      "source_locations": [],
+      "status": "out-of-slice"
+    },
+    {
+      "id": "key_knotted_cord",
+      "kind": "key-item",
+      "label": "a twisted wool cord, one knot per person of hers, never explained",
+      "category": "memento",
+      "source_locations": [],
+      "status": "approved"
+    },
+    {
+      "id": "key_rite_chime",
+      "kind": "key-item",
+      "label": "a small rite chime",
+      "category": "tool",
+      "source_locations": [
+        "Festival Grounds",
+        "Forest Unlock 2"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "key_sealed_letter",
+      "kind": "key-item",
+      "label": "a wax-sealed festival letter",
+      "category": "gift",
+      "source_locations": [],
+      "status": "approved"
+    },
+    {
+      "id": "key_spare_apron",
+      "kind": "key-item",
+      "label": "a second work apron, folded and kept for hands that have not come",
+      "category": "memento",
+      "source_locations": [],
+      "status": "approved"
+    },
+    {
+      "id": "key_stone_sickle",
+      "kind": "key-item",
+      "label": "a stone-edged sickle",
+      "category": "tool",
+      "source_locations": [],
+      "status": "approved"
+    },
+    {
+      "id": "key_tonic_drop",
+      "kind": "key-item",
+      "label": "a stoppered drop of the first-frost tonic",
+      "category": "memento",
+      "source_locations": [],
+      "status": "approved"
+    },
+    {
+      "id": "key_unopened_jar",
+      "kind": "key-item",
+      "label": "a wax-sealed jar of preserves, never opened",
+      "category": "memento",
+      "source_locations": [],
+      "status": "approved"
+    }
+  ]
+}

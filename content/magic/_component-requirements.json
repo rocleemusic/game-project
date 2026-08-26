@@ -1,0 +1,126 @@
+{
+  "component_requirements": [
+    {
+      "item_id": "item_sticks",
+      "description": "sticks",
+      "needed_by": [
+        "furrow",
+        "ignite"
+      ],
+      "gate_bearing": true
+    },
+    {
+      "item_id": "item_wool",
+      "description": "wool",
+      "needed_by": [
+        "fetch",
+        "scratch"
+      ],
+      "gate_bearing": false
+    },
+    {
+      "item_id": "item_grass",
+      "description": "grass",
+      "needed_by": [
+        "breath",
+        "waft"
+      ],
+      "gate_bearing": false
+    },
+    {
+      "item_id": "item_dirt",
+      "description": "dirt",
+      "needed_by": [
+        "breath",
+        "furrow"
+      ],
+      "gate_bearing": false
+    },
+    {
+      "item_id": "item_river_stone",
+      "description": "a river stone",
+      "needed_by": [
+        "glimmer",
+        "portion",
+        "temper",
+        "weigh"
+      ],
+      "gate_bearing": false
+    },
+    {
+      "item_id": "item_feather",
+      "description": "a feather",
+      "needed_by": [
+        "fetch"
+      ],
+      "gate_bearing": false
+    },
+    {
+      "item_id": "item_berry",
+      "description": "a berry",
+      "needed_by": [
+        "steep"
+      ],
+      "gate_bearing": false
+    },
+    {
+      "item_id": "item_spring_water",
+      "description": "spring water",
+      "needed_by": [
+        "steep",
+        "temper"
+      ],
+      "gate_bearing": false
+    },
+    {
+      "item_id": "item_ash",
+      "description": "ash",
+      "needed_by": [
+        "dry"
+      ],
+      "gate_bearing": false
+    },
+    {
+      "item_id": "item_tree_sap",
+      "description": "tree sap",
+      "needed_by": [
+        "waft"
+      ],
+      "gate_bearing": false
+    },
+    {
+      "item_id": "item_beeswax",
+      "description": "beeswax",
+      "needed_by": [
+        "echo",
+        "seal"
+      ],
+      "gate_bearing": false
+    },
+    {
+      "item_id": "item_salt",
+      "description": "salt",
+      "needed_by": [
+        "preserve"
+      ],
+      "gate_bearing": false
+    },
+    {
+      "item_id": "item_captured_sound",
+      "description": "a captured sound",
+      "needed_by": [
+        "echo"
+      ],
+      "gate_bearing": false
+    },
+    {
+      "item_id": "item_flame",
+      "description": "an existing flame",
+      "needed_by": [
+        "leap"
+      ],
+      "gate_bearing": false
+    }
+  ],
+  "note": "needed_by lists only spells that are approved, canon or pending — rejected spells are excluded, so a rejected design cannot keep an item alive. Each spell record carries its own status (Roc's gate 2026-08-04)."
+}

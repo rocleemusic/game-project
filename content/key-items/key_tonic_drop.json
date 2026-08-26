@@ -1,0 +1,18 @@
+{
+  "key_item_id": "key_tonic_drop",
+  "description": "The glass vial is small and holds a single drop of the first-frost tonic. It stays clear and liquid, even when the weather turns cold, though it seems to catch the light differently than water. The stopper is wax-sealed so the liquid stays exactly as it was when it was bottled. It is heavier than it looks.",
+  "category": "memento",
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-05.",
+  "role": "Herbalist",
+  "origin": "made",
+  "made_from": [
+    "item_berry",
+    "item_spring_water"
+  ],
+  "source_locations": [],
+  "persistence": "pack-triaged",
+  "consumable": false,
+  "use_family": null,
+  "role_link_note": "A spare drop kept back from the Herbalist's festival tonic, steeped from berry and spring water like the batch itself."
+}

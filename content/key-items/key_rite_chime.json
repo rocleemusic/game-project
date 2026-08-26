@@ -1,0 +1,18 @@
+{
+  "key_item_id": "key_rite_chime",
+  "description": "The chime is a small brass bell, worn smooth by fingers. It hangs from a simple leather strap. When held and shaken, it makes a clear, brief sound. It does not ring for long. The metal is heavy for its size and shows a few small dents along the rim. It is the kind of object used to mark a moment or call attention to a change.",
+  "category": "tool",
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-05.",
+  "role": "Priest",
+  "origin": "found",
+  "made_from": [],
+  "source_locations": [
+    "Festival Grounds",
+    "Forest Unlock 2"
+  ],
+  "persistence": "pack-triaged",
+  "consumable": false,
+  "use_family": "chime",
+  "role_link_note": "The Priest's rite is called with struck resonant stone; old chimes from past festivals turn up at the Grounds and along the secret forest path."
+}

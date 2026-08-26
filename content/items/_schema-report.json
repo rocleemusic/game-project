@@ -1,0 +1,91 @@
+{
+  "schema_notes": {
+    "matrix": [
+      {
+        "item_id": "item_sticks",
+        "description": "sticks",
+        "category": "component"
+      },
+      {
+        "item_id": "item_wool",
+        "description": "wool",
+        "category": "component"
+      },
+      {
+        "item_id": "item_grass",
+        "description": "grass",
+        "category": "component"
+      },
+      {
+        "item_id": "item_dirt",
+        "description": "dirt",
+        "category": "component"
+      },
+      {
+        "item_id": "item_river_stone",
+        "description": "a river stone",
+        "category": "component"
+      },
+      {
+        "item_id": "item_feather",
+        "description": "a feather",
+        "category": "component"
+      },
+      {
+        "item_id": "item_berry",
+        "description": "a berry",
+        "category": "component"
+      },
+      {
+        "item_id": "item_spring_water",
+        "description": "spring water",
+        "category": "component"
+      },
+      {
+        "item_id": "item_ash",
+        "description": "ash",
+        "category": "component"
+      },
+      {
+        "item_id": "item_tree_sap",
+        "description": "tree sap",
+        "category": "component"
+      },
+      {
+        "item_id": "item_beeswax",
+        "description": "beeswax",
+        "category": "component"
+      },
+      {
+        "item_id": "item_salt",
+        "description": "salt",
+        "category": "component"
+      },
+      {
+        "item_id": "item_captured_sound",
+        "description": "a captured sound",
+        "category": "sound"
+      }
+    ],
+    "empty_categories": [
+      "made",
+      "memento",
+      "gift",
+      "tool"
+    ]
+  },
+  "scope_check": {
+    "total_items": 13,
+    "per_category": {
+      "component": 12,
+      "made": 0,
+      "memento": 0,
+      "gift": 0,
+      "sound": 1,
+      "tool": 0
+    },
+    "target": 15,
+    "note": "13 items from the 21-spell superset (3 per role x 7 roles), itself designed against a slice count of 10 spells. Under the ~15 total but lopsided against the roughly-3-per-category spread: all derived items are raw casting materials. Trimming happens at Roc's spell-selection gate, not here."
+  },
+  "orphans": []
+}

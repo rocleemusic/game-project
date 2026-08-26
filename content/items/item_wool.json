@@ -1,0 +1,19 @@
+{
+  "item_id": "item_wool",
+  "description": "The wool is thick and unwashed, smelling of dry grass and livestock. It came off a mountain sheep, and the curls are still tangled with bits of burr and dirt. If you pull it, the fibers stretch before they break, showing the strength of the fleece. It is heavy in the hand.",
+  "category": "component",
+  "persistence": "pack-triaged",
+  "collectible": true,
+  "consumable": true,
+  "source_locations": [
+    "Town scene",
+    "Festival Grounds"
+  ],
+  "always_available": false,
+  "used_by": [
+    "fetch",
+    "scratch"
+  ],
+  "produced_by": [],
+  "use_family": null
+}

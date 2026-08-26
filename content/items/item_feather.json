@@ -1,0 +1,19 @@
+{
+  "item_id": "item_feather",
+  "description": "A feather found on the trail. It is long and white, with soft down near the quill. The edges are not frayed. It feels light and slightly stiff, the kind of thing that catches a breeze and stays up.",
+  "category": "component",
+  "persistence": "pack-triaged",
+  "collectible": true,
+  "consumable": true,
+  "source_locations": [
+    "Forager's Clearing",
+    "Square",
+    "Forest Unlock 2"
+  ],
+  "always_available": false,
+  "used_by": [
+    "fetch"
+  ],
+  "produced_by": [],
+  "use_family": null
+}

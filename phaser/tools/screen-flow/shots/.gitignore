@@ -1,0 +1,4 @@
+# keep shots/ in the tree; generated PNGs are not committed
+*.png
+capture-manifest.json
+!.gitignore

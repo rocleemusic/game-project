@@ -1,0 +1,19 @@
+{
+  "item_id": "item_beeswax",
+  "description": "Beeswax in a small waxen-sealed pouch. It smells faintly of honey and sun. The texture is soft enough to hold a fingerprint but stays firm in the heat. Good for sealing letters or greasing thread.",
+  "category": "component",
+  "persistence": "pack-triaged",
+  "collectible": true,
+  "consumable": true,
+  "source_locations": [
+    "Town scene",
+    "Festival Grounds"
+  ],
+  "always_available": false,
+  "used_by": [
+    "echo",
+    "seal"
+  ],
+  "produced_by": [],
+  "use_family": null
+}

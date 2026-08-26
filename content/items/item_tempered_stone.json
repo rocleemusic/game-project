@@ -1,0 +1,19 @@
+{
+  "item_id": "item_tempered_stone",
+  "description": "A smooth river stone, grey and heavy. It stays cool to the touch even in the sun, and it seems to drink the heat without getting any warmer. For about a week, the surface felt like it was waiting for something. It is no longer a rough-edged rock from the bank.",
+  "category": "component",
+  "persistence": "world",
+  "collectible": false,
+  "consumable": true,
+  "source_locations": [
+    "Heart of the Wood"
+  ],
+  "always_available": true,
+  "used_by": [
+    "fetch"
+  ],
+  "produced_by": [
+    "temper"
+  ],
+  "use_family": null
+}

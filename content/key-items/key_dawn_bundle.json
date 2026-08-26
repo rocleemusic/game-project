@@ -1,0 +1,19 @@
+{
+  "key_item_id": "key_dawn_bundle",
+  "description": "A small wool-wrapped bundle of provisions, tied the night before. It smells of dry grain and old fat. There is a little bit of cheese in the middle, though the edges have turned hard. It feels heavy for its size, like it was packed to last the whole day. It is soft where it sits, and the wool is still warm from the hearth.",
+  "category": "gift",
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-05.",
+  "soul": "toby",
+  "origin": "made",
+  "made_from": [
+    "item_berry",
+    "item_grass",
+    "item_wool"
+  ],
+  "source_locations": [],
+  "persistence": "pack-triaged",
+  "consumable": false,
+  "use_family": null,
+  "soul_link_note": "Toby works out what you will need and it is already there when you reach for it — this bundle is that anticipation with a knot in it, made up before you woke and never mentioned. Foraged goods and a scrap of wool need no trade, so the habit outlives any job he is dealt."
+}

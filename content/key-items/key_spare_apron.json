@@ -1,0 +1,17 @@
+{
+  "key_item_id": "key_spare_apron",
+  "description": "A second work apron, folded and kept for hands that have not come. It is made of heavy, unbleached linen and bears no stains from use, unlike the one I wear. It stays tucked in the bottom of my pack, pressed flat against the spare clothes to keep the creases sharp. The fabric is coarse and smells faintly of dust and sun, a small weight that pulls at my shoulder whenever I turn to see if anyone is following.",
+  "category": "memento",
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-05.",
+  "soul": "ilsa",
+  "origin": "made",
+  "made_from": [
+    "item_wool"
+  ],
+  "source_locations": [],
+  "persistence": "pack-triaged",
+  "consumable": false,
+  "use_family": null,
+  "soul_link_note": "The place Ilsa keeps at the empty end of her bench has one portable heart: the spare apron she lays out and works around. The laid-out second place is carded as travelling with the soul, and an apron fits any work, so it goes wherever the reshuffle seats her."
+}

@@ -1,0 +1,55 @@
+{
+  "spell_id": "waft",
+  "phrase": "waft",
+  "role": "Priest",
+  "canon": false,
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-04.",
+  "components": [
+    "item_grass",
+    "item_tree_sap"
+  ],
+  "produces": [],
+  "learn_source": "Watch the priest send the censer smoke up straight at the Festival Grounds — the rite that calls the souls home is read in the rising column",
+  "confirm_action": "Cast it yourself on something that smokes or scents once",
+  "mana_effect": "Quality only: at high mana the column rises tall and unbroken; at baseline it climbs a body-height and frays. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "inert",
+      "receiver_id": "censer_smoke",
+      "physical_outcome": "Gathers and rises in a single straight column, undisturbed by breeze",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "chimney",
+      "physical_outcome": "State-dependent: backing up and smoky, the draft rights itself and pulls clean; drawing fine already, nothing changes",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "dusty_floor",
+      "physical_outcome": "The dust lifts in a thin sheet and drifts out the doorway",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "river_stone",
+      "physical_outcome": "no_effect — nothing about it can rise or drift",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "cat",
+      "physical_outcome": "No physical effect — the lift does not attach to a living body",
+      "reaction_kind": "watches the moving dust, pounce-stalks it"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "bex",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "plainly states what the caster just tried to do to him"
+    }
+  ]
+}

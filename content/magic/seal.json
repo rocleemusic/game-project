@@ -1,0 +1,54 @@
+{
+  "spell_id": "seal",
+  "phrase": "seal",
+  "role": "Postman",
+  "canon": false,
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-04.",
+  "components": [
+    "item_beeswax"
+  ],
+  "produces": [],
+  "learn_source": "Watch the postman close the festival letters in the Square before the rounds — a letter that opens in the rain is a letter lost",
+  "confirm_action": "Cast it yourself on a folded letter once",
+  "mana_effect": "Quality only: at high mana the seal is weather-tight and opens clean for the receiver; at baseline it holds but tears a little coming off. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "inert",
+      "receiver_id": "folded_letter",
+      "physical_outcome": "Seals shut along the fold, weather-tight",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "sealed_letter",
+      "physical_outcome": "no_effect — it is already closed; the cast finds nothing open",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "parcel",
+      "physical_outcome": "State-dependent: dry wrapping seals tight at every seam; soaked wrapping will not take the seal until it dries",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "jam_jar",
+      "physical_outcome": "The lid seats and seals — pantry-tight",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "dog",
+      "physical_outcome": "No physical effect — nothing on a living body closes",
+      "reaction_kind": "sneeze, head-shake, trots off"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "linnet",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "quiet withdrawal a step back from the caster"
+    }
+  ]
+}

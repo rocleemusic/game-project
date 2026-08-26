@@ -1,0 +1,58 @@
+{
+  "spell_id": "temper",
+  "phrase": "temper",
+  "role": "Blacksmith",
+  "canon": false,
+  "status": "approved",
+  "status_note": "Approved at Roc's gate 2026-08-04.",
+  "components": [
+    "item_river_stone",
+    "item_spring_water"
+  ],
+  "produces": [],
+  "learn_source": "Watch the blacksmith quench a glowing piece at the bench in the Town scene — the Lantern Arch centerpiece demands metal hardened true, not just cooled",
+  "confirm_action": "Cast it yourself on something hot from the forge once",
+  "mana_effect": "Quality only: at high mana the hardening runs even to the core with no warp; at baseline the surface hardens true but thick pieces may cool with a slight bow. Never whether the cast is possible.",
+  "unlocks": null,
+  "receivers": [
+    {
+      "receiver_class": "stateful",
+      "receiver_id": "forge_billet",
+      "physical_outcome": "State-dependent: glowing hot, it hardens evenly with a hiss and holds its shape; already cold, no_effect — there is no heat to set",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "stick",
+      "physical_outcome": "no_effect — wood takes no temper",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "hot_loaf",
+      "physical_outcome": "The crust sets hard and glassy — the loaf survives but eats like a brick",
+      "reaction_kind": null
+    },
+    {
+      "receiver_class": "inert",
+      "receiver_id": "heated_stone",
+      "physical_outcome": "The heat sets and evens as it cools — the stone hardens into a piece cool enough to handle",
+      "reaction_kind": null,
+      "produces": [
+        "item_tempered_stone"
+      ]
+    },
+    {
+      "receiver_class": "creature",
+      "receiver_id": "cat",
+      "physical_outcome": "No physical effect — the cast passes over the animal without attaching",
+      "reaction_kind": "ear-flick, unbothered stare"
+    },
+    {
+      "receiver_class": "soul",
+      "receiver_id": "nell",
+      "physical_outcome": "No physical effect",
+      "reaction_kind": "amused shrug, returns to work without breaking his hum"
+    }
+  ]
+}
