@@ -9,12 +9,12 @@ record: plans/_handoffs/
 Where the last session stopped — one dated file per session, split out of `plans/` on
 2026-08-16 because progress reports kept polluting design records (`plans/CONTEXT.md`).
 Stale by design: a handoff's lifespan is one session, then it is history. New ones
-are still written constantly (38 files and counting), which is why the noun is live
+are still written constantly (40 files and counting), which is why the noun is live
 even though every individual file goes stale immediately.
 
 ## Doors
 - `plans/_handoffs/CONTEXT.md` — the folder's own contract
-- `plans/_handoffs/2026-08-25-mara-exemplar-pipeline-run-handoff.md` — the newest, driving the pending pipeline run
+- `plans/_handoffs/2026-08-25-thread-driven-scenes-run-handoff.md` — the newest, driving the pending pipeline run (GP-205)
 
 ## Hits
 Only the next session, and only as a starting pointer. Anything durable gets folded

@@ -2,7 +2,9 @@
 
 Highest-authority prose: `CONTEXT.md` at the territory root (the front door — read it
 before anything; the capstone date, the pivot, and the Paca-first rule live there).
-Walked 2026-08-25.
+The public repo also carries a `README.md` front door — it describes the map and what
+the public copy leaves out, not the game; it is not a noun and gets no card.
+Walked 2026-08-25 (run 2; run 1 was earlier the same day).
 
 Naming collisions: [`collisions.md`](collisions.md) — read it before trusting any
 search hit; the same name lands on different things in this territory.
@@ -33,7 +35,7 @@ Shore marks the design/build seam — the boundary most changes must cross.
 | gdd-sync — how session rulings reach `gdd/`; spec at RL_MAP root | live | design | `cards/gdd-sync.md` |
 | Paca board — external task state, `GP-nnn` ids | live | — | `cards/paca-board.md` |
 | seat contract — an agent's job description, audited | live | design | `cards/seat-contract.md` |
-| pipeline run — dated run output; only the newest (2026-08-25) is pending intake | live | design | `cards/pipeline-run.md` |
+| pipeline run — dated run output; newest is `2026-08-25-thread-driven-scenes`, pending pick-and-polish | live | design | `cards/pipeline-run.md` |
 | design record — why it was built this way (`plans/`) | live | design | `cards/design-record.md` |
 | session handoff — where the last session stopped; never cited | live | — | `cards/session-handoff.md` |
 | assignment — coursework; derives from the game, feeds nothing back | live | — | `cards/assignment.md` |

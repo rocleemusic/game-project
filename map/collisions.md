@@ -1,7 +1,7 @@
 # Naming collisions — game-project
 
-Built fresh on this walk (2026-08-25). Same name, different things; grab the wrong
-one and the change vanishes, breaks a passing test, or imports a dead ruling.
+Built fresh on this walk (2026-08-25, run 2). Same name, different things; grab the
+wrong one and the change vanishes, breaks a passing test, or imports a dead ruling.
 
 **story.json is five files.** `lantern-projects/v01/story.json` is the record.
 `lantern-projects/scratch/story.json` is a scratch copy. `phaser/public/story/story.json`
@@ -69,10 +69,31 @@ it matches no screen id or name — a GDD-era label never minted (`phaser/README
 §Three things block, GP-106). The join the graph actually uses is gate ids like
 `G-F7-light`.
 
+**Two 2026-08-25 pipeline runs; the newer one retired the older's dialogue.**
+`pipeline-runs/2026-08-25-thread-driven-scenes/` is the newest run and holds the
+pending scene lines (`lines/*-comparison.md`, `structure/`). It superseded the
+dialogue output of `pipeline-runs/2026-08-25-full-content-generation/` ("single lines,
+no real structure", per the newer run's RESULTS.md). But the older run is not all
+dead — its item and key-item descriptions were ingested into live canon (GP-207), and
+its `magic/` descriptions are still the pending source. Grab the older run's dialogue
+as current and you pick from scrapped material.
+
+**`lantern-projects/v01/threads/` is a retired format still on disk.** Three large
+`ilsa-*.md` conversation files sit there. The thread-driven-scenes run retired the
+4-conversation format they use (its RESULTS.md). They are frozen leftovers, not live
+dialogue — the live scene structures are in
+`pipeline-runs/2026-08-25-thread-driven-scenes/structure/`.
+
+**`commands/gdd-sync.md` is an in-territory copy of a foreign command.** The file is a
+copy of the RL_MAP session command, not game content. Its own paths read
+`ProjectOS/game-project/gdd/` — the source layout — but this territory keeps `gdd/` at
+its root, not under `ProjectOS/game-project/`. Read those paths as this repo's
+root-level `gdd/`. The gdd-sync card names this file the record.
+
 ## Debris (no resolution needed, just don't trust it)
 
-`bash.exe.stackdump` at the territory root and
-`tools/resolver/P:tmpresolver_test_out.txt` (an escaped Windows redirect) are shell
-accidents wired to nothing. `phaser/.playtest/`, `phaser/.adversary/`,
-`phaser/.tmp-verifier-shots/`, `phaser/dist/`, `tools/resolver/out-calib/` and
-`tools/resolver/out/` are regenerated outputs.
+`.gitignore` now excludes the regenerable outputs from this public copy, so most run-1
+debris is simply absent here: `node_modules/`, `dist/`, `out/`, `out-calib/`, `.vite/`,
+`.adversary/`, `.playtest/`, and `*.stackdump` are gitignored and not on disk. The one
+stray left is `tools/resolver/P:tmpresolver_test_out.txt` — an escaped Windows redirect,
+wired to nothing.

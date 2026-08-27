@@ -1,8 +1,8 @@
 # Open work — game-project
 
-**Snapshot from the Paca board, read 2026-08-25.** A point-in-time copy of the board's open tasks, filed to the one map noun each change lands on. It is not live. Task state lives in Paca — run `/pm` for the current list. The backlog is not shown.
+**Snapshot from the Paca board, read 2026-08-25 (run 2).** A point-in-time copy of the board's open tasks, filed to the one map noun each change lands on. It is not live. Task state lives in Paca — run `/pm` for the current list. The backlog is not shown.
 
-**35 open** — 3 in motion · 24 waiting on you · 8 queued.
+**33 open** — 3 in motion · 22 waiting on you · 8 queued.
 
 This is the same open-work layer the surface (`surface.html`) shows. If this file and the board disagree, the board wins. If a task's noun and the map disagree, the card wins.
 
@@ -10,7 +10,7 @@ This is the same open-work layer the surface (`surface.html`) shows. If this fil
 
 Top 3, ranked by tier, then by what is in motion.
 
-1. **GP-205** · in motion · *dialogue inventory* — T15, NPC dialogue rework + overnight generation
+1. **GP-205** · in motion · *dialogue inventory* — T15, NPC dialogue rework; priority raised to 5 (top of board). Act on `pipeline-runs/2026-08-25-thread-driven-scenes/`
 2. **GP-206** · in motion · *pipeline run* — T16, intro story scene (arrival, name entry)
 3. **GP-137** · waiting on you · *resolver* — 26 of 30 line files have no scene in the graph (Mara has zero)
 
@@ -18,7 +18,7 @@ Top 3, ranked by tier, then by what is in motion.
 
 Heaviest first. Within a noun: in motion, then waiting on you, then queued.
 
-### phaser build — 18
+### phaser build — 16
 - **GP-160** · waiting on you · Collection & Discovery mode — 5 scenes + theme pass
 - **GP-165** · waiting on you · Mode5 SRP extraction — CollectScene 1244→832 lines
 - **GP-166** · waiting on you · VFX never wired to mode5 — every cast was silent
@@ -34,9 +34,7 @@ Heaviest first. Within a noun: in motion, then waiting on you, then queued.
 - **GP-192** · waiting on you · Options settings — first live non-preview controls
 - **GP-193** · waiting on you · Universal fade-in wired into every scene
 - **GP-200** · waiting on you · Content Approval Editor — preview-pane fixes
-- **GP-202** · waiting on you · T14, HUD relayout (single bottom bar, move regions)
-- **GP-203** · waiting on you · Move-region editor in EditModeSystem
-- **GP-204** · waiting on you · T13, year-loop saves (rollover, 3-slot set + name)
+- **GP-208** · waiting on you · Item art — per-item PNGs wired into every item-icon surface
 
 ### resolver — 6
 - **GP-137** · waiting on you · 26 of 30 line files have no scene in the graph (Mara has zero)
@@ -61,7 +59,7 @@ Heaviest first. Within a noun: in motion, then waiting on you, then queued.
 - **GP-206** · in motion · T16, intro story scene (arrival, name entry)
 
 ### item record — 1
-- **GP-207** · in motion · T17, item descriptions in the mage's field-notes voice (54 records)
+- **GP-207** · in motion · T17, item descriptions in the mage's field-notes voice — items + key items ingested, `content/magic` descriptions pending
 
 ### lantern player — 1
 - **GP-96** · waiting on you · ThreadsPanel — wire thread ids to prose
@@ -74,3 +72,7 @@ Heaviest first. Within a noun: in motion, then waiting on you, then queued.
 
 ### seat contract — 1
 - **GP-123** · queued · Trim narrative-architect.md — it still claims choice_node work
+
+---
+
+*Changed since run 1's snapshot earlier today (35 open): GP-202 (T14 HUD relayout), GP-203 (move-region editor), GP-204 (T13 year-loop saves) left the open set; GP-208 (item art wiring) was added. Net phaser build 18 → 16.*

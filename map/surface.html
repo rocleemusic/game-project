@@ -220,7 +220,7 @@
 
 <header class="titleblock">
   <div class="titleleft">
-    <p class="eyebrow">A survey of the territory · walked 2026-08-25</p>
+    <p class="eyebrow">A survey of the territory · walked 2026-08-25 · run 2</p>
     <h1>game-project</h1>
     <p class="sub">A high-level overview of the current state of game-project. Pick a change or domain below to see what a change would affect.</p>
     <div class="donext" id="donext"></div>
@@ -338,7 +338,7 @@
       <li><code>phaser/src</code> interior — one noun here; its doors (<code>ARCHITECTURE.md</code>, <code>GAPS.md</code>) carry the inside.</li>
       <li><code>game-project-ideas.md</code>, <code>-resources.md</code> — an idea inbox and a link list. Neither is state.</li>
       <li><code>locations/</code> — one art doc, carried by the appearance.md trap.</li>
-      <li>Debris — <code>bash.exe.stackdump</code>, <code>.playtest/</code>, <code>.adversary/</code>, <code>dist/</code>, <code>out-calib/</code> — regenerated or accidental, wired to nothing.</li>
+      <li>Debris — <code>.gitignore</code> keeps the regenerable outputs (<code>dist/</code>, <code>out-calib/</code>, <code>.playtest/</code>, <code>.adversary/</code>, <code>*.stackdump</code>) out of this public copy; only the stray <code>tools/resolver/P:tmpresolver_test_out.txt</code> remains, wired to nothing.</li>
     </ul>
   </section>
 </div>
@@ -358,8 +358,8 @@ const NOUNS = {
     hits:"Rulings land in CONTEXT.md and reach these files via gdd-sync. A mechanic change in 04-magic-system.md reaches the build only by hand: a ruling applied to content/magic/ records, then re-bundled by prep:content. There is no automatic sync — the bundle reads content/, never gdd/.",
     wrong:"resources/_archive/build-gdd-v*_draft.md — the retired compile lineage. Map 'Build GDD section N' references to the numbered files."},
   "gdd-sync":          {shore:"design", status:"live", pos:[70,268], r:13, role:"rulings → gdd",
-    card:"cards/gdd-sync.md", record:"../../commands/gdd-sync.md",
-    what:"The ruling-reconciliation process. Spec lives at the RL_MAP root, outside the territory. It proposes diffs; Roc gates every one.",
+    card:"cards/gdd-sync.md", record:"commands/gdd-sync.md",
+    what:"The ruling-reconciliation process. The spec now sits in-territory at commands/gdd-sync.md, a copy of the RL_MAP session command. It proposes diffs; Roc gates every one. Trap: the copy's paths read ProjectOS/game-project/gdd/ — read them as this repo's root-level gdd/.",
     hits:"A run writes approved diffs into gdd files, and supersession banners into knowledge-base docs when a ruling reverses a recommendation.",
     wrong:"The rulings themselves — it moves rulings into gdd, never mints or edits one. And not Paca: task status is the board's."},
   "knowledge base":    {shore:"design", status:"live", pos:[92,388], r:14, role:"external reference",
@@ -384,12 +384,12 @@ const NOUNS = {
     wrong:"pipeline-runs/*/ — same-named copies of these docs, frozen at run time. Editing a copy changes nothing."},
   "pipeline run":      {shore:"design", status:"live", pos:[420,432], r:21, role:"dated run output",
     card:"cards/pipeline-run.md", record:"pipeline-runs/",
-    what:"Dated snapshots of narrative runs. Older runs are frozen photographs. Live only because 2026-08-25-full-content-generation is fresh, unconsumed raw material.",
-    hits:"Only the newest run hits anything, via the polish pass: approved text folds into dialogue-inventory rows and run-folder-v01's ink/ (inklecate recompile). Once folded, the folder freezes and hits nothing.",
+    what:"Dated snapshots of narrative runs. Older runs are frozen photographs. Live because 2026-08-25-thread-driven-scenes is the newest run, its scene lines still pending pick-and-polish. It superseded the earlier same-day full-content-generation run's dialogue output.",
+    hits:"Only the newest run hits anything, via the polish pass: approved text folds into dialogue-inventory rows and run-folder-v01's ink/ (inklecate recompile). One fold already happened — full-content-generation's item and key-item descriptions were copied into item-record (GP-207); its content/magic descriptions are still pending. Once folded, a folder freezes and hits nothing.",
     wrong:"cast/ and narrative-pipeline/ — the live originals. Run folders hold live-looking copies; none are wired."},
   "dialogue inventory":{shore:"design", status:"live", pos:[330,580], r:16, role:"the fill tracker",
     card:"cards/dialogue-inventory.md", record:"gdd/15-dialogue-inventory.md",
-    what:"One row per authored dialogue entry (43 core rows). Its own header states the boundary: this table tracks; the rulings rule.",
+    what:"One row per authored dialogue entry. Greetings are the deep three ×3 bond levels plus the texture five ×2 rows each — raised from one row on 2026-08-25 by the thread-driven-scenes run's Phase 0. Its own header states the boundary: this table tracks; the rulings rule.",
     hits:"Row statuses are the burn-down toward the 2026-08-28 freeze. Marking built asserts the text is in ink — run-folder-v01's ink/, where touching source means an inklecate recompile.",
     wrong:"The rulings themselves — a table row contradicting a ruling is a table bug. And not the Paca board: content fill, not task state."},
   "design record":     {shore:"design", status:"live", pos:[540,120], r:15, role:"why, in plans/",
@@ -404,8 +404,8 @@ const NOUNS = {
     wrong:"gdd/04-magic-system.md — the design-altitude spec, not the record; its slice count follows the records. And not cues.json — visuals are a separate noun."},
   "item record":       {shore:"design", status:"live", pos:[236,600], r:16, role:"content/items/",
     card:"cards/item-record.md", record:"content/items/",
-    what:"One JSON per common item (17) and key item (12). Items satisfy spell components and forage; key items serve soul storylines.",
-    hits:"An item id change hits every spell whose components or produces names it — the join is by item_id. World items are collectible:false and must stay so: cast on and cast from, never pocketed.",
+    what:"One JSON per common item (16) and key item (12). Items satisfy spell components and forage; key items serve soul storylines. Each description is now the mage's field-notes voice — T17 ingested items and key items into live canon (GP-207).",
+    hits:"An item id change hits every spell whose components or produces names it — the join is by item_id. It also names the art file phaser/public/art/items/${id}.png, loaded by PreloadScene and drawn by makeItemIcon (GP-208) — rename the id and the art silently falls back to the category glyph. World items are collectible:false and must stay so: cast on and cast from, never pocketed.",
     wrong:"gdd/05-collectibles.md — category design, not records. And _component-requirements.json — derived; regenerate, don't hand-edit."},
   "seat contract":     {shore:"design", status:"live", pos:[560,300], r:13, role:"agent seats",
     card:"cards/seat-contract.md", record:"agents/",
@@ -449,7 +449,7 @@ const NOUNS = {
     wrong:"plans/ and _handoffs/ — why and where-we-stopped, not state. A task found only in the archived backlog is not a task."},
   "session handoff":   {shore:"off", status:"live", pos:[470,716], r:9, role:"where we stopped",
     card:"cards/session-handoff.md", record:"plans/_handoffs/",
-    what:"One dated file per session, stale by design — a handoff's lifespan is one session. The noun is live because new ones are written constantly.",
+    what:"One dated file per session, stale by design — a handoff's lifespan is one session. The noun is live because new ones are written constantly (40 files; newest is 2026-08-25-thread-driven-scenes-run-handoff.md).",
     hits:"Only the next session, as a starting pointer. Anything durable folds into CONTEXT.md, a design record, or Paca.",
     wrong:"Contracts and rulings — never cite a handoff in a contract. PAUSED.md is the same species but carries live VFX rulings; see collisions."},
   "assignment":        {shore:"off", status:"live", pos:[630,716], r:9, role:"coursework",
@@ -557,7 +557,10 @@ const COLLISIONS = [
   ["Tasks live in two worlds","Paca holds state; markdown holds reasoning. A task found only in the archived backlog is not a task."],
   ["The test command is not one command","resolver runs node --test; lantern and phaser run vitest. The wrong runner looks like a wall of failures."],
   ["“home” is not what the manifest says","T5 is an NPC's home despite the manifest's filename; the player's Home Hub is HOME."],
-  ["“Forest Unlock 1” is a label, not a screen","It matches no screen id — never minted (GP-106). The graph joins on gate ids."]
+  ["“Forest Unlock 1” is a label, not a screen","It matches no screen id — never minted (GP-106). The graph joins on gate ids."],
+  ["Two 2026-08-25 pipeline runs","thread-driven-scenes is newest and holds the pending lines; it retired full-content-generation's dialogue. But that older run's item descriptions were ingested (GP-207) — only its dialogue is dead."],
+  ["v01/threads/ is a retired format still on disk","Three big ilsa-*.md conversation files. The thread-driven-scenes run retired the 4-conversation format. Frozen leftovers, not live dialogue."],
+  ["commands/gdd-sync.md is an in-territory copy","A copy of the RL_MAP session command. Its paths read ProjectOS/game-project/gdd/ — read them as this repo's root-level gdd/."]
 ];
 
 // ======= PACA — open-work snapshot, taken at run time. See fallback note. =======
@@ -567,13 +570,14 @@ const COLLISIONS = [
 const PACA_SNAPSHOT = {
   available: true,
   taken: "2026-08-25",
-  counts: {todo:8, inprogress:3, inreview:24},
+  counts: {todo:8, inprogress:3, inreview:22},
   note: "Open tasks read from the Paca board when this page was made. Backlog is not shown. Task state lives in Paca — run /pm for the live list."
 };
 const PACA = [
   {id:205, s:"inprogress", tier:"must",   noun:"dialogue inventory", t:"T15 — NPC dialogue rework + overnight generation"},
   {id:206, s:"inprogress", tier:"must",   noun:"pipeline run", t:"T16 — Intro story scene (arrival, name entry)"},
-  {id:207, s:"inprogress", tier:"should", noun:"item record", t:"T17 — Item descriptions, mage's field-notes voice (54 records)"},
+  {id:207, s:"inprogress", tier:"should", noun:"item record", t:"T17 — Item descriptions, field-notes voice — items + key items ingested, magic pending"},
+  {id:208, s:"inreview", tier:"should", noun:"phaser build", t:"Item art — per-item PNGs wired into every item-icon surface"},
   {id:96,  s:"inreview", tier:"could",  noun:"lantern player", t:"ThreadsPanel — wire thread ids to prose"},
   {id:137, s:"inreview", tier:"must",   noun:"resolver", t:"26 of 30 line files have no scene in the graph (Mara has zero)"},
   {id:138, s:"inreview", tier:"must",   noun:"resolver", t:"The 4 imported scenes are a stale copy of the line files"},
@@ -595,9 +599,6 @@ const PACA = [
   {id:193, s:"inreview", tier:"should", noun:"phaser build", t:"Universal fade-in wired into every scene"},
   {id:199, s:"inreview", tier:"could",  noun:"cue", t:"VFX sprite cue kind — 9 of 16 spells re-authored"},
   {id:200, s:"inreview", tier:"could",  noun:"phaser build", t:"Content Approval Editor — preview-pane fixes"},
-  {id:202, s:"inreview", tier:"should", noun:"phaser build", t:"T14 — HUD relayout (single bottom bar, move regions)"},
-  {id:203, s:"inreview", tier:"should", noun:"phaser build", t:"Move-region editor in EditModeSystem"},
-  {id:204, s:"inreview", tier:"must",   noun:"phaser build", t:"T13 — Year-loop saves (rollover, 3-slot set + name)"},
   {id:89,  s:"todo", tier:"should", noun:"resolver", t:"arch_promote 3-of-5 is unsatisfiable — decide the denominator"},
   {id:92,  s:"todo", tier:"should", noun:"soul", t:"Refactor thread tables into per-life -threads.md files"},
   {id:93,  s:"todo", tier:"should", noun:"resolver", t:"Day-loop pacing rules — a conversation advances time"},
