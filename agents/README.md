@@ -24,6 +24,7 @@ The distinction that decides which directory a seat lives in:
 | **UI Builder** | [`ui-builder.md`](ui-builder.md) | One game UI screen, from mockup + spec to a shipped Phaser scene matching the design system | A new screen to build, or a fix pass from the UI Verifier |
 | **UI Verifier** | [`ui-verifier.md`](ui-verifier.md) | The fidelity-and-gate verdict on a built UI screen — findings only, never fixes | After a UI Builder handoff, or directly on an existing screen |
 | **QA Adversary** | [`qa-adversary.md`](qa-adversary.md) | Whether the build breaks under abuse — 250 headless steps of deliberately invalid input, triaged. Findings only, never fixes | Build-phase boundaries · before content freeze · before the capstone · after any change to save, gates, inventory, cast or the day loop |
+| **Audio Implementer** | [`audio-implementer/`](audio-implementer/) | Every sound in the build — proposes interactions that need one, tracks them in a ledger, wires up what Roc drops in `staging/`, routed through the Music/SFX/Ambience/Spell-Cast buses that back `OptionsScene`'s Sound category | On demand — run the propose stage when starting a new sweep, the wire stage whenever `staging/` has files waiting |
 
 ## The gate trio
 
