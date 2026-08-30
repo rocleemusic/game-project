@@ -26,6 +26,36 @@ directly. Load the `audio-and-sound` skill before writing any of it — Phaser 4
 changed sound APIs from v3 in places, same trap class as the tint/mask gotchas in
 `phaser/dev-notes/`.
 
+Four things the skill surfaces that change how this module has to be built, not
+just how it's described:
+
+1. **Phaser has no built-in category volume.** `this.sound.volume` is one global
+   knob for every sound in the game. There's no native "bus" to attach a slider
+   to — the module has to track each category's setting itself and multiply it
+   into the `volume` passed to every `play()`/`add()` call. This is the entire
+   reason the module exists instead of scenes calling `this.sound` directly.
+2. **`this.sound` is one shared manager across every scene, and a looping sound
+   does not stop on its own when the scene changes.** Ambience and Music are
+   loops. The module must explicitly stop the outgoing location's loop before
+   starting the next one, or loops stack instead of replacing each other.
+3. **`pauseOnBlur` (default `true`) already pauses every sound when the tab loses
+   focus.** Before building a separate hidden-tab handler for the "Mute when
+   window is hidden" toggle, check whether that toggle can just flip
+   `this.sound.pauseOnBlur` — likely it can, and a hand-built version would
+   duplicate behavior Phaser already gives for free.
+4. **Autoplay lock.** Browsers block audio until the player clicks or presses a
+   key. Music started on scene boot can silently fail to play if
+   `this.sound.locked` is still true at that moment — check it, and if locked,
+   queue the play via `this.sound.once('unlocked', () => sound.play())` instead
+   of assuming `play()` worked.
+
+Lower priority, worth doing but not blocking: **load audio with a format-fallback
+array** (`this.load.audio(key, ['file.ogg', 'file.mp3'])`) rather than one file,
+for cross-browser playback. This touches `staging/`'s naming rule (a slot may
+stage more than one file, same id, different extensions) and Stage 3's move step
+(both formats move together). Skip for the first pass if it adds friction — add
+once a real cross-browser gap shows up.
+
 **Writes:** the `PlayerSettings.ts` additions, the new `audio/` module, an update to
 `OptionsScene.ts` flipping the Sound category's rows from inert display values to
 real ones wired to the new settings (this is the one point where this seat edits a
