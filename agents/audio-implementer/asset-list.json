@@ -1,0 +1,20 @@
+{
+  "$comment": [
+    "The ledger for the Audio Implementer's loop (see ../CONTEXT.md). One entry per",
+    "sound slot, from proposed through implemented. This file is the whole state",
+    "machine — don't keep status anywhere else.",
+    "",
+    "Schema, per entry:",
+    "  id             (required) kebab-slug, unique. The staged filename stem must match it.",
+    "  category       (required) one of the categories/*.md files, by filename stem",
+    "  interaction    (required) the file:line or scene+trigger this sound plays on",
+    "  description    (required) what the sound should be/do, for the human making it",
+    "  status         (required) proposed | rejected | staged | implemented",
+    "  proposedAt     (required) ISO date the slot was proposed",
+    "  file           (optional) the staged filename, set when status becomes staged",
+    "  implementedAt  (optional) file:line of the wired call, set when status becomes implemented",
+    "  notes          (optional) rejection reason, or anything the human should know"
+  ],
+  "categories": ["music", "sound-effects", "ambience", "spell-cast-sounds"],
+  "slots": []
+}
