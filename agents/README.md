@@ -82,8 +82,4 @@ A new seat needs **a clear, distinct why and a passing capability check** — no
 
 §8A of that document names the expansion candidates. The Production/PM seat was one of them, and its stated *Watch* — "it overlaps the orchestrator's sequencing; keep it a separate seat only if task tracking/reporting is a distinct load from run-time routing" — is what this directory answers. The Orchestrator sequences content runs inside one session; the PM tracks work across weeks and five tracks, including the Unreal build the pipeline never touches. Distinct load, so it earns a seat — beside the pipeline, not inside it.
 
-**Audio Implementer** was the other named candidate. It's staffed now, in
-[`audio-implementer/`](audio-implementer/) — the one seat here with a folder
-instead of a single file, because its loop (propose → human makes the sound →
-stage → wire) carries state across sessions that a stateless role-prompt can't
-hold.
+**Audio Implementer** is the other named candidate, still unstaffed. It would belong here.
