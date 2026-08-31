@@ -49,12 +49,11 @@ just how it's described:
    queue the play via `this.sound.once('unlocked', () => sound.play())` instead
    of assuming `play()` worked.
 
-Lower priority, worth doing but not blocking: **load audio with a format-fallback
-array** (`this.load.audio(key, ['file.ogg', 'file.mp3'])`) rather than one file,
-for cross-browser playback. This touches `staging/`'s naming rule (a slot may
-stage more than one file, same id, different extensions) and Stage 3's move step
-(both formats move together). Skip for the first pass if it adds friction — add
-once a real cross-browser gap shows up.
+**Format: MP3, single file per slot.** OGG Vorbis isn't supported on Safari at
+all — a `.ogg`-only sound plays nothing there, silently. MP3 has the broadest
+cross-browser support (including Safari/iOS), so it's the one format this seat
+asks for. No fallback array, no second file per slot — `staging/`'s naming rule
+stays one file, `<slot-id>.mp3`.
 
 **Writes:** the `PlayerSettings.ts` additions, the new `audio/` module, an update to
 `OptionsScene.ts` flipping the Sound category's rows from inert display values to
